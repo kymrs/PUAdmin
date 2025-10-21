@@ -1,0 +1,109 @@
+<div class="container">
+  <div class="page-inner">
+    <!-- <div class="page-header">
+      <h3 class="fw-bold mb-3">Travel Reviews</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home"><a href="#"><i class="icon-home"></i></a></li>
+        <li class="separator"><i class="icon-arrow-right"></i></li>
+        <li class="nav-item"><a href="#">Tables</a></li>
+        <li class="separator"><i class="icon-arrow-right"></i></li>
+        <li class="nav-item"><a href="#">Datatables</a></li>
+      </ul>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <h4 class="card-title">Travel Reviews Table</h4>
+              <a data-bs-toggle="modal" data-bs-target="#travelReviewsFormModal" class="btn btn-primary btn-round ms-auto" href=""><i class="fa fa-plus"></i> Add Travel Review</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="overflow-x: auto;">
+              <table id="travelreviews" class="display table table-striped table-hover w-100" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Travel ID</th>
+                    <th>User ID</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Dibuat Pada</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Action</th>
+                    <th>Travel ID</th>
+                    <th>User ID</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Dibuat Pada</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <!-- Data rows will be dynamically rendered here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- MODAL FORM TRAVEL REVIEWS -->
+          <div class="modal fade" id="travelReviewsFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title"><span class="fw-mediumbold">Form</span> <span class="fw-light">Travel Review</span></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="travelReviewsForm">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Travel</label>
+                          <input id="hidden_id" type="hidden" class="form-control">
+                          <select id="travel_id" class="form-control select2">
+                            <option value="">Pilih Travel</option>
+                            <% if (typeof travels !== 'undefined' && travels.length > 0) { %>
+                              <% travels.forEach(function(travel) { %>
+                                <option value="<%= travel.id %>"><%= travel.name %></option>
+                              <% }); %>
+                            <% } %>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>User ID</label>
+                          <input id="user_id" type="text" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Rating</label>
+                          <input id="rating" type="number" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Comment</label>
+                          <textarea id="comment" class="form-control" rows="3"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="submitTravelReviewsBtn" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END MODAL FORM -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

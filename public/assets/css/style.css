@@ -1,0 +1,36 @@
+.form-group-default {
+    border: 1px solid rgba(26, 32, 53, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+    transition: all 0.3s ease; /* Transisi halus */
+    background-color: #f9f9f9; /* Warna latar default */
+}
+
+.form-group-default input,
+.form-group-default textarea,
+.form-group-default select {
+    border: none;
+    outline: none;
+    width: 100%;
+    background: transparent;
+    font-size: 14px;
+    color: #333;
+}
+
+.form-group-default:focus-within {
+    border-color: rgb(26, 32, 53); /* Warna border saat fokus */
+    box-shadow: 0 0 8px rgba(26, 32, 53, 0.5); /* Efek bayangan */
+    background-color: #ffffff; /* Warna latar saat fokus */
+}
+
+.form-group-default label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+    display: block;
+    transition: color 0.3s ease; /* Transisi warna label */
+}
+
+.form-group-default:focus-within label {
+    color: rgb(26, 32, 53); /* Warna label saat fokus */
+}

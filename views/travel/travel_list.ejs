@@ -1,0 +1,145 @@
+<div class="container">
+  <div class="page-inner">
+    <!-- <div class="page-header">
+      <h3 class="fw-bold mb-3">Travels</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home"><a href="#"><i class="icon-home"></i></a></li>
+        <li class="separator"><i class="icon-arrow-right"></i></li>
+        <li class="nav-item"><a href="#">Tables</a></li>
+        <li class="separator"><i class="icon-arrow-right"></i></li>
+        <li class="nav-item"><a href="#">Datatables</a></li>
+      </ul>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <h4 class="card-title">Travels Table</h4>
+              <a data-bs-toggle="modal" data-bs-target="#travelFormModal" class="btn btn-primary btn-round ms-auto" href=""><i class="fa fa-plus"></i> Add Travel</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="overflow-x: auto;">
+              <table id="travels" class="display table table-striped table-hover w-100" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Nama Travel</th>
+                    <th>Deskripsi</th>
+                    <th>Logo URL</th>
+                    <th>Contact Person</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Website</th>
+                    <th>Is_Verified</th>
+                    <th>Dibuat Pada</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Action</th>
+                    <th>Nama Travel</th>
+                    <th>Deskripsi</th>
+                    <th>Logo URL</th>
+                    <th>Contact Person</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Website</th>
+                    <th>Is_Verified</th>
+                    <th>Dibuat Pada</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <!-- Data rows will be dynamically rendered here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- MODAL FORM TRAVEL -->
+          <div class="modal fade" id="travelFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title"><span class="fw-mediumbold">Form</span> <span class="fw-light">Travel</span></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="travelForm">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Nama Travel</label>
+                          <input id="name" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Contact Person</label>
+                          <input id="contact_person" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Phone</label>
+                          <input id="phone" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Email</label>
+                          <input id="email" type="email" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Website</label>
+                          <input id="website" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Is Verified</label>
+                          <select id="is_verified" class="form-select">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Address</label>
+                          <textarea class="form-control" id="address" rows="5"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md">
+                        <div class="form-group form-group-default">
+                          <label>Deskripsi</label>
+                          <textarea class="form-control" id="description" rows="5"></textarea>
+                        </div>
+                      </div>  
+                      <div class="col-sm-12">
+                        <div class="form-group form-group-default">
+                          <label>Logo URL</label>
+                          <input id="logo_url" type="text" class="form-control">
+                          <input type="hidden" id="hidden_id">
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="submitTravelBtn" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END MODAL FORM -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Fonts Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    <!-- Style -->
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body>
+    <main>
+        <div class="row-1">
+            <img src="assets/img/logo/pengenumroh.png" alt="Logo PengenUmroh">
+        </div>
+        <div class="row-2">
+            <div class="form-container" id="login" style="display: block;">
+                <form action="/login" method="post">
+                    <div class="header">
+                        <h1>Login ke akun Anda</h1>
+                    </div>
+                    <div class="row">
+                        <input type="text" name="username" id="username" placeholder="Username">
+                    </div>
+                    <div class="row password-row">
+                        <input type="password" id="passwordInput" name="password" placeholder="Password">
+                        <span id="togglePassword" class="toggle-icon">
+                          <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                        </span>
+                    </div>
+                    <div class="extra-input">
+                        <div class="group">
+                            <input type="checkbox" id="rememberMe" hidden>
+                            <label class="custom-checkbox" for="rememberMe">Ingat saya</label>               
+                        </div>
+                        <div class="group">
+                            <a href="">Lupa Sandi?</a>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <button type="submit">Masuk</button>
+                        <p>Tidak punya akun?</p>
+                        <a href="" id="register-button">Daftar sekarang</a>
+                    </div>
+                </form>
+            </div>
+            <div class="form-container" id="register" style="display: none; margin-top: -10px">
+                <form action="/register" method="post">
+                    <div class="header-register">
+                        <h1>Buat Akun</h1>
+                    </div>
+                    <div class="row">
+                        <input type="text" name="username" id="username" placeholder="Username">
+                    </div>
+                    <div class="row">
+                        <input type="text" name="fullname" id="fullname" placeholder="Fullname">
+                    </div>
+                    <!-- <div class="row">
+                        <input type="text" name="no_hp" id="no_hp" placeholder="No Handphone">
+                    </div> -->
+                    <div class="row">
+                        <input type="text" name="email" id="email" placeholder="Email">
+                    </div>
+                    <div class="row password-row">
+                        <input type="password" name="password" id="passwordInput2" placeholder="Password">
+                        <span id="togglePassword2" class="toggle-icon">
+                          <i id="eyeIcon2" class="fa-solid fa-eye"></i>
+                        </span>
+                    </div>
+                    <div class="row password-row">
+                        <input type="password" name="confirmPassword" id="passwordInput3" placeholder="Confirm Password">
+                        <span id="togglePassword3" class="toggle-icon">
+                          <i id="eyeIcon3" class="fa-solid fa-eye"></i>
+                        </span>
+                    </div>
+                        <div class="extra-input">
+                            <div class="group">
+                                <input type="checkbox" id="daftar" hidden>
+                                <label style="line-height: 18px;" class="custom-checkbox2" for="daftar">Dengan mendaftar, Saya menyetujui syarat dan ketentuan kami.</label>               
+                            </div>
+                        </div>
+                    <div class="footer">
+                        <button type="submit" style="margin-bottom: 20px;">Buat Akun</button>
+                        <p>Sudah punya akun?</p>
+                        <a href="" id="login-button">Masuk</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>©2025 PengenUmroh.com - All rights reserved</p>
+    </footer>
+</body>
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#togglePassword').on('click', function() {
+            const $passwordInput = $('#passwordInput');
+            const $eyeIcon = $('#eyeIcon');
+
+            // Toggle type input
+            const isPassword = $passwordInput.attr('type') === 'password';
+            $passwordInput.attr('type', isPassword ? 'text' : 'password');
+
+            // Toggle icon class
+            $eyeIcon.toggleClass('fa-eye fa-eye-slash');
+        });
+
+        $('#togglePassword2').on('click', function () {
+            const $passwordInput = $('#passwordInput2');
+            const $eyeIcon = $(this).find('i'); // pakai find daripada id duplikat
+            const isPassword = $passwordInput.attr('type') === 'password';
+            $passwordInput.attr('type', isPassword ? 'text' : 'password');
+            $eyeIcon.toggleClass('fa-eye fa-eye-slash');
+        });
+
+        $('#togglePassword3').on('click', function() {
+            const $passwordInput = $('#passwordInput3');
+            const $eyeIcon = $('#eyeIcon');
+
+            // Toggle type input
+            const isPassword = $passwordInput.attr('type') === 'password';
+            $passwordInput.attr('type', isPassword ? 'text' : 'password');
+
+            // Toggle icon class
+            $eyeIcon.toggleClass('fa-eye fa-eye-slash');
+        });
+    });
+
+  $(document).ready(function () {
+    $('#login').addClass('show');
+
+    $('#register-button').click(function (e) {
+        $('#email').val('');
+        $('#passwordInput2').val('');
+      e.preventDefault();
+      setTimeout(function () {
+          $('#login').hide();
+          $('#register').fadeIn(100).addClass('show');
+        }, 300);
+        $('#login').removeClass('show');
+    });
+
+    $('#login-button').click(function (e) {
+      e.preventDefault();
+      setTimeout(function () {
+          $('#register').hide();
+          $('#login').fadeIn(100).addClass('show');
+        }, 300);
+        $('#register').removeClass('show');
+    });
+  });
+
+  $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = urlParams.get('page');
+
+        if (page === 'register') {
+            setTimeout(function () {
+            $('#login').hide();
+            $('#register').fadeIn(100).addClass('show');
+            }, 300);
+            $('#login').removeClass('show');
+        }
+  });
+
+</script>
+  
+  
+</html>

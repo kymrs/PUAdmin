@@ -1,0 +1,195 @@
+<div class="container">
+    <div class="page-inner">
+      <!-- <div class="page-header">
+        <h3 class="fw-bold mb-3">Users</h3>
+        <ul class="breadcrumbs mb-3">
+          <li class="nav-home">
+            <a href="#">
+              <i class="icon-home"></i>
+            </a>
+          </li>
+          <li class="separator">
+            <i class="icon-arrow-right"></i>
+          </li>
+          <li class="nav-item">
+            <a href="#">Tables</a>
+          </li>
+          <li class="separator">
+            <i class="icon-arrow-right"></i>
+          </li>
+          <li class="nav-item">
+            <a href="#">Datatables</a>
+          </li>
+        </ul>
+      </div> -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="d-flex align-items-center">
+                <h4 class="card-title">Users Table</h4>
+                <a
+                  id="addUserBtn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#userFormModal"
+                  class="btn btn-primary btn-round ms-auto"
+                  href=""
+                >
+                  <i class="fa fa-plus"></i>
+                  Add Row
+                </a>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="table-responsive">
+                <table
+                  id="userTable"
+                  class="display table table-striped table-hover"
+                >
+                  <thead>
+                    <tr>
+                      <th style="width: 10%">Action</th>
+                      <th>Username</th>
+                      <th>Fullname</th>
+                      <th>ID Level</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Action</th>
+                      <th>Username</th>
+                      <th>Fullname</th>
+                      <th>ID Level</th>
+                      <th>Status</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+              <!-- MODAL EDIT DATA -->
+              <div
+              class="modal fade"
+              id="userFormModal"
+              tabindex="-1"
+              role="dialog"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header border-0">
+                    <h5 class="modal-title">
+                      <span class="fw-mediumbold"> Form</span>
+                      <span class="fw-light"> User </span>
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="userForm">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group form-group-default">
+                            <label>Fullname</label>
+                            <input
+                              id="fullname"
+                              type="text"
+                              class="form-control"
+                            />
+                            <!-- HIDDEN INPUT -->
+                             <input 
+                              type="hidden"
+                              id="hidden_id_user"
+                             />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default">
+                            <label>Username</label>
+                            <input
+                              id="username"
+                              type="text"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6" id="passwordDiv">
+                          <div class="form-group form-group-default">
+                            <label>Password</label>
+                            <input
+                              id="password"
+                              type="text"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>ID Level</label>
+                          <select name="id_level" id="id_level" class="form-select">
+                            <option selected disabled>Pilih Opsi....</option>
+                            <% userlevels.forEach(function(level) { %>
+                              <option value="<%= level.id_level %>"><%= level.nama_level %></option>
+                            <% }); %>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Active</label>
+                          <select name="is_active" id="is_active" class="form-select">
+                            <option selected disabled>Pilih Opsi....</option>
+                            <option value="Y">Ya</option>
+                            <option value="N">Tidak</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Approval</label>
+                          <select name="app" id="app" class="form-select">
+                            <option selected disabled>Pilih Opsi....</option>
+                            <option value="Y">Ya</option>
+                            <option value="N">Tidak</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer border-0">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      id="submitUserBtn"
+                      class="btn btn-primary"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

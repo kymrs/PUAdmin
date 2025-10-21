@@ -1,0 +1,261 @@
+<div class="container">
+  <div class="page-inner">
+    <!-- <div class="page-header">
+      <h3 class="fw-bold mb-3">Travels</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home"><a href="#"><i class="icon-home"></i></a></li>
+        <li class="separator"><i class="icon-arrow-right"></i></li>
+        <li class="nav-item"><a href="#">Tables</a></li>
+        <li class="separator"><i class="icon-arrow-right"></i></li>
+        <li class="nav-item"><a href="#">Datatables</a></li>
+      </ul>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <h4 class="card-title">Paket Umroh Table</h4>
+              <a data-bs-toggle="modal" id="addPaketUmrahBtn" data-bs-target="#umrahPackageFormModal" class="btn btn-primary btn-round ms-auto" href=""><i class="fa fa-plus"></i> Add Paket Umrah</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="overflow-x: auto;">
+              <table id="umrahPackage" class="display table table-striped table-hover w-100" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Nama Paket</th>
+                    <th>Travel</th>
+                    <th>Tipe Paket</th>
+                    <th>Harga</th>
+                    <th>Durasi</th>
+                    <th>Deskripsi</th>
+                    <th>Dibuat Pada</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Action</th>
+                    <th>Nama Paket</th>
+                    <th>Travel</th>
+                    <th>Tipe Paket</th>
+                    <th>Harga</th>
+                    <th>Durasi</th>
+                    <th>Deskripsi</th>
+                    <th>Dibuat Pada</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <!-- Data rows will be dynamically rendered here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- MODAL FORM PAKET UMRAH -->
+          <div class="modal fade" id="umrahPackageFormModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">
+          <span class="fw-mediumbold">Form</span>
+          <span class="fw-light">Paket Umrah</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body" style="max-height: 80vh; overflow-y: auto; overflow-x: hidden;">
+        <form id="umrahPackageForm">
+          <div class="row">
+            <input type="hidden" id="hidden_id">
+
+            <div class="col-md-6">
+              <div class="form-group form-group-default">
+                <label>Nama Paket</label>
+                <input id="name" type="text" class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group form-group-default">
+                <label>Nama Travel</label>
+                <select class="form-control" id="travel_agency_id">
+                  <option value="" selected disabled>Pilih Opsi...</option>
+                  <option value="1">Dummy</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group form-group-default">
+                <label>Tipe Paket</label>
+                <input id="package_type" type="text" class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group form-group-default">
+                <label>Harga</label>
+                <input id="price" type="text" class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group form-group-default">
+                <label>Durasi</label>
+                <input id="duration_days" type="text" class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group form-group-default">
+                <label>Deskripsi</label>
+                <input id="description" type="text" class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group form-group-default">
+                <label>Fasilitas Termasuk</label>
+                <div class="input-group mb-2">
+                  <input id="facilityInput" type="text" class="form-control" placeholder="Tambah fasilitas">
+                  <button type="button" id="addFacilityBtn" class="btn btn-success">Tambah</button>
+                </div>
+                <ul id="facilityList" class="list-group"></ul>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group form-group-default">
+                <label>Fasilitas Tidak Termasuk</label>
+                <div class="input-group mb-2">
+                  <input id="notFacilityInput" type="text" class="form-control" placeholder="Tambah fasilitas">
+                  <button type="button" id="addNotFacilityBtn" class="btn btn-success">Tambah</button>
+                </div>
+                <ul id="notFacilityList" class="list-group"></ul>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group form-group-default">
+                <label>Itinerary</label>
+                <div class="input-group mb-2">
+                  <input id="itinerarInput" type="text" class="form-control" placeholder="Tambah Itinerary">
+                  <button type="button" id="itineraryBtn" class="btn btn-success">Tambah</button>
+                </div>
+                <ul id="itineraryList" class="list-group"></ul>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="submitUmrahPackageBtn" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const facilityInput = document.getElementById('facilityInput');
+  const notFacilityInput = document.getElementById('notFacilityInput');
+  const itineraryInput = document.getElementById('itineraryInput');
+  const addFacilityBtn = document.getElementById('addFacilityBtn');
+  const notFacilityBtn = document.getElementById('notFacilityBtn');
+  const itineraryBtn = document.getElementById('itineraryBtn');
+  const facilityList = document.getElementById('facilityList');
+  const notFacilityList = document.getElementById('notFacilityList');
+  const itineraryList = document.getElementById('itineraryList');
+
+  function addFacility() {
+    const value = facilityInput.value.trim();
+    if (value) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.textContent = value;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'btn btn-sm btn-danger ms-2';
+      removeBtn.textContent = 'Hapus';
+      removeBtn.onclick = () => li.remove();
+
+      li.appendChild(removeBtn);
+      facilityList.appendChild(li);
+      facilityInput.value = '';
+    }
+  }
+
+  function addNotFacility() {
+    const value = notFacilityInput.value.trim();
+    if (value) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.textContent = value;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'btn btn-sm btn-danger ms-2';
+      removeBtn.textContent = 'Hapus';
+      removeBtn.onclick = () => li.remove();
+
+      li.appendChild(removeBtn);
+      notFacilityList.appendChild(li);
+      notFacilityInput.value = '';
+    }
+  }
+
+  function addItinerary() {
+    const value = itineraryInput.value.trim();
+    if (value) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.textContent = value;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'btn btn-sm btn-danger ms-2';
+      removeBtn.textContent = 'Hapus';
+      removeBtn.onclick = () => li.remove();
+
+      li.appendChild(removeBtn);
+      itineraryList.appendChild(li);
+      itineraryInput.value = '';
+    }
+  }
+
+  facilityInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addFacility();
+    }
+  });
+
+  notFacilityInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addNotFacility();
+    }
+  });
+
+  itineraryInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addItinerary();
+    }
+  });
+
+  addFacilityBtn.addEventListener('click', addFacility);
+  notFacilityBtn.addEventListener('click', addNotFacility);
+  itineraryBtn.addEventListener('click', addItinerary);
+</script>
+          <!-- END MODAL FORM -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

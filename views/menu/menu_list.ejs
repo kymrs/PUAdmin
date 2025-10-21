@@ -1,0 +1,185 @@
+<div class="container">
+    <div class="page-inner">
+      <!-- <div class="page-header">
+        <h3 class="fw-bold mb-3">Menu</h3>
+        <ul class="breadcrumbs mb-3">
+          <li class="nav-home">
+            <a href="#">
+              <i class="icon-home"></i>
+            </a>
+          </li>
+          <li class="separator">
+            <i class="icon-arrow-right"></i>
+          </li>
+          <li class="nav-item">
+            <a href="#">Tables</a>
+          </li>
+          <li class="separator">
+            <i class="icon-arrow-right"></i>
+          </li>
+          <li class="nav-item">
+            <a href="#">Datatables</a>
+          </li>
+        </ul>
+      </div> -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="d-flex align-items-center">
+                <h4 class="card-title">Menu Table</h4>
+                <a
+                  data-bs-toggle="modal"
+                  data-bs-target="#menuModal"
+                  class="btn btn-primary btn-round ms-auto"
+                  href=""
+                >
+                  <i class="fa fa-plus"></i>
+                  Add Row
+                </a>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="table-responsive">
+                <table
+                  id="menuTable"
+                  class="display table table-striped table-hover"
+                  style="width: 100%"
+                >
+                  <thead>
+                    <tr>
+                      <th style="width: 10%">Action</th>
+                      <th>Menu</th>
+                      <th>Link</th>
+                      <th>Icon</th>
+                      <th>Order</th>
+                      <th>Is_active</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Action</th>
+                      <th>Menu</th>
+                      <th>Link</th>
+                      <th>Icon</th>
+                      <th>Order</th>
+                      <th>Is_active</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+              <!-- MODAL EDIT DATA -->
+              <div
+              class="modal fade"
+              id="menuModal"
+              tabindex="-1"
+              role="dialog"
+              aria-hidden="true"
+              >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header border-0">
+                    <h5 class="modal-title">
+                      <span class="fw-mediumbold"> Form</span>
+                      <span class="fw-light"> Menu </span>
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    >
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="menuForm">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group form-group-default">
+                            <label>Menu Name</label>
+                            <input
+                              id="nama_menu"
+                              type="text"
+                              class="form-control"
+                            />
+                            <!-- HIDDEN INPUT -->
+                             <input 
+                              type="hidden"
+                              id="hidden_id_menu"
+                             />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default">
+                            <label>Link</label>
+                            <input
+                              id="link"
+                              type="text"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default">
+                            <label>Icon</label>
+                            <input
+                              id="icon"
+                              type="text"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Order</label>
+                          <input
+                              id="urutan"
+                              type="text"
+                              class="form-control"
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Active</label>
+                          <select name="is_active" id="is_active" class="form-select">
+                            <option selected disabled>Pilih Opsi....</option>
+                            <option value="Y">Ya</option>
+                            <option value="N">Tidak</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer border-0">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      id="submitMenuBtn"
+                      class="btn btn-primary"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

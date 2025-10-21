@@ -1,0 +1,392 @@
+/* CSS Reset */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+body {
+    background-image: url('../img/login-background.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Fonts */
+.poppins-light {
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+  
+.poppins-regular {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+  
+.poppins-medium {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Main */
+main {
+    align-items: center;
+    height: 89.6vh;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    display: flex;
+}
+
+.row-1 {
+    width: 50%;
+    text-align: center;
+}
+
+.row-1 img {
+    width: 70%;
+}
+
+.row-2  {
+    width: 50%;
+}
+
+.row-2 .form-container {
+    width: 420px;
+    background: linear-gradient(135deg, #ffffff, #f8f9fa); /* soft gradient */
+    border-radius: 15px;
+    margin: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* soft elegant shadow */
+    padding: 30px;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateX(30px);
+    display: none;
+    transition: all 0.5s ease;
+}
+
+.form-container.show {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.row-2 .form-container:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* efek hover */
+}
+
+.row-2 .form-container form .header {
+    padding: 30px 0 40px;
+    text-align: center;
+}
+
+.row-2 .form-container form .header-register {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.row-2 .form-container form .header h1 {
+    font-size: 1.9rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.row-2 .form-container form .header-register h1 {
+    font-size: 1.9rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.row-2 .form-container form .row {
+    margin-top: 13px;
+}
+
+.row-2 .form-container form .row input[type=text],
+.row-2 .form-container form .row input[type=password] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    height: 40px;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #333;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+/* Saat input di-klik / fokus */
+.row-2 .form-container form .row input[type=text]:focus,
+.row-2 .form-container form .row input[type=password]:focus {
+    border-color: #ff6900;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(234, 36, 39, 0.5);
+}
+
+/* Style khusus password input */
+.password-row {
+    position: relative;
+}
+  
+.password-row input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 40px 10px 15px; /* Biar ga ketiban icon */
+    height: 45px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #333;
+    transition: all 0.3s ease;
+    outline: none;
+}
+  
+.password-row input:focus {
+    border-color: #ff6900;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(255, 105, 0, 0.3);
+}
+  
+.toggle-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 15px;
+    color: #888;
+    user-select: none;
+}
+
+.row-2 .form-container form .extra-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.row-2 .form-container form .extra-input a {
+    color: #333;
+    text-decoration: none;
+}
+
+/* Sembunyikan checkbox asli */
+input[type="checkbox"][id="rememberMe"] {
+    display: none;
+}
+  
+/* Style untuk label */
+.custom-checkbox,
+.custom-checkbox2 {
+    position: relative;
+    padding-left: 23px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    color: #333;
+    user-select: none;
+    display: inline-block;
+    margin: 20px 0;
+}
+  
+/* Kotak checkbox custom */
+.custom-checkbox::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -2.5px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 105, 0, 0.4);
+    border-radius: 4px;
+    background: white;
+    transition: all 0.2s ease;
+}
+  
+.custom-checkbox2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 105, 0, 0.4);
+    border-radius: 4px;
+    background: white;
+    transition: all 0.2s ease;
+}
+  
+/* Tanda centang */
+input[type="checkbox"]:checked + .custom-checkbox::after,
+input[type="checkbox"]:checked + .custom-checkbox2::after {
+    content: "✔";
+    position: absolute;
+    left: 4px;
+    top: -1px;
+    font-size: 12px;
+    color: #ff6900;
+    transition: all 0.2s ease;
+}
+
+.row-2 .form-container form .footer {
+    text-align: center;
+    font-size: 14px;
+}
+
+.row-2 .form-container form .footer button {
+    width: 100%;
+    height: 40px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    background-color: #ff6900;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(255, 105, 0, 0.3);
+    margin-bottom: 35px;
+}
+
+.row-2 .form-container form .footer button {
+    width: 100%;
+    height: 40px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    background-color: #ff6900;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(255, 105, 0, 0.3);
+    margin-bottom: 35px;
+}
+
+.row-2 .form-container form .footer button:hover {
+    background-color: #e55e00;
+    box-shadow: 0 6px 12px rgba(255, 105, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.row-2 .form-container form .footer p {
+    margin-bottom: 7px;
+}
+
+.row-2 .form-container form .footer a {
+    color: #ff6900;
+    text-decoration: none;
+}
+
+/* Footer */
+footer {
+    width: 100%;
+    padding: 30px 0;
+    background-color: #111723;
+    text-align: center;
+}
+
+footer p {
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@media (max-width: 920px){
+    main {
+        display: block;
+        text-align: center;
+    }
+
+    main .row-1,
+    main .row-2 {
+        width: 100%;
+    }
+
+    main .row-1 {
+        margin: 30px 0;
+    }
+
+    .row-1 img {
+        width: 50%;
+    }
+}
+
+@media (max-width: 498px){
+    body {
+        font-size: 60%;
+        background-position: -350px 0px;
+    }
+
+    .row-1 img {
+        width: 70%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    main .row-2 .form-container {
+        margin-top: 15%;
+        width: 85%;
+        padding: 20px 30px 50px;
+    }
+
+    .row-2 .form-container form .header {
+        padding: 10px 0 10px;
+    }
+
+    .row-2 .form-container form .header h1 {
+        font-size: 1.4rem;
+    }
+}
+
+/* Registration Style */

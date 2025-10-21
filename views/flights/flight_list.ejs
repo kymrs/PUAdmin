@@ -1,0 +1,107 @@
+<div class="container">
+  <div class="page-inner">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <h4 class="card-title">Flight Table</h4>
+              <a data-bs-toggle="modal" data-bs-target="#flightFormModal" class="btn btn-primary btn-round ms-auto" href=""><i class="fa fa-plus"></i> Add Data Flight</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="overflow-x: auto;">
+              <table id="flightTable" class="display table table-striped table-hover w-100" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Airline</th>
+                    <th>Flight Number</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Action</th>
+                    <th>Airline</th>
+                    <th>Flight Number</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <!-- Data rows will be dynamically rendered here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- MODAL FORM TRAVEL -->
+          <div class="modal fade" id="flightFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title"><span class="fw-mediumbold">Form</span> <span class="fw-light">Flight</span></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="hotelInput">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Airline</label>
+                          <input type="hidden" id="hidden_id">
+                          <input id="airline" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Flight Number</label>
+                          <input id="flight_number" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Departure Airport</label>
+                          <input id="departure_airport" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                          <label>Arrival Airport</label>
+                          <input id="arrival_airport" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                          <label>Departure Time</label>
+                          <input id="departure_time" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group form-group-default">
+                          <label>Arrival Time</label>
+                          <input id="arrival_time" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="submitFlightBtn" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END MODAL FORM -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

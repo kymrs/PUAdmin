@@ -1,0 +1,144 @@
+<!--   Core JS Files   -->
+<script src="/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="/assets/js/core/popper.min.js"></script>
+<script src="/assets/js/core/bootstrap.min.js"></script>
+
+<!-- jQuery Scrollbar -->
+<script src="/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+<!-- Chart JS -->
+<script src="/assets/js/plugin/chart.js/chart.min.js"></script>
+
+<!-- jQuery Sparkline -->
+<script src="/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+<!-- Chart Circle -->
+<script src="/assets/js/plugin/chart-circle/circles.min.js"></script>
+
+<!-- Datatables -->
+<script src="/assets/js/plugin/datatables/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<!-- JS DataTables Responsive -->
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<!-- Bootstrap Notify -->
+<script src="/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+<!-- jQuery Vector Maps -->
+<script src="/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+<script src="/assets/js/plugin/jsvectormap/world.js"></script>
+
+<!-- Sweet Alert -->
+<script src="/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+<!-- Kaiadmin JS -->
+<script src="/assets/js/kaiadmin.min.js"></script>
+
+<!-- Kaiadmin DEMO methods, don't include it in your project! -->
+<script src="/assets/js/setting-demo.js"></script>
+<script src="/assets/js/demo.js"></script>
+
+<!-- PEMILIHAN PAGE JAVASCRIPT -->
+<!-- <script src="<%= jslink %>"></script> -->
+<!-- <% if (typeof jslink !== 'undefined') { %>
+    <script src="<%= jslink %>"></script>
+<% } else { %>
+    <script src="javascripts/javascript.js"></script>
+<% } %> -->
+<script src="<%= jslink %>"></script>
+<% if (typeof jslink2 !== 'undefined') { %>
+  <script src="<%= jslink2 %>"></script>
+<% } %>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const socket = io();
+
+  socket.emit("init_user");
+
+  socket.on("joined_admin_room", () => {
+    console.log("✅ Admin joined room");
+
+    socket.on("user_registered", (data) => {
+      console.log("📢 Notifikasi user baru:", data);
+
+      $.notify({
+        message: `${data.fullname} (${data.username}) baru saja mendaftar!`
+      }, {
+        type: 'info',
+        delay: 100000,
+        placement: {
+          from: 'top',
+          align: 'right'
+        }
+      });
+
+      const notifBadge = document.querySelector(".notification");
+      if (notifBadge) {
+        let count = parseInt(notifBadge.textContent || "0");
+        notifBadge.textContent = count + 1;
+        notifBadge.style.display = "inline-block";
+      } else {
+        console.warn("⚠️ .notification tidak ditemukan");
+      }
+
+      const notifTitle = document.getElementById("notif-title");
+      if (notifTitle) {
+        let current = parseInt(document.querySelector(".notification").textContent || "0");
+        notifTitle.textContent = `You have ${current + 1} new notification`;
+      } else {
+        console.warn("⚠️ #notif-title tidak ditemukan");
+      }
+
+      const notifCenter = document.getElementById("notif-center");
+      if (notifCenter) {
+        const notifItem = document.createElement("a");
+        notifItem.href = "#";
+        notifItem.innerHTML = `
+          <div class="notif-icon notif-primary border-radius" style="width: 60px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #007bff; color: white;">
+            <i class="fa fa-user-plus"></i>
+          </div>
+          <div class="notif-content">
+            <span class="block" style="width: 205px;">
+              ${data.message}
+            </span>
+            <span class="time">
+              ${new Date().toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+            </span>
+          </div>
+        `;
+        notifCenter.prepend(notifItem);
+      } else {
+        console.warn("⚠️ #notif-center tidak ditemukan");
+      }
+    });
+  });
+});
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const currentPath = window.location.pathname;
+
+  // Highlight the matching menu item
+  document.querySelectorAll('.nav-item a').forEach(link => {
+    if (link.getAttribute('href') === currentPath) {
+      // Add 'active' class to the parent nav-item
+      link.parentElement.classList.add('active');
+
+      // Expand the menu if it's inside a collapsed menu
+      const collapseParent = link.closest('.collapse');
+      if (collapseParent) {
+        collapseParent.classList.add('show'); // Open the collapsed menu
+        collapseParent.previousElementSibling.classList.remove('collapsed');
+      }
+    }
+  });
+});
+
+</script>
+</body>
+</html>

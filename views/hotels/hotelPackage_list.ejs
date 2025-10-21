@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="page-inner">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <h4 class="card-title">Paket Hotel Table</h4>
+              <a data-bs-toggle="modal" data-bs-target="#hotelPackageFormModal" class="btn btn-primary btn-round ms-auto" href=""><i class="fa fa-plus"></i> Add Paket Umrah</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="overflow-x: auto;">
+              <table id="hotelPackage" class="display table table-striped table-hover w-100" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Nama Paket</th>
+                    <th>Nama Hotel</th>
+                    <th>Lokasi</th>
+                    <th>Durasi Penginapan</th>
+                    <th>Dibuat Pada</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Action</th>
+                    <th>Nama Paket</th>
+                    <th>Nama Hotel</th>
+                    <th>Lokasi</th>
+                    <th>Durasi Penginapan</th>
+                    <th>Dibuat Pada</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <!-- Data rows will be dynamically rendered here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- MODAL FORM TRAVEL -->
+          <div class="modal fade" id="hotelPackageFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title"><span class="fw-mediumbold">Form</span> <span class="fw-light">Paket Hotel</span></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="hotelPackageInput">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Nama Paket</label>
+                          <input type="hidden" id="hidden_id">
+                          <input id="name" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Nama Hotel</label>
+                          <input id="hotel_id" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Lokasi</label>
+                          <input id="location" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Jarak</label>
+                          <div class="input-group">
+                            <input id="distance" type="text" class="form-control">
+                            <span class="input-group-text">Km</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                          <label>Durasi Penginapan</label>
+                          <input id="number_of_night" type="text" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="submitHotelPackageBtn" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END MODAL FORM -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
