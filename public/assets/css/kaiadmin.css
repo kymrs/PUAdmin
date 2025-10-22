@@ -2694,7 +2694,8 @@ label {
   margin-bottom: 0.5rem;
   color: #495057;
   font-size: 1rem;
-  white-space: nowrap; }
+  white-space: nowrap; 
+}
 
 .form-group-default {
   background-color: #ffffff;
@@ -3161,7 +3162,7 @@ label.error {
 
 .navbar .navbar-nav .notification {
   position: absolute;
-  background-color: #31CE36;
+  background-color: #ff050d;
   text-align: center;
   border-radius: 10px;
   min-width: 17px;
