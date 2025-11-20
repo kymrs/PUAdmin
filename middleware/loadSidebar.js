@@ -1,4 +1,36 @@
-const { Menu, Submenu, Aksesmenu, Aksessubmenu } = require('../models');
+const { Menu, Aksesmenu } = require('../models');
+const menuService = require('../services/menu.service');
+
+
+const buildTree = (menus, parentId = null) => {
+      return menus
+        .filter(menu => menu.parent_id === parentId)
+        .map(menu => ({
+          id_menu: menu.id_menu,
+          nama_menu: menu.nama_menu,
+          icon: menu.icon,
+          link: menu.link,
+          urutan: menu.urutan,
+          is_active: menu.is_active,
+          children: buildTree(menus, menu.id_menu)
+        }))
+      .sort((a, b) => a.urutan - b.urutan);
+    }
+
+const findActiveMenu = (menus, currentUrl) => {
+  for (const menu of menus) {
+    if(currentUrl.startsWith(menu.link)) {
+      return menu;
+    }
+    if(menu.children && menu.children.length > 0) {
+      const activeChild = findActiveMenu(menu.children);
+      if(activeChild) {
+        return menu;
+      }
+    }
+  }
+  return null;
+}   
 
 const loadSidebar = async (req, res, next) => {
   try {
@@ -22,64 +54,34 @@ const loadSidebar = async (req, res, next) => {
           model: Menu,
           where: { is_active: 'Y' },
           required: true,
+          
         },
       ],
       order: [[{ model: Menu }, 'urutan', 'ASC']],
     });
 
-    const menus = await Promise.all(
-      aksesMenus.map(async (akses) => {
-        const menu = akses.Menu;
+    const rawMenus = await menuService.getAllMenu();
+    const menuMap = {};
 
-        // Ambil submenu yang sesuai dengan id_level dan id_menu
-        const aksesSubmenus = await Aksessubmenu.findAll({
-          where: {
-            id_level: idlevel,
-            view_level: 'Y', // Pastikan hanya submenu dengan view_level = 'Y'
-          },
-          include: [
-            {
-              model: Submenu,
-              where: {
-                id_menu: menu.id_menu,
-                is_active: 'Y',
-              },
-              required: true,
-            },
-          ],
-          order: [[{ model: Submenu }, 'urutan', 'ASC']],
-        });
+    rawMenus.forEach(menu => {
+      menu.children = [];
+      menuMap[menu.id_menu] = menu;
+    });
 
-        const submenus = aksesSubmenus.map((aksesSub) => aksesSub.Submenu);
-
-        return {
-          id_menu: menu.id_menu,
-          nama_menu: menu.nama_menu,
-          icon: menu.icon,
-          link: menu.link,
-          submenus,
-        };
-      })
-    );
-
-    // Tentukan menu aktif berdasarkan URL
-    const currentUrl = req.originalUrl; // URL yang sedang diakses
-    let activeMenu = menus.find((menu) => currentUrl.startsWith(menu.link));
-
-    // Jika tidak ada menu utama yang cocok, periksa submenu
-    if (!activeMenu) {
-      menus.forEach((menu) => {
-        const activeSubmenu = menu.submenus.find((submenu) =>
-          currentUrl.startsWith(submenu.link)
-        );
-        if (activeSubmenu) {
-          activeMenu = menu; // Tetapkan menu utama sebagai aktif
+    const menuTree = [];
+    rawMenus.forEach(menu => {
+      if(menu.parent_id) {
+        if(menuMap[menu.parent_id]){
+          menuMap[menu.parent_id].children.push(menu);
         }
-      });
-    }
+      } else {
+        menuTree.push(menu);
+      }
+    });
 
-    res.locals.sidebarMenus = menus;
-    res.locals.activeMenu = activeMenu ? activeMenu.id_menu : null; // Ambil id_menu aktif
+    res.locals.sidebarMenus = menuTree;
+   // Ambil id_menu aktif
+
     next();
   } catch (error) {
     console.error('❌ Error loading sidebar:', error);

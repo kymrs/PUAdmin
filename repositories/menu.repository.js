@@ -1,22 +1,64 @@
-const { Model, Op } = require("sequelize");
+const { Model, Op, where } = require("sequelize");
 const { sequelize, Menu } = require("../models");
 const aksesmenuRepository = require("./aksesmenu.repository");
 const submenuRepository = require("./submenu.repository");
+const { raw } = require("body-parser");
 
 class MenuRepository {
-  async getAllMenu() {
-    return await Menu.findAll();
+
+  async getAllNestedMenu(){
+    return await Menu.findAll({
+      where: {parent_id: null},
+      include:[
+        {
+          model: Menu,
+          as: 'children',
+          include: [
+            {
+              model: Menu,
+              as: 'children',
+              include: [
+                {
+                  model: Menu,
+                  as: 'children'
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      order: [['urutan', 'ASC']]
+    })
   }
+
+  async getAllMenu() {
+    return await Menu.findAll({ 
+      raw: true,
+      attributes: ['id_menu', 'nama_menu','icon','link','urutan','is_active','parent_id'],
+      order: [['urutan', 'ASC']] 
+    });
+  }
+
+  async getParentMenus() {
+    return await Menu.findAll({
+      where: {parent_id: null},
+      order: [['urutan', 'ASC']]
+    })
+  }
+
+
 
   async getPaginatedMenu({ start, length, search, order, columns }) {
     const where = {
+      parent_id: null,
       ...(search && {
         [Op.or]: [
           { nama_menu: { [Op.like]: `%${search}%` } },
           { link: { [Op.like]: `%${search}%` } },
           { icon: { [Op.like]: `%${search}%` } },
           { urutan: { [Op.like]: `%${search}%` } },
-          { is_active: { [Op.like]: `%${search}%` } }
+          { is_active: { [Op.like]: `%${search}%` } },
+          { parent_id: { [Op.like]: `%${search}%` } }
         ]
       }),
       // Add any other filters you need here
@@ -49,7 +91,8 @@ class MenuRepository {
   }
 
   async updateMenu(id_menu, menuData) {
-    return await Menu.update(menuData, { where: { id_menu } });
+    await Menu.update(menuData, { where: { id_menu } });
+    return await Menu.findByPk(id_menu);
   }
 
   async deleteMenu(id_menu) {
@@ -74,6 +117,32 @@ class MenuRepository {
       throw error;
     }
   }
+
+  async getNestedMenu() {
+    const allMenu = await Menu.findAll({
+      raw: true,
+      order: [['urutan', 'ASC']]
+    });
+
+    const menuMap = {};
+    allMenu.forEach(menu => {
+      menu.children = [];
+      menuMap[menu.id_menu].children.push(menu);
+    })
+
+    const nestedMenu = [];
+    allMenu.forEach(menu => {
+      if(menu.parent_id){
+        if(menuMap.parent_id){   
+          menuMap[menu.parent_id].children.push(menu);
+        }
+      }else{
+        nestedMenu.push(menu);
+      }
+    })
+    return nestedMenu;
+  }
+  
 }
 
 module.exports = new MenuRepository();

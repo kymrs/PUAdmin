@@ -11,10 +11,11 @@ router.get("/", auth.ensureAuth, loadSidebar, loadNotification, async (req, res)
         res.render("home", {
             link: "menu/menu_list",
             jslink: "javascripts/menu_javascript.js",
+            sidebarMenus: res.locals.sidebarMenus,
+            activeMenu: req.path,
             user: req.session.user,
             username: req.session.user?.username || "Guest",
             fullname: req.session.user?.fullname || "Guest",
-            menu
         });  
     } catch (error) {
         console.log("❌ Error loading gallery:", error.message);

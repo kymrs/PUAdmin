@@ -2,12 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#submenuTable").DataTable({
     processing: true,
-    serverSide: true,
+    serverSide: false,
     responsive: false,
     scrollX: false,
-    autowidth: true,
+    autoWidth: true,
     ajax: {
-      url: "/api/submenu/datatables", // Backend endpoint
+      url: "/api/menu/submenu", // Backend endpoint
       type: "GET",
       dataSrc: function (json) {
         console.log("DataTables response:", json); // Debugging log
@@ -16,20 +16,20 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     columns: [
       {
-        data: "id_submenu",
+        data: "id_menu",
         render: function (data, type, row) {
           console.log("Data ID:", row); // Debugging log
           let buttons = `<div class="d-flex gap-2 justify-content-center">`;
 
           if (row.akses && row.akses.edit) {
             buttons += `
-              <a href="#" class="btn btn-sm btn-warning submenuEdit" data-id="${row.id_submenu}">
+              <a href="#" class="btn btn-sm btn-warning submenuEdit" data-id="${row.id_menu}">
                 <i class="fa fa-edit"></i>
               </a>`;
           }
           if (row.akses && row.akses.delete) {
             buttons += `
-              <a href="#" class="btn btn-sm btn-danger submenuDelete" data-id="${row.id_submenu}">
+              <a href="#" class="btn btn-sm btn-danger submenuDelete" data-id="${row.id_menu}">
                 <i class="fa fa-times"></i>
               </a>`;
           }
@@ -38,12 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
           return buttons;
         },
       },
-      { data: "nama_submenu", title: "Nama Submenu" },
+      { data: "nama_menu", title: "Nama Submenu" },
       { data: "link", title: "Link" },
       { data: "icon", title: "Icon" },
       { data: "urutan", title: "Urutan" },
       { data: "is_active", title: "Is Active" },
-      { data: "id_menu", title: "ID Menu" }
+      { data: "id_menu", title: "ID Menu" },
+      { data: "parent_id", title: "Parent_Id" }
     ],
     columnDefs: [
       // { responsivePriority: 1, targets: 0 }, // Title
@@ -64,8 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // CREATE OR UPDATE
   document.getElementById("submitSubmenuBtn").addEventListener("click", async () => {
-    const id = document.getElementById("hidden_id_submenu").value;
-    const nama_submenu = document.getElementById("nama_submenu").value;
+    const id = document.getElementById("hidden_id_menu").value;
+    const nama_menu = document.getElementById("nama_menu").value;
     const link = document.getElementById("link").value;
     const icon = document.getElementById("icon").value;
     const id_menu = document.getElementById("id_menu").value;
@@ -74,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Tentukan URL dan method berdasarkan id
   const isUpdate = id !== "";
-  const url = isUpdate ? `/api/submenu/${id}` : `/api/submenu`;
+  const url = isUpdate ? `/api/menu/${id}` : `/api/menu`;
   const method = isUpdate ? "PUT" : "POST";
 
     try {
@@ -84,12 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          nama_submenu,
+          nama_menu,
           link,
           icon,
           urutan: parseInt(urutan),
           is_active,
-          id_menu
+          parent_id: id_menu
         }),
       });
 
@@ -114,14 +115,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const id = btn.getAttribute("data-id");
 
       try {
-        const res = await fetch(`/api/submenu/${id}`);
+        const res = await fetch(`/api/menu/${id}`);
         const data = await res.json();
 
         if (data.status === "success") {
           const submenu = data.data;
 
-          document.getElementById("hidden_id_submenu").value = submenu.id_submenu;
-          document.getElementById("nama_submenu").value = submenu.nama_submenu;
+          document.getElementById("hidden_id_menu").value = submenu.id_menu;
+          document.getElementById("nama_menu").value = submenu.nama_menu;
           document.getElementById("link").value = submenu.link;
           document.getElementById("icon").value = submenu.icon;
           document.getElementById("id_menu").value = submenu.id_menu;
@@ -142,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // RESET SAAT MENUTUP MODAL
   document.getElementById('submenuModal').addEventListener('hidden.bs.modal', function () {
       document.getElementById("submenuForm").reset();
-      document.getElementById("hidden_id_submenu").value = '';
+      document.getElementById("hidden_id_menu").value = '';
   });
     
 
@@ -161,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }).then(async (willDelete) => {
         if (willDelete) {
           try {
-            const res = await fetch(`/api/submenu/${id}`, {
+            const res = await fetch(`/api/menu/${id}`, {
               method: "DELETE",
             });
 

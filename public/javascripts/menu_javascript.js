@@ -2,15 +2,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#menuTable").DataTable({
     processing: true,
-    serverSide: true,
+    serverSide: false,
     responsive: false,
     scrollX: false,
-    autowidth: true,
+    autoWidth: true,
     ajax: {
-      url: "/api/menu/datatables", // Backend endpoint
+      url: "/api/menu/parent", // Backend endpoint
       type: "GET",
       dataSrc: function (json) {
-        // console.log("DataTables response:", json); // Debugging log
+        console.log("DataTables response:", json); // Debugging log
+        // const parentMenus = json.filter(menu => menu.parent_id === null );
         return json.data; // Extract the data array
       },
     },
@@ -19,22 +20,23 @@ document.addEventListener("DOMContentLoaded", () => {
         data: "id_menu",
         render: function (data, type, row) {
 
-          // console.log("Data ID:", row); // Debugging log
+          console.log("Data ID:", row); // Debugging log
           
           let buttons = `<div class="d-flex gap-2 justify-content-center">`;
 
-          if (row.akses && row.akses.edit) {
+           if (row.akses && row.akses.edit) {
             buttons += `
               <a href="#" class="btn btn-sm btn-warning menuEdit" data-id="${row.id_menu}">
                 <i class="fa fa-edit"></i>
-              </a>`;
-          }
-          if (row.akses && row.akses.delete) {
+              </a>`
+              ;
+           } 
+           if (row.akses && row.akses.delete) {
             buttons += `
               <a href="#" class="btn btn-sm btn-danger menuDelete" data-id="${row.id_menu}">
                 <i class="fa fa-times"></i>
               </a>`;
-          }
+            }
 
           buttons += `</div>`;
           return buttons;
