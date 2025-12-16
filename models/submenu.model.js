@@ -1,14 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
     const Submenu = sequelize.define("Submenu", {
-      id_submenu: {
+      id_menu: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      id_menu: {
-        type: DataTypes.INTEGER,
-      },
-      nama_submenu: {
+      nama_menu: {
         type: DataTypes.STRING(50),
         allowNull: true,
       },
@@ -36,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Submenu.associate = (models) => {
       Submenu.belongsTo(models.Menu, { foreignKey: 'id_menu' });
-      Submenu.hasMany(models.Aksessubmenu, { foreignKey: 'id_submenu' });
+      Submenu.hasMany(models.Aksessubmenu, { foreignKey: 'id_menu' });
     };
     
   

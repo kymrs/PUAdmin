@@ -31,11 +31,17 @@ class AksesmenuRepository {
 
   async getAksesmenuByLevel(id_level) {
     return await Menu.findAll({
+      where: {
+        parent_id: null,
+        is_active: 'Y'
+      },
+      order: [['urutan', 'ASC']],
       include: [{ 
         model: Aksesmenu, 
         required: false,
         where: { id_level: id_level },
       }],
+    
     });
   }
 

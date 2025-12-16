@@ -1,10 +1,21 @@
 const { Model, Op, where } = require("sequelize");
 const { sequelize, Menu } = require("../models");
-const aksesmenuRepository = require("./aksesmenu.repository");
+const aksesRepository = require("./akses.repository");
 const submenuRepository = require("./submenu.repository");
 const { raw } = require("body-parser");
 
 class MenuRepository {
+
+  async getAllMenu() {
+    return await Menu.findAll({ 
+      raw: true,
+      attributes: ['id_menu', 'nama_menu','icon','link','urutan','is_active','parent_id'],
+      order: [['urutan', 'ASC']] 
+    });
+  }
+  async getMenuById(id_menu) {
+    return await Menu.findByPk(id_menu);
+  }
 
   async getAllNestedMenu(){
     return await Menu.findAll({
@@ -31,14 +42,6 @@ class MenuRepository {
     })
   }
 
-  async getAllMenu() {
-    return await Menu.findAll({ 
-      raw: true,
-      attributes: ['id_menu', 'nama_menu','icon','link','urutan','is_active','parent_id'],
-      order: [['urutan', 'ASC']] 
-    });
-  }
-
   async getParentMenus() {
     return await Menu.findAll({
       where: {parent_id: null},
@@ -48,22 +51,28 @@ class MenuRepository {
 
 
 
-  async getPaginatedMenu({ start, length, search, order, columns }) {
-    const where = {
-      parent_id: null,
-      ...(search && {
-        [Op.or]: [
-          { nama_menu: { [Op.like]: `%${search}%` } },
-          { link: { [Op.like]: `%${search}%` } },
-          { icon: { [Op.like]: `%${search}%` } },
-          { urutan: { [Op.like]: `%${search}%` } },
-          { is_active: { [Op.like]: `%${search}%` } },
-          { parent_id: { [Op.like]: `%${search}%` } }
-        ]
-      }),
-      // Add any other filters you need here
-    };
+  async getPaginatedMenu({ start, length, search, order, columns, filter={}}) {
+    const where = { }; // Add any other filters you need here
 
+    if( filter.parent_id === null){
+      where.parent_id = null;
+    }
+
+    if(filter.parent_not_null){
+      where.parent_id = {[Op.ne]: null};
+    }
+
+    if(search){
+      where[Op.or] = [
+        { id_menu: { [Op.like]: `%${search}%` } },
+        { parent_id: { [Op.like]: `%${search}%` } },
+        { nama_menu: { [Op.like]: `%${search}%` } },
+        { link: { [Op.like]: `%${search}%` } },
+        { icon: { [Op.like]: `%${search}%` } },
+        { urutan: { [Op.like]: `%${search}%` } },
+        { is_active: { [Op.like]: `%${search}%` } }
+      ]
+    }
     const sort =
       order && order.length > 0
         ? [[columns[order[0].column].data, order[0].dir]]
@@ -82,9 +91,6 @@ class MenuRepository {
     return result;
   }
 
-  async getMenuById(id_menu) {
-    return await Menu.findByPk(id_menu);
-  }
 
   async createMenu(menuData) {
     return await Menu.create(menuData);
@@ -100,12 +106,12 @@ class MenuRepository {
 
     try {
       // Hapus akses menu terlebih dahulu
-      await aksesmenuRepository.deleteAksesmenuById_menu(id_menu, transaction);
-      const id_submenu = await submenuRepository.getSubmenuById_menu(id_menu);
+      await aksesRepository.deleteAksesById_menu(id_menu, transaction);
+      const id_menu = await submenuRepository.getSubmenuById_menu(id_menu);
 
-      if (id_submenu) {
+      if (id_menu) {
         // Hapus submenu terkait
-        await submenuRepository.deleteSubmenu(id_submenu.id_submenu, transaction);
+        await submenuRepository.deleteSubmenu(id_menu.id_menu, transaction);
       }
 
       // Hapus menu

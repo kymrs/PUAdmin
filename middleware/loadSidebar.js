@@ -1,4 +1,4 @@
-const { Menu, Aksesmenu } = require('../models');
+const { Menu, Akses} = require('../models');
 const menuService = require('../services/menu.service');
 
 
@@ -44,7 +44,7 @@ const loadSidebar = async (req, res, next) => {
     const idlevel = user.id_level;
 
     // Ambil semua menu sesuai hak akses user
-    const aksesMenus = await Aksesmenu.findAll({
+    const aksesMenus = await Akses.findAll({
       where: {
         id_level: idlevel,
         view_level: 'Y', // Pastikan hanya mengambil menu dengan view_level = 'Y'

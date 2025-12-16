@@ -2,6 +2,8 @@ const { Op } = require("sequelize");
 const { Userlevel } = require("../models");
 const UserlevelRepository = require("../repositories/userlevel.repository");
 const userlevelRepository = require("../repositories/userlevel.repository");
+const aksesRepository = require("../repositories/akses.repository");
+
 
 class UserlevelService {
   async getAllUserlevel() {
@@ -30,7 +32,7 @@ class UserlevelService {
   }
 
   async getUserlevelById(id_level) {
-    const userlevel = await UserlevelRepository.getUserlevelById(id_level);
+    const userlevel = await aksesRepository.getUserlevelById(id_level);
     return userlevel || []; // jika null/undefined, tetap kembalikan array kosong
   }
 

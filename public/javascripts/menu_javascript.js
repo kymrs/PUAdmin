@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { data: "link", title: "Link" },
       { data: "icon", title: "Icon" },
       { data: "urutan", title: "Urutan" },
-      { data: "is_active", title: "Is Active" },
+      { data: "is_active", title: "Is Active" }
     ],
     columnDefs: [
       // { responsivePriority: 1, targets: 0 }, // Title

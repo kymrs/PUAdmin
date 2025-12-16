@@ -39,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
     Menu.associate = (models) => {
       Menu.belongsTo(Menu, {as: 'parent', foreignKey: 'parent_id'});     
       Menu.hasMany(Menu, {as: 'children', foreignKey: 'parent_id'});
+      Menu.belongsTo(models.Akses, {
+        foreignKey: 'id_menu',
+      })
+      // Menu.hasOne(models.Aksesmenu, { foreignKey: 'id_menu', as: 'aksesmenu' });
+      // Menu.hasMany(models.Aksessubmenu, {foreignKey: 'id_menu', as: 'aksessubmenu' });
     };
     
     return Menu;

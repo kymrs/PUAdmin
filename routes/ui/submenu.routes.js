@@ -7,7 +7,7 @@ const MenuService = require("../../services/menu.service");
 // TAMPILAN LIST
 router.get("/", auth.ensureAuth, loadSidebar, loadNotification, async (req, res) => {
     try {
-        const submenu = await SubmenuService.getAllSubmenu();
+        const submenu = await SubmenuService.getSubmenu();
         const menu = await MenuService.getAllMenu();
 
         res.render("home", {

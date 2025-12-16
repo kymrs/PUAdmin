@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const { Aksessubmenu, Submenu } = require("../models");
 
 class AksessubmenuRepository {
@@ -11,6 +12,11 @@ class AksessubmenuRepository {
 
   async getAksessubmenuWithSubmenuByLevel(id_level) {
     return await Submenu.findAll({
+      where:{
+        parent_id: {[Op.ne]: null},
+        is_active: 'Y'
+      },
+      order: [['urutan', 'ASC']],
       include: [{
         model: Aksessubmenu,
         required: false,
@@ -31,22 +37,22 @@ class AksessubmenuRepository {
     return await Aksessubmenu.destroy({ where: { id } });
   }
 
-  async deleteAksessubmenuById_submenu(id_submenu, transaction) {
+  async deleteAksessubmenuById_submenu(id_menu, transaction) {
     return await Aksessubmenu.destroy({
-      where: { id_submenu },
+      where: { id_menu },
       transaction
     });
   }
   
 
   async upsert(data, options) {
-    const { id, id_level, id_submenu, level, status } = data;
+    const { id, id_level, id_menu, level, status } = data;
     // console.log(data)
     try {
       // Siapkan payload hanya dengan field yang valid
       const payload = {
         id_level,
-        id_submenu,
+        id_menu,
         [level]: status,
         ...(id !== undefined && id !== 'undefined' && id !== null ? { id: Number(id) } : {})
       };

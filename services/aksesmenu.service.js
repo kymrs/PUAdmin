@@ -9,6 +9,32 @@ class AksesmenuService {
     return aksesmenu;
   }
 
+  async getAllUserlevelDatatables(req, res) {
+  try {
+    const { akses } = res.locals;
+
+    if (akses.view_level !== "Y") {
+      return res.status(403).json({ error: "Akses ditolak" });
+    }
+
+    const result = await userlevelService.getAllUserlevelDatatables(req.query);
+
+    result.data = result.data.map(row => ({
+      ...row.get({ plain: true }),
+      akses: {
+        edit: akses.edit_level === "Y",
+        delete: akses.delete_level === "Y"
+      },
+    }));
+
+    return response.datatables(res, result);
+  } catch (error) {
+    console.error("Error getAllUserlevelDatatables:", error);
+    return response.error(res, error.message);
+  }
+}
+
+
   async getAksesmenuByLevel(id_level) {
     const aksesmenu = await AksesmenuRepository.getAksesmenuByLevel(id_level);
     if (!aksesmenu || aksesmenu.length === 0) {

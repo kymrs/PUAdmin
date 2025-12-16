@@ -26,7 +26,7 @@ class AksessubmenuService {
   }
 
   async createAksessubmenu(aksessubmenuData) {
-    const requiredFields = ["id_level", "id_submenu", "view_level", "add_level", "edit_level", "delete_level", "print_level", "upload_level"];
+    const requiredFields = ["id_level", "id_menu", "view_level", "add_level", "edit_level", "delete_level", "print_level", "upload_level"];
     if (!requiredFields.every(field => aksessubmenuData[field])) {
       throw new Error("Semua field wajib diisi");
     }

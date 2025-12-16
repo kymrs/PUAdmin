@@ -1,6 +1,6 @@
     <% if(menu.children && menu.children.length > 0) {%>
         <li class="nav-item ">                        
-            <a data-bs-toggle="<%= menu.children && menu.children.length ? 'collapse' : '' %>" href="<%= menu.children && menu.children.length ? '#collapse-' + menu.id_menu : menu.link %>" data-bs-target="#collapse-<%= menu.id_menu %>"  class="collapsed nav-link toggle-menu" role="button"  aria-controls="collapse-<%= menu.id_menu %>" >
+            <a data-bs-toggle="<%= menu.children && menu.children.length ? 'collapse' : '' %>" href="<%= menu.children && menu.children.length ? '#collapse-' + menu.id_menu : menu.link %>" data-menu-id="<%= menu.id_menu %>" data-bs-target="#collapse-<%= menu.id_menu %>"  class="collapsed nav-link toggle-menu" role="button"  aria-controls="collapse-<%= menu.id_menu %>" >
                  <i class="<%= menu.icon %>"></i> <p><%= menu.nama_menu %></p>
                  <% if(menu.children.length) {%>
                    <span class="caret"></span>

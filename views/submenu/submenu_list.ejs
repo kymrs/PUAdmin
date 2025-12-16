@@ -72,7 +72,7 @@
                     </tr>
                   </tfoot>
                   <tbody>
-                    <% submenu.forEach(function(men) {%>
+                    <% menu.forEach(function(men) {%>
                         <tr>
                             <td><%= men.nama_menu %></td>
                             <td><%= men.link %></td>
@@ -83,7 +83,7 @@
                             <td>
                                 <div class="form-button-action">
                                 <a
-                                    data-id="<%= men.id_submenu %>"
+                                    data-id="<%= men.id_menu %>"
                                     class="btn btn-link btn-primary btn-lg submenuEdit"
                                   >
                                     <i class="fa fa-edit"></i>
@@ -91,7 +91,7 @@
                                 <a
                                     type="button"
                                     data-bs-toggle="tooltip"
-                                    data-id="<%= men.id_submenu %>"
+                                    data-id="<%= men.id_menu %>"
                                     title=""
                                     class="btn btn-link btn-danger submenuDelete"
                                     data-original-title="Remove"

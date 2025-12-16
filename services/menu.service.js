@@ -5,21 +5,30 @@ class MenuService {
     const menu = await MenuRepository.getAllMenu();
     return menu || []; // jika null/undefined, tetap kembalikan array kosong
   }
-
-  async getParentsMenus() {
-    const parentMenus = await MenuRepository.getParentMenus();
-    return parentMenus || [];
+  async getMenuById(id_menu) {
+    const menu = await MenuRepository.getMenuById(id_menu);
+    return menu || []; // jika null/undefined, tetap kembalikan array kosong
   }
-
-  async getAllMenuDatatables({ draw, start, length, search, order, columns }) {
+  async getAllMenuDatatables({ draw, start, length, search, order, columns, parent_id, parent_not_null}) {
     const searchValue = search?.value || "";
-               
+
+    const filter = {};
+    
+    if( parent_id === null) {
+      filter.parent_id = null;
+    }
+    
+    if(parent_not_null){
+      filter.parent_not_null = true;
+    }
+
     const { count, rows } = await MenuRepository.getPaginatedMenu({
       start: parseInt(start, 10) || 0,
       length: parseInt(length, 10) || 10,
       search: searchValue,
       order,
-      columns
+      columns,
+      parentOnly
     });
 
     return {
@@ -30,12 +39,11 @@ class MenuService {
     };
   }
 
-
-  async getMenuById(id_menu) {
-    const menu = await MenuRepository.getMenuById(id_menu);
-    return menu || []; // jika null/undefined, tetap kembalikan array kosong
+  async getParentsMenusDatatable() {
+    const parentMenus = await MenuRepository.getParentMenus();
+    return parentMenus || [];
   }
-
+  
   async createMenu(menuData) {
     const requiredFields = ["nama_menu", "link", "icon", "urutan", "is_active"];
      for(const field of requiredFields){

@@ -14,6 +14,26 @@ module.exports = (sequelize, DataTypes) => {
       view_level: {
         type: DataTypes.ENUM('Y', 'N'),
         allowNull: true,
+      },
+      add_level: {
+        type: DataTypes.ENUM('Y', 'N'),
+        allowNull: true,
+      },
+      edit_level: {
+        type: DataTypes.ENUM('Y', 'N'),
+        allowNull: true,
+      },
+      delete_level: {
+        type: DataTypes.ENUM('Y', 'N'),
+        allowNull: true,
+      },
+      print_level: {
+        type: DataTypes.ENUM('Y', 'N'),
+        allowNull: true,
+      },
+      upload_level: {
+        type: DataTypes.ENUM('Y', 'N'),
+        allowNull: true,
       }
     },
     {

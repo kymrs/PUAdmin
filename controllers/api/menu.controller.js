@@ -1,4 +1,3 @@
-
 const menuRepository = require("../../repositories/menu.repository");
 const menuService = require("../../services/menu.service");
 const response = require("../../utils/response");
@@ -21,55 +20,9 @@ class MenuController {
       })
     }
   }
-
-     async getPaginatedMenu(req, res){
+  async getMenuById(req, res){
       try{
-        const {start, length, search, order, columns} = req.body;
-        const result = await menuRepository.getPaginatedMenu({
-          start,
-          length,
-          search,
-          order,
-          columns
-        });
-
-        return res.status(200).json({
-          success: true,
-          message: "Paginated menus fetched successfully",
-          recordTotal: result.count,
-          recordFiltered: result.count,
-          data: result,
-        })
-      }catch (error){
-        return res.status(500).json({
-          success: false,
-          message: "Error fetching paginated menus",
-          error: error.message,
-        });
-      }
-     }
-
-    async getParentsController(req, res){
-      try {
-        const parentMenu = await menuService.getParentsMenus();
-
-        res.json({
-          success: true,
-          data: parentMenu
-        });
-
-      } catch (e){
-        console.error(e);
-        return res.status(500).json({
-          success: true,
-          message: "failed to load parentMenus"
-        })
-      }
-    }
-
-     async getMenuById(req, res){
-      try{
-        const {id} = req.params.id;
+        const {id} = req.params;
         const menu = await menuRepository.getMenuById(id);
 
         return res.status(200).json({
@@ -85,7 +38,108 @@ class MenuController {
           error: error.message,
         });
       }
-     }
+    }
+    async getParentPaginatedMenu(req, res){
+      try{
+        const {akses} = res.locals;
+        if( akses.view_menu !== "Y"){
+          return response.forbidden(res, "Akses ditolak");
+        }
+
+        const parentMenu = await menuService.getParentsMenusDatatable({
+          ...req.query,
+          parent_id: null
+        });
+        const data = parentMenu.map(menu => ({
+          ...menu,
+          akses: {
+            edit: akses.edit_menu === "Y",
+            delete: akses.delete_menu === "Y"
+          }
+        }))
+
+
+        return res.json({
+          message: "Parent menus fetched successfully",
+          data: data
+        })
+      } catch (error){
+        console.error(error);
+        return res.status(500).json({
+          success: false,
+          message: "Error fetching parent menus",
+          error: error.message,
+        });
+      }
+    }
+    async getSubmenuPaginated(req, res) {
+       try {
+        const { akses } = res.locals;
+        
+         if (akses.view_level !== 'Y') {
+            return res.status(403).json({ error: "Akses ditolak" });
+         }
+        
+          const result = menuService.getAllMenuDatatables(req.query);
+        
+          result.data = result.data.map(row => ({
+            ...row.get({ plain: true }),
+            akses: {
+               edit: akses.edit_level === 'Y',
+               delete: akses.delete_level === 'Y'
+            }
+         }));
+        
+          return response.datatables(res, result);
+        } catch (error) {
+          console.error("Error getSubmenuPaginated:", error);
+          return response.error(res, error.message);
+      } 
+    }
+  //  async getPaginatedMenu(req, res){
+  //     try{
+  //       const {start, length, search, order, columns} = req.body;
+  //       const result = await menuRepository.getPaginatedMenu({
+  //         start,
+  //         length,
+  //         search,
+  //         order,
+  //         columns
+  //       });
+
+  //       return res.status(200).json({
+  //         success: true,
+  //         message: "Paginated menus fetched successfully",
+  //         recordTotal: result.count,
+  //         recordFiltered: result.count,
+  //         data: result,
+  //       })
+  //     }catch (error){
+  //       return res.status(500).json({
+  //         success: false,
+  //         message: "Error fetching paginated menus",
+  //         error: error.message,
+  //       });
+  //     }
+  //    }
+    async getParentsController(req, res){
+      try {
+        const parentMenu = await menuService.getParentsMenusDatatable();
+
+        res.json({
+          success: true,
+          data: parentMenu
+        });
+
+      } catch (e){
+        console.error(e);
+        return res.status(500).json({
+          success: true,
+          message: "failed to load parentMenus"
+        })
+      }
+    }
+    
   async getAllMenuDatatables(req, res) {
     try {
       const { akses } = res.locals;

@@ -1,19 +1,25 @@
-const { Model, Op } = require("sequelize");
-const { sequelize, Submenu } = require("../models");
-const aksessubmenuRepository = require("./aksessubmenu.repository");
+const { Model, Op, where } = require("sequelize");
+const { sequelize, Menu } = require("../models");
+const aksesRepository = require('./akses.repository');
 
 class SubmenuRepository {
-  async getAllSubmenu() {
-    return await Submenu.findAll();
+  async getSubmenu() {
+    return await Menu.findAll({
+      where:{
+        parent_id: {[Op.ne]: null}
+      },
+      order: [['urutan', 'ASC']]
+    })
   }
 
   async getPaginatedSubmenu({ start, length, search, order, columns }) {
     const where = {
+      parent_id: {[Op.ne]: null},
       ...(search && {
         [Op.or]: [
-          { id_submenu: { [Op.like]: `%${search}%` } },
           { id_menu: { [Op.like]: `%${search}%` } },
-          { nama_submenu: { [Op.like]: `%${search}%` } },
+          { parent_id: { [Op.like]: `%${search}%` } },
+          { nama_menu: { [Op.like]: `%${search}%` } },
           { link: { [Op.like]: `%${search}%` } },
           { icon: { [Op.like]: `%${search}%` } },
           { urutan: { [Op.like]: `%${search}%` } },
@@ -31,7 +37,7 @@ class SubmenuRepository {
     const offset = start || 0; // Default to 0 if start is not provided
     const limit = length || 10; // Default to 10 if length is not provided
 
-    const result = await Submenu.findAndCountAll({
+    const result = await Menu.findAndCountAll({
       where,
       order: sort,
       offset,
@@ -41,43 +47,39 @@ class SubmenuRepository {
     return result;
   }
 
-  async getSubmenuById(id_submenu) {
-    return await Submenu.findByPk(id_submenu);
+  async getSubmenuById(id_menu){
+    return await Menu.findByPk(id_menu);
   }
 
   async getSubmenuById_menu(id_menu) {
-    return await Submenu.findOne({
-      where: { id_menu },
-      attributes: ["id_submenu"]
-    });
+    return await Menu.findByPk(id_menu);
   }
 
-  async createSubmenu(menuData) {
-    return await Submenu.create(menuData);
+  async createSubmenu(menuData){
+    return await Menu.create(menuData);
   }
 
-  async updateSubmenu(id_submenu, menuData) {
-    return await Submenu.update(menuData, { where: { id_submenu } });
+  async updateSubmenu(id_menu, menuData) {
+    await Menu.update(menuData, {where: {id_menu}})
   }
 
-  async deleteSubmenu(id_submenu) {
-    const transaction = await sequelize.transaction();
-  
+  async deleteSubmenu(id_menu, transaction) {
     try {
-      // Hapus akses submenu terlebih dahulu
-      await aksessubmenuRepository.deleteAksessubmenuById_submenu(id_submenu, transaction);
-  
-      // Hapus submenu
-      await Submenu.destroy({
-        where: { id_submenu },
-        transaction
-      });
-  
-      await transaction.commit();
-      return { success: true, message: 'Submenu dan akses submenu berhasil dihapus' };
+        await aksesRepository.deleteAksesById_menu(id_menu, transaction);
+
+        await Menu.destroy({ 
+          where: { id_menu }, 
+          transaction 
+        });
+
+        await transaction.commit();
+        return {
+           success: true,
+           message: "Submenu dan akses submenu berhasil dihapus"
+          }
     } catch (error) {
-      await transaction.rollback();
-      throw error;
+        await transaction.rollback();
+        throw error;
     }
   }
 }

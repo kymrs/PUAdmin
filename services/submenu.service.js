@@ -1,12 +1,13 @@
 const SubmenuRepository = require("../repositories/submenu.repository");
 
-class SubmenuService {
-  async getAllSubmenu() {
-    const submenu = await SubmenuRepository.getAllSubmenu();
+class SubmenuSerivce {
+    // submenu start
+  async getSubmenu() {
+    const submenu = await SubmenuRepository.getSubmenu();
     return submenu || []; // jika null/undefined, tetap kembalikan array kosong
   }
 
-  async getAllSubmenuDatatables({ draw, start, length, search, order, columns }) {
+  async getSubmenuPaginated({ draw, start, length, search, order, columns }) {
     const searchValue = search?.value || "";
     
     const { count, rows } = await SubmenuRepository.getPaginatedSubmenu({
@@ -25,34 +26,38 @@ class SubmenuService {
     };
   }
 
-  async getSubmenuById(id_submenu) {
-    const submenu = await SubmenuRepository.getSubmenuById(id_submenu);
-    return submenu || []; // jika null/undefined, tetap kembalikan array kosong
+  async getSubmenuById(id_menu) {
+    const submenu = await SubmenuRepository.getSubmenuById_menu();
+    return submenu || [];
   }
 
-  async createSubmenu(subMenuData) {
-    const requiredFields = ["id_menu", "nama_submenu", "link", "icon", "urutan", "is_active"];
-    if (!requiredFields.every(field => subMenuData[field])) {
-      throw new Error("Semua field wajib diisi");
+  async createSubmenu(menuData){
+      const requiredFields = ['nama_menu', 'link', 'icon', 'urutan', 'is_active', 'parent_id'];
+      for(const field of requiredFields){
+        if(menuData[field] === undefined){
+          throw new Error (`${field} wajib diisi`);
+        }
+      }
+      return await SubmenuRepository.createSubmenu(menuData);
     }
-    return await SubmenuRepository.createSubmenu(subMenuData);
+
+  async updateMenu(id_menu, menuData) {
+    const submenu = await SubmenuRepository.updateSubmenu(id_menu);
+    if(!submenu){
+      throw new Error ("Submenu Not Found");
+    }
+    return await SubmenuRepository.updateMenu(id_menu, menuData);                           
   }
 
-  async updateSubmenu(id_submenu, subMenuData) {
-    const submenu = await SubmenuRepository.getSubmenuById(id_submenu);
-    if (!submenu) {
-      throw new Error("Submenu not found");
+  async deleteSubmenu(id_menu) {
+    const submenu = await SubmenuRepository.deleteSubmenu(id_menu);
+    if(!submenu){
+      throw new Error ("Submenu Not Found");
     }
-    return await SubmenuRepository.updateSubmenu(id_submenu, subMenuData);
+    return await SubmenuRepository.deleteSubmenu(id_menu);
   }
+  // submenu end
 
-  async deleteSubmenu(id_submenu) {
-    const submenu = await SubmenuRepository.getSubmenuById(id_submenu);
-    if (!submenu) {
-      throw new Error("Submenu not found");
-    }
-    return await SubmenuRepository.deleteSubmenu(id_submenu);
-  }
 }
 
-module.exports = new SubmenuService();
+  module.exports = new SubmenuSerivce();
