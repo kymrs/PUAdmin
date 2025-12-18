@@ -32,7 +32,7 @@ class UserlevelService {
   }
 
   async getUserlevelById(id_level) {
-    const userlevel = await aksesRepository.getUserlevelById(id_level);
+    const userlevel = await userlevelRepository.getUserlevelById(id_level);
     return userlevel || []; // jika null/undefined, tetap kembalikan array kosong
   }
 

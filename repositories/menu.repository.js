@@ -1,5 +1,5 @@
 const { Model, Op, where } = require("sequelize");
-const { sequelize, Menu } = require("../models");
+const { sequelize, Menu, Akses } = require("../models");
 const aksesRepository = require("./akses.repository");
 const submenuRepository = require("./submenu.repository");
 const { raw } = require("body-parser");
@@ -45,7 +45,7 @@ class MenuRepository {
   async getParentMenus() {
     return await Menu.findAll({
       where: {parent_id: null},
-      order: [['urutan', 'ASC']]
+      order: [['urutan', 'ASC']],
     })
   }
 

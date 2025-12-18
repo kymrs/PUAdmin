@@ -3,8 +3,6 @@ const router = express.Router();
 const { auth, loadSidebar, loadNotification } = require("../../middleware");
 const UserService = require("../../services/user.service");
 const UserlevelService = require("../../services/userlevel.service");
-const AksesmenuService = require("../../services/aksesmenu.service");
-const AksessubmenuService = require("../../services/aksessubmenu.service");
 
 router.get("/", auth.ensureAuth, loadSidebar, loadNotification, async (req, res) => {
     try {
@@ -30,9 +28,7 @@ router.get("/", auth.ensureAuth, loadSidebar, loadNotification, async (req, res)
 router.get("/userAkses/:id_level", auth.ensureAuth, loadSidebar, async (req, res) => {
     try {
         const users = await UserService.getAllUsers();
-        const idLevelUser = req.session.user.id_level;
-        const aksesMenu = await AksesmenuService.getAksesmenuByLevel(idLevelUser);
-        const aksesSubmenu = await AksessubmenuService.getAksessubmenuByLevel(idLevelUser);
+        const {id_level} = req.params;
         const userlevel = await UserlevelService.getAllUserlevel();
 
         // console.log("AKSES MENU:");
@@ -49,9 +45,8 @@ router.get("/userAkses/:id_level", auth.ensureAuth, loadSidebar, async (req, res
             username: req.session.user?.username || "Guest",
             fullname: req.session.user?.fullname || "Guest",
             users,
-            aksesMenu,
-            aksesSubmenu,
-            userlevel
+            userlevel,
+            id_level
         });
     } catch (error) {
         console.error("❌ Error loading userakses", error.message);

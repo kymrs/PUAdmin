@@ -4,24 +4,37 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!detailBtn) return;
 
     e.preventDefault();
-    const id = detailBtn.getAttribute("data-id");
+    const idLevel = detailBtn.dataset.id;
+    if(!idLevel){
+      console.error("ID is not found");
+      return;
+    }
 
     try {
-      const res = await fetch(`/api/userlevel/by-level/${id_level}`);
+      const res = await fetch(`/api/userlevel/by-level/${idLevel}`);
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message);
 
       const menus = data.data.menus;      // semua menu & submenu
       const akses = data.data.akses;      // semua akses yang sudah tersimpan
+      console.log("FULL RESPONSE:", data);
+      console.log("menus:",menus);
+      console.log("akses:",akses);
+
 
       const tbody = document.querySelector("#userAksesT tbody");
       tbody.innerHTML = "";
+      const menusSafe = (menus || []).filter(m => m && m.id_menu);
 
-      menus.forEach((menu, index) => {
+      menusSafe.forEach((menu, index) => {
         // Tentukan apakah ini menu utama
         if (menu.parent_id === null) {
           const aksesMenu = akses.find(a => a.id_menu === menu.id_menu) || defaultAkses(menu.id_menu);
+
+          // const viewIcon = menus?.view_level === 'Y'
+          // ? iconCheck('view_level', 'menu', menu.id_menu, )
+          // : iconCross('view_level', 'menu', menu.id_menu);
 
           const tr = document.createElement("tr");
           tr.className = "table-success";
@@ -37,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
           menus
             .filter(sub => sub.parent_id === menu.id_menu)
             .forEach(sub => {
-              const aksesSub = akses.find(a => a.id_menu === sub.id_menu) || defaultAkses(sub.id_menu);
+              const aksesSub = akses.find(b => b.id_menu === sub.id_menu) || defaultAkses(sub.id_menu);
 
               const trSub = document.createElement("tr");
               trSub.className = "table-info";
@@ -59,10 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const modal = new bootstrap.Modal(document.getElementById("aksesModal"));
       modal.show();
-
     } catch (err) {
-      console.error(err);
-      alert("Gagal memuat data akses.");
+      console.log("Error",err);
+      alert(err);
     }
   });
 

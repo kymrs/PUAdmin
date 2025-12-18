@@ -1,4 +1,4 @@
-const { Akses } = require('../models');
+const { Akses, Menu } = require('../models');
 const AksesRepository = require('../repositories/akses.repository');
 
 class AksesService {
@@ -38,7 +38,7 @@ class AksesService {
         return await AksesRepository.deleteAkses(id);
     }
 
-    static async upsertAkses(level, menuId, payload){
+    async upsertAkses(level, menuId, payload){
         return await Akses.upsert({
             id_level: level,
             id_menu: menuId,
@@ -46,7 +46,7 @@ class AksesService {
         })
     }
 
-    static async getAksesByLevel(id_level) {
+     async getAksesByLevel(id_level) {
         const rows = await Akses.findAll({
             where: { id_level: id_level},
             include: [{

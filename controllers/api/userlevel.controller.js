@@ -3,6 +3,7 @@
 const userlevelService = require("../../services/userlevel.service");
 const response = require("../../utils/response");
 const aksesService = require("../../services/akses.service");
+const menuService = require("../../services/menu.service")
 
 class UserlevelController {
   async getAllUserlevel(req, res) {
@@ -43,17 +44,21 @@ class UserlevelController {
     }
   }
   
-  async getUserAksesByLevel(req, res) {
+  async getUserlevelByLevel(req, res) {
       try {
         const {id_level} = req.params;
-        const aksesmenu = await aksesService.getAksesmenuByLevel(id_level);
+
+        const menus = await menuService.getAllMenu();
+        const akses = await aksesService.getAksesByLevel(id_level);
+        console.log("aksesmenu:", akses);
         // const aksesSubmenu = await aksessubmenuService.getAksessubmenuByLevel(req.session.user.id_level);
 
         return response.success(res, "User akses fetched", {
-          aksesmenu: aksesmenu.map(menu => menu.dataValues),  // Mengambil dataValues untuk aksesmenu
-          // aksesSubmenu: aksesSubmenu.map(submenu => submenu.dataValues)  // Mengambil dataValues untuk aksessubmenu
+          akses,
+          menus  // Mengambil dataValues untuk aksesmenu dan menu
         });        
       } catch (error) {
+        console.error("Error getUserlevelByLevel:", error);
         return response.error(res, error.message);
       }
   }
