@@ -1,12 +1,15 @@
-const aksesmenuService = require("../../services/aksesmenu.service");
-const aksessubmenuService = require("../../services/aksessubmenu.service");
+// const aksesmenuService = require("../../services/aksesmenu.service");
+// const aksessubmenuService = require("../../services/aksessubmenu.service");
 const userlevelService = require("../../services/userlevel.service");
 const response = require("../../utils/response");
+const aksesService = require("../../services/akses.service");
+const menuService = require("../../services/menu.service")
 
 class UserlevelController {
   async getAllUserlevel(req, res) {
     try {
       const userlevel = await userlevelService.getAllUserlevel();
+      
       return response.success(res, "All userlevel fetched", userlevel);
     } catch (error) {
       return response.error(res, error.message);
@@ -15,8 +18,11 @@ class UserlevelController {
 
   async getAllUserlevelDatatables(req, res) {
     try {
+      console.log("debug akses:", res.locals.akses);
+      console.log("debug user:", req.session.user);
       const { akses } = res.locals;
-  
+
+      
       if (akses.view_level !== 'Y') {
         return res.status(403).json({ error: "Akses ditolak" });
       }
@@ -38,16 +44,21 @@ class UserlevelController {
     }
   }
   
-  async getUserAksesByLevel(req, res) {
+  async getUserlevelByLevel(req, res) {
       try {
-        const aksesmenu = await aksesmenuService.getAksesmenuByLevel(req.session.user.id_level);
-        const aksesSubmenu = await aksessubmenuService.getAksessubmenuByLevel(req.session.user.id_level);
+        const {id_level} = req.params;
+
+        const menus = await menuService.getAllMenu();
+        const akses = await aksesService.getAksesByLevel(id_level);
+        console.log("aksesmenu:", akses);
+        // const aksesSubmenu = await aksessubmenuService.getAksessubmenuByLevel(req.session.user.id_level);
 
         return response.success(res, "User akses fetched", {
-          aksesmenu: aksesmenu.map(menu => menu.dataValues),  // Mengambil dataValues untuk aksesmenu
-          aksesSubmenu: aksesSubmenu.map(submenu => submenu.dataValues)  // Mengambil dataValues untuk aksessubmenu
+          akses,
+          menus  // Mengambil dataValues untuk aksesmenu dan menu
         });        
       } catch (error) {
+        console.error("Error getUserlevelByLevel:", error);
         return response.error(res, error.message);
       }
   }
@@ -55,7 +66,8 @@ class UserlevelController {
 
   async getUserlevelById(req, res) {
     try {
-      const userlevel = await userlevelService.getUserlevelById(req.params.id);
+      const {id} = req.params;
+      const userlevel = await userlevelService.getUserlevelById(id);
       return response.success(res, "Userlevel fetched", userlevel);
     } catch (error) {
       return response.notFound(res, error.message);
@@ -73,7 +85,8 @@ class UserlevelController {
 
   async updateUserlevel(req, res) {
     try {
-      await userlevelService.updateUserlevel(req.params.id, req.body);
+      const {id} = req.params;
+      await userlevelService.updateUserlevel(id, req.body);
       return response.success(res, "Userlevel updated successfully");
     } catch (error) {
       return response.error(res, error.message, 400);
@@ -82,7 +95,8 @@ class UserlevelController {
 
   async deleteUserlevel(req, res) {
     try {
-      await userlevelService.deleteUserlevel(req.params.id);
+      const {id} = req.params;
+      await userlevelService.deleteUserlevel(id);
       return response.success(res, "Userlevel deleted successfully");
     } catch (error) {
       return response.notFound(res, error.message);
@@ -94,7 +108,7 @@ class UserlevelController {
       const id_level = req.session.user.id_level;
       const aksesData = req.body.akses;
 
-      // console.log("ID Level:", id_level);
+      console.log("ID Level:", id_level);
       // console.log("Akses Data:", aksesData);
 
       const result = await userlevelService.upsertAccess({ id_level, akses: aksesData });

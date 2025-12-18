@@ -1,7 +1,7 @@
 <!-- Tambahkan di file CSS atau di dalam <style> -->
   <style>
     .nav-item.active {
-      background-color: #0e131d;
+      background-color: #1d120e;
     }
   </style>
 <body>
@@ -33,40 +33,18 @@
           </div>
           <!-- End Logo Header -->
         </div>
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+        <div class="sidebar-wrapper scrollbar scrollbar-inner" >
           <div class="sidebar-content">
-            <ul class="nav nav-secondary">
-              <% if (typeof sidebarMenus !== 'undefined' && Array.isArray(sidebarMenus)) { %>
-                <% sidebarMenus.forEach(menu => { %>
-                  <% if (menu.submenus.length > 0) { %>
-                    <li class="nav-item <%= activeMenu === menu.id_menu ? 'active' : '' %>">
-                      <a data-bs-toggle="collapse" class="collapsed" href="<%= menu.link %>" data-target="#<%= menu.nama_menu %>">
-                        <i class="<%= menu.icon %>"></i> <p><%= menu.nama_menu %></p>
-                        <span class="caret"></span>
-                      </a>
-                      <div id="<%= menu.nama_menu %>" class="collapse <%= activeMenu === menu.id_menu ? 'show' : '' %>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                        <ul class="nav nav-collapse">
-                          <% menu.submenus.forEach(submenu => { %>
-                            <li>
-                              <a class="collapse-item" href="<%= submenu.link %>">
-                                &nbsp;&nbsp;&nbsp;&nbsp;<i class="<%= submenu.icon %>"></i><%= submenu.nama_submenu %>
-                              </a>
-                            </li>
-                          <% }); %>
-                        </ul>
-                      </div>
-                    </li>
-                  <% } else { %>
-                    <li class="nav-item">
-                      <a class="nav-link" href="<%= menu.link %>">
-                        <i class="<%= menu.icon %>"></i><p><%= menu.nama_menu %></p> 
-                      </a>
-                    </li>
-                  <% } %>
-                <% }); %>
-              <% } %>
-            </ul>     
+              <ul class="nav nav-secondary" id="sidebar-nav-container"> 
+                <% if (typeof sidebarMenus !== 'undefined' && Array.isArray(sidebarMenus)) { %>
+                   <% sidebarMenus.forEach(menu => { %>
+                    <%- include('menu_item', {menu, parentId: null}) %> 
+                  <% }); %>
+                <% } %>
+              </ul>     
           </div>
         </div>
       </div>
       <!-- End Sidebar -->
+
+   

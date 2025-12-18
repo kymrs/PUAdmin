@@ -1,0 +1,27 @@
+    <% if(menu.children && menu.children.length > 0) {%>
+        <li class="nav-item ">                        
+            <a data-bs-toggle="<%= menu.children && menu.children.length ? 'collapse' : '' %>" href="<%= menu.children && menu.children.length ? '#collapse-' + menu.id_menu : menu.link %>" data-menu-id="<%= menu.id_menu %>" data-bs-target="#collapse-<%= menu.id_menu %>"  class="collapsed nav-link toggle-menu" role="button"  aria-controls="collapse-<%= menu.id_menu %>" >
+                 <i class="<%= menu.icon %>"></i> <p><%= menu.nama_menu %></p>
+                 <% if(menu.children.length) {%>
+                   <span class="caret"></span>
+                 <% } %>
+            </a>
+            <% if(menu.children.length) {%>
+            <div id="collapse-<%= menu.id_menu %>" class="collapse <%= menu.children.length === menu.id_menu ? 'show' : '' %>" 
+                <%= parentId && (typeof parentId === 'string' || typeof parentId === number) ? `data-bs-parent="#collapse-${parentId}"` : "" %>
+              aria-labelledby="headingUtilities">
+              <ul class="nav nav-collapse ps-3">
+                 <% menu.children.forEach(childMenu => {%>
+                     <%- include('menu_item', {menu: childMenu}) %>
+                 <% });%>
+             </ul>
+            </div>
+         <%}%>
+        </li>
+        <% } else {%>
+        <li class="nav-item">
+            <a href="<%= menu.link %>">
+                 <i class="<%= menu.icon %>"></i> <p><%= menu.nama_menu %></p>
+            </a>                   
+        </li>        
+    <% } %>  

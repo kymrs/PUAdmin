@@ -9,8 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     ajax: {
       url: "/api/userlevel/datatables",
       type: "GET",
+      xhrFields:{
+        withCredentials:true
+      },
       dataSrc: function (json) {
-        console.log("DataTables response:", json); // Debugging log
+        console.log("DataTables response:", json); // Debugging log        
         return json.data;
       },
     },
@@ -40,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <i class="fa fa-times"></i>
               </a>`;
           }
-
+          
             buttons += `
             <a href="#" class="btn btn-sm btn-success userlevelDetail" data-id="${row.id_level}">
               Akses

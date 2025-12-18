@@ -15,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Userlevel.associate = (models) => {
-      Userlevel.hasMany(models.Aksesmenu, { foreignKey: 'id_level' });
-      Userlevel.hasMany(models.Aksessubmenu, { foreignKey: 'id_level' });
+      Userlevel.hasMany(models.Akses, { foreignKey: 'id_level' });
       Userlevel.hasMany(models.User, { foreignKey: 'id_level' });
     };
     

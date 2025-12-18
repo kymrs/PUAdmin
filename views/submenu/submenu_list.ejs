@@ -56,6 +56,7 @@
                       <th>Menu</th>
                       <th>Is_active</th>
                       <th>Order</th>
+                      <th>Parent_Id</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -65,14 +66,15 @@
                       <th>Link</th>
                       <th>Icon</th>
                       <th>Menu</th>
-                      <th>Order</th>
                       <th>Is_active</th>
+                      <th>Order</th>
+                      <th>Parent_Id</th>
                     </tr>
                   </tfoot>
                   <tbody>
-                    <% submenu.forEach(function(men) {%>
+                    <% menu.forEach(function(men) {%>
                         <tr>
-                            <td><%= men.nama_submenu %></td>
+                            <td><%= men.nama_menu %></td>
                             <td><%= men.link %></td>
                             <td><%= men.icon %></td>
                             <td><%= men.id_menu %></td>
@@ -81,7 +83,7 @@
                             <td>
                                 <div class="form-button-action">
                                 <a
-                                    data-id="<%= men.id_submenu %>"
+                                    data-id="<%= men.id_menu %>"
                                     class="btn btn-link btn-primary btn-lg submenuEdit"
                                   >
                                     <i class="fa fa-edit"></i>
@@ -89,7 +91,7 @@
                                 <a
                                     type="button"
                                     data-bs-toggle="tooltip"
-                                    data-id="<%= men.id_submenu %>"
+                                    data-id="<%= men.id_menu %>"
                                     title=""
                                     class="btn btn-link btn-danger submenuDelete"
                                     data-original-title="Remove"
@@ -117,8 +119,8 @@
                 <div class="modal-content">
                   <div class="modal-header border-0">
                     <h5 class="modal-title">
-                      <span class="fw-mediumbold"> Form</span>
-                      <span class="fw-light"> Sub Menu </span>
+                      <span class="fw-mediumbold">Form Sub Menu</span>
+                      <!-- <span class="fw-light"> Sub Menu </span> -->
                     </h5>
                     <button
                       type="button"
@@ -136,14 +138,14 @@
                           <div class="form-group form-group-default">
                             <label>SubMenu Name</label>
                             <input
-                              id="nama_submenu"
+                              id="nama_menu"
                               type="text"
                               class="form-control"
                             />
                             <!-- HIDDEN INPUT -->
                              <input 
                               type="hidden"
-                              id="hidden_id_submenu"
+                              id="hidden_id_menu"
                              />
                           </div>
                         </div>

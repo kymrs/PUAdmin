@@ -646,7 +646,7 @@ body {
       .sidebar .nav > .nav-item.submenu, .sidebar[data-background-color="white"] .nav > .nav-item.submenu {
         background: rgba(0, 0, 0, 0.03); }
         .sidebar .nav > .nav-item.submenu > li > a i, .sidebar[data-background-color="white"] .nav > .nav-item.submenu > li > a i {
-          color: rgba(23, 125, 255, 0.76); }
+          color: #ff6900; }
       .sidebar .nav > .nav-item a, .sidebar[data-background-color="white"] .nav > .nav-item a {
         display: flex;
         align-items: center;

@@ -5,16 +5,30 @@ class MenuService {
     const menu = await MenuRepository.getAllMenu();
     return menu || []; // jika null/undefined, tetap kembalikan array kosong
   }
-
-  async getAllMenuDatatables({ draw, start, length, search, order, columns }) {
+  async getMenuById(id_menu) {
+    const menu = await MenuRepository.getMenuById(id_menu);
+    return menu || []; // jika null/undefined, tetap kembalikan array kosong
+  }
+  async getAllMenuDatatables({ draw, start, length, search, order, columns, parent_id, parent_not_null}) {
     const searchValue = search?.value || "";
+
+    const filter = {};
+    
+    if( parent_id === null) {
+      filter.parent_id = null;
+    }
+    
+    if(parent_not_null){
+      filter.parent_not_null = true;
+    }
 
     const { count, rows } = await MenuRepository.getPaginatedMenu({
       start: parseInt(start, 10) || 0,
       length: parseInt(length, 10) || 10,
       search: searchValue,
       order,
-      columns
+      columns,
+      parentOnly
     });
 
     return {
@@ -25,18 +39,24 @@ class MenuService {
     };
   }
 
-
-  async getMenuById(id_menu) {
-    const menu = await MenuRepository.getMenuById(id_menu);
-    return menu || []; // jika null/undefined, tetap kembalikan array kosong
+  async getParentsMenusDatatable() {
+    const parentMenus = await MenuRepository.getParentMenus();
+    return parentMenus || [];
   }
-
+  
   async createMenu(menuData) {
     const requiredFields = ["nama_menu", "link", "icon", "urutan", "is_active"];
-    if (!requiredFields.every(field => menuData[field])) {
-      throw new Error("Semua field wajib diisi");
-    }
-    return await MenuRepository.createMenu(menuData);
+     for(const field of requiredFields){
+      if(menuData[field] === undefined){
+        throw new Error(`${field} wajib diisi`);
+      }
+     }
+
+     const parentId = menuData.parent_id || null;
+     return await MenuRepository.createMenu({
+      ...menuData,
+      parent_id: parentId
+     });
   }
 
   async updateMenu(id_menu, menuData) {
@@ -44,7 +64,13 @@ class MenuService {
     if (!menu) {
       throw new Error("Menu not found");
     }
-    return await MenuRepository.updateMenu(id_menu, menuData);
+    const parentId = menuData.parent_id || null;
+
+    const updated = await MenuRepository.updateMenu(id_menu, {
+      ...menuData,
+      parent_id: parentId
+    });
+    return updated;
   }
 
   async deleteMenu(id_menu) {
@@ -52,8 +78,58 @@ class MenuService {
     if (!menu) {
       throw new Error("Menu not found");
     }
-    return await MenuRepository.deleteMenu(id_menu);
+    
+    await MenuRepository.deleteMenu(id_menu);
+
+    return { message: "Menu deleted successfully" };
   }
+
+  // 🆕 Fungsi baru: Ambil menu dalam struktur bertingkat (multi-level)
+  async getNestedMenu() {
+    const menus = await MenuRepository.getAllMenu();
+    //recursive builder
+    const buildTree = (parentId = null) => {
+      return menus
+        .filter(menu => menu.parent_id === parentId)
+        .map(menu => ({
+          id_menu: menu.id_menu,
+          nama_menu: menu.nama_menu,
+          icon: menu.icon,
+          link: menu.link,
+          urutan: menu.urutan,
+          is_active: menu.is_active,
+          children: buildTree(menu.id_menu)
+        }))
+    }
+    
+    return buildTree();
+  }
+
+  async createNestedMenu(menuData, parentId = null){
+    const newMenu = await MenuRepository.createMenu({
+      nama_menu: menuData.nama_menu,
+      link: menuData.link,
+      icon: menuData.icon,
+      urutan: menuData.urutan,
+      is_active: menuData.is_active,
+      parent_id: parentId
+    })
+
+    // const requiredNestedFields = ['nama_menu', 'link', 'icon', 'urutan', 'is_active', 'parent_id'];
+    // if(!requiredNestedFields.every(field => menuData[field])){
+    //   throw new Error("Semua field wajib diisi");
+    // } else 
+      if (menuData.children && menuData.children.length > 0){
+      for(const child of menuData.children){
+        await this.createNestedMenu(child, 
+          newMenu.id_menu);
+      }
+    }
+    return newMenu;
+  }
+
+  
+
 }
 
 module.exports = new MenuService();

@@ -1,92 +1,116 @@
-const { Aksessubmenu, Submenu } = require("../models");
-const { Op } = require("sequelize");
+const { Menu, Akses } = require("../models");
 
 module.exports = async (req, res, next) => {
   try {
     const user = req.session.user;
 
+    // Kalau belum login → set default akses N
     if (!user) {
-      res.locals.akses = {
-        view_level: 'N',
-        add_level: 'N',
-        edit_level: 'N',
-        delete_level: 'N',
-        print_level: 'N',
-        upload_level: 'N',
-      };
+      res.locals.akses = getDefaultAkses();
       return next();
     }
 
-    // Ambil path penuh (bukan hanya bagian terakhir)
-    let currentPath = req.baseUrl.replace(/^\/api/, "");
-    if (!currentPath.startsWith("/")) {
-      currentPath = "/" + currentPath;
+    let currentPath = req.originalUrl.replace(/\?.*$/, ""); 
+    currentPath = currentPath.replace(/^\/api/, "");
+
+    if(currentPath.includes("/datatables")){
+      res.locals.akses = {
+        view_level: 'Y',
+        add_level: 'Y',
+        edit_level: 'Y',
+        delete_level: 'Y',
+        print_level: 'Y',
+        upload_level: 'Y',
+      };
+    return next();
+    }
+    // SUPERADMIN → full akses
+    if (user.id_level === 1) {
+      res.locals.akses = getFullAkses();
+      res.locals.user = user;
+      return next();
     }
 
-    // ambil semua hak akses submenu berdasarkan level user
-    const aksesList = await Aksessubmenu.findAll({
+    // Ambil akses dari DB
+    const aksesList = await Akses.findAll({
       where: { id_level: user.id_level },
       include: {
-        model: Submenu,
+        model: Menu,
         attributes: ["link"],
-        where: {
-          is_active: 'Y',
-        },
+        where: { is_active: "Y" },
       },
     });
 
-    // mapping: { '/path/to/page': { view_level: 'Y', ... } }
-   // mapping: { '/path/to/page': { view_level: 'Y', ... } }
-    const aksesSubmenu = {};
-    aksesList.forEach((item) => {
-      if (item.Submenu && item.Submenu.link) {
-        aksesSubmenu[item.Submenu.link] = {
+    // Mapping
+    const aksesMap = {};
+    for (const row of aksesList){
+      if(!Menu || !row.Menu.link) continue;
+
+      let link = row.Menu.link.trim();
+
+      if( link === "#" || link === "" ) continue;
+
+      if(!link.startsWith("/")) link = "/" + link;
+
+       aksesMap[link] = {
           view_level: item.view_level,
           add_level: item.add_level,
           edit_level: item.edit_level,
           delete_level: item.delete_level,
           print_level: item.print_level,
           upload_level: item.upload_level,
-        };
-      }
-    });
-
-    // Cari akses paling cocok berdasarkan currentPath
-    let akses = null;
-    let maxMatchLength = 0;
-
-    for (const [link, aksesData] of Object.entries(aksesSubmenu)) {
-      if (currentPath.includes(link) && link.length > maxMatchLength) {
-        akses = aksesData;
-        maxMatchLength = link.length;
-      }
-    }
-
-    if (!akses) {
-      akses = {
-        view_level: 'N',
-        add_level: 'N',
-        edit_level: 'N',
-        delete_level: 'N',
-        print_level: 'N',
-        upload_level: 'N',
       };
     }
 
+    // Cari matching akses berdasarkan link terpanjang
+    const akses = matchAkses(currentPath, aksesMap) || getDefaultAkses
+    ;
+    
 
-    // Inject
     res.locals.akses = akses;
-    res.locals.username = user.username || null;
-    res.locals.fullname = user.fullname || null;
-    res.locals.id_level = user.id_level || null;
-
-    // Log
-    // console.log("current path:", currentPath);
-    // console.log("akses:", akses);
+    res.locals.username = user.username;
+    res.locals.fullname = user.fullname;
+    res.locals.id_level = user.id_level;
 
     next();
-  } catch (error) {
-    console.error("Error in injectUser middleware:", error);
-    next(error);
+  } catch (err) {
+    console.error("injectUser error:", err);
+    next(err);
   }
 };
+
+// Helpers
+function getDefaultAkses() {
+  return {
+    view_level: "N",
+    add_level: "N",
+    edit_level: "N",
+    delete_level: "N",
+    print_level: "N",
+    upload_level: "N",
+  };
+}
+
+function getFullAkses() {
+  return {
+    view_level: "Y",
+    add_level: "Y",
+    edit_level: "Y",
+    delete_level: "Y",
+    print_level: "Y",
+    upload_level: "Y",
+  };
+}
+
+function matchAkses(link, aksesMap) {
+  let bestMatch = null;
+  let longest = 0;
+
+  for(const link in aksesMap){
+    if(currentPath.startsWith(link) && link.length > longest ){
+      bestMatch = aksesMap[link];
+      longest = link.length;
+    }
+    return bestMatch;
+  }
+}

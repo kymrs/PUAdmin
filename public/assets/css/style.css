@@ -34,3 +34,40 @@
 .form-group-default:focus-within label {
     color: rgb(26, 32, 53); /* Warna label saat fokus */
 }
+/* --- MULTI LEVEL SIDEBAR FIX --- */
+.nav .collapse .collapse {
+  padding-left: 1rem;
+  transition: all 0.3s ease;
+}
+
+.sidebar .collapse{
+  display: none;
+}
+.sidebar .collapse.show{
+    display: block;
+}
+/* Rotasi caret pas terbuka */
+.nav .caret {
+  transition: transform 0.3s ease;
+}
+
+.nav .collapsed .caret {
+  transform: rotate(0deg);
+}
+
+.nav .collapse.show ~ .nav-link .caret,
+.nav .nav-item.submenu.show > a .caret {
+  transform: rotate(90deg);
+}
+
+/* Optional: styling child menu biar beda */
+.nav .nav-collapse .nav-link {
+  font-size: 0.9rem;
+  padding-left: 2rem;
+}
+
+/* Highlight active menu */
+.nav-item.active > a {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+}

@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       is_active: {
         type: DataTypes.ENUM('Y', 'N'),
         allowNull: true,
+      },
+      parent_id:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
       }
     },
     {
@@ -31,12 +35,18 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false // Hapus jika pakai createdAt & updatedAt
     });
 
+   
     Menu.associate = (models) => {
-      Menu.hasMany(models.Aksesmenu, { foreignKey: 'id_menu' });
-      Menu.hasMany(models.Submenu, { foreignKey: 'id_menu' });
+      Menu.belongsTo(Menu, {as: 'parent', foreignKey: 'parent_id'});     
+      Menu.hasMany(Menu, {as: 'children', foreignKey: 'parent_id'});
+      Menu.belongsTo(models.Akses, {
+        foreignKey: 'id_menu',
+      })
+
+      // Menu.hasOne(models.Aksesmenu, { foreignKey: 'id_menu', as: 'aksesmenu' });
+      // Menu.hasMany(models.Aksessubmenu, {foreignKey: 'id_menu', as: 'aksessubmenu' });
     };
     
-  
     return Menu;
   };
   

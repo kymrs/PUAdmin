@@ -294,13 +294,16 @@ $(document).ready(function(){
 
 	// addClass if nav-item click and has subnav
 
-	$(".nav-item a").on('click', (function(){
-		if ( $(this).parent().find('.collapse').hasClass("show") ) {
-			$(this).parent().removeClass('submenu');
+	$(' .nav-item a[data-bs-toggle="collapse"]').on('click', function(){
+		const parentItem = $(this).parent();
+
+		if(parentItem.find('.collapse').hasClass('show')){
+			parentItem.remove('submenu');
 		} else {
-			$(this).parent().addClass('submenu');
+			parentItem.addClass("submenu");
 		}
-	}));
+
+	})
 
 
 	//Chat Open

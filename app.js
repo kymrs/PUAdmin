@@ -36,7 +36,7 @@ const sessionMiddleware = session({
   secret: "rahasia_kamu",
   resave: false,
   saveUninitialized: false, // disarankan untuk keamanan & efisiensi
-  cookie: { secure: false }, // kalau di production, ganti jadi true + pakai https
+  cookie: { secure: false, httpOnly: true }, // kalau di production, ganti jadi true + pakai https
 });
 
 // Pakai di HTTP routes (Express)
@@ -56,7 +56,11 @@ app.use(express.static(path.join(__dirname, "public")));
 // });
 
 // 📄 Parsing Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://localhost:3000", // Ganti dengan origin frontend Anda
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true, // Agar cookie session bisa dipakai
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
