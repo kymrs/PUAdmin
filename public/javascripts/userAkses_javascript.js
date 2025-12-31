@@ -27,49 +27,43 @@ document.addEventListener("DOMContentLoaded", () => {
       tbody.innerHTML = "";
       const menusSafe = (menus || []).filter(m => m && m.id_menu);
 
-      menusSafe.forEach((menu, index) => {
-        // Tentukan apakah ini menu utama
-        if (menu.parent_id === null) {
-          const aksesMenu = akses.find(a => a.id_menu === menu.id_menu) || defaultAkses(menu.id_menu);
+       function renderMenuRows(menus, akses, parentId = null, level = 0) {
+            menus
+              .filter(menu => menu.parent_id === parentId)
+              .forEach(menu => {
 
-          // const viewIcon = menus?.view_level === 'Y'
-          // ? iconCheck('view_level', 'menu', menu.id_menu, )
-          // : iconCross('view_level', 'menu', menu.id_menu);
+                const aksesMenu =
+                  akses.find(a => a.id_menu === menu.id_menu) ||
+                  defaultAkses(menu.id_menu);
 
-          const tr = document.createElement("tr");
-          tr.className = "table-success";
-          tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${menu.nama_menu}</td>
-            <td class="text-center">${makeIcon('view_level', aksesMenu)}</td>
-            <td colspan="5" class="bg-light"></td>
-          `;
-          tbody.appendChild(tr);
+                const tr = document.createElement("tr");
 
-          // tampilkan semua submenu dari menu ini
-          menus
-            .filter(sub => sub.parent_id === menu.id_menu)
-            .forEach(sub => {
-              const aksesSub = akses.find(b => b.id_menu === sub.id_menu) || defaultAkses(sub.id_menu);
+                tr.className =
+                  level === 0 ? "table-success" :
+                  level === 1 ? "table-info" :
+                  "table-light";
 
-              const trSub = document.createElement("tr");
-              trSub.className = "table-info";
-              trSub.innerHTML = `
-                <td></td>
-                <td>${sub.nama_menu}</td>
+                tr.innerHTML = `
+                  <td>${level === 0 ? menu.id_menu : ""}</td>
+                  <td style="padding-left:${level * 25}px">
+                    ${"— ".repeat(level)}${menu.nama_menu}
+                  </td>
 
-                ${permissionIcon("view_level", aksesSub)}
-                ${permissionIcon("add_level", aksesSub)}
-                ${permissionIcon("edit_level", aksesSub)}
-                ${permissionIcon("delete_level", aksesSub)}
-                ${permissionIcon("print_level", aksesSub)}
-                ${permissionIcon("upload_level", aksesSub)}
-              `;
-              tbody.appendChild(trSub);
-            });
-        }
-      });
+                  ${permissionIcon("view_level", aksesMenu)}
+                  ${permissionIcon("add_level", aksesMenu)}
+                  ${permissionIcon("edit_level", aksesMenu)}
+                  ${permissionIcon("delete_level", aksesMenu)}
+                  ${permissionIcon("print_level", aksesMenu)}
+                  ${permissionIcon("upload_level", aksesMenu)}
+                `;
 
+                tbody.appendChild(tr);
+
+                // 🔁 render anak-anaknya
+                renderMenuRows(menus, akses, menu.id_menu, level + 1);
+              });
+          }
+      renderMenuRows(menusSafe, akses)
       const modal = new bootstrap.Modal(document.getElementById("aksesModal"));
       modal.show();
     } catch (err) {

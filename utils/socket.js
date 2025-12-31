@@ -17,12 +17,13 @@ module.exports = (io, sessionMiddleware) => {
         return;
       }
 
-      if (user.id_level === 1) {
-        socket.join('admin');
-        console.log(`👑 ${user.username} masuk ke room admin`);
+
+      if (user.id_level === 6) {
+        socket.join('super admin');
+        console.log(`👑 ${user.username} masuk ke room super admin`);
         socket.emit('joined_admin_room'); // ⬅️ ini penting!
       } else {
-        console.log(`🙅‍♂️ ${user.username} bukan admin`);
+        console.log(`👤 ${user.username} masuk dan tidak memiliki akses admin`);
       }
     });
 

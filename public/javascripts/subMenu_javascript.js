@@ -7,10 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollX: false,
     autoWidth: true,
     ajax: {
-      url: "/api/menu/submenu", // Backend endpoint
+      url: "/api/menu/submenu/datatables", // Backend endpoint
       type: "GET",
       dataSrc: function (json) {
-        console.log("DataTables response:", json); // Debugging log
+        //console.log("DataTables response:", json); // Debugging log
         return json.data; // Extract the data array
       },
     },

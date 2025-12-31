@@ -7,8 +7,16 @@ class SubmenuSerivce {
     return submenu || []; // jika null/undefined, tetap kembalikan array kosong
   }
 
-  async getSubmenuPaginated({ draw, start, length, search, order, columns }) {
+  async getSubmenuPaginated({ draw, start, length, search, order, columns, parent_id, parent_not_null }) {
     const searchValue = search?.value || "";
+
+    const filter = {};
+    if(parent_id === null) {
+      filter.parent_id = null
+    }
+    if(parent_not_null){
+      filter.parent_not_null = true;
+    }
     
     const { count, rows } = await SubmenuRepository.getPaginatedSubmenu({
       start: parseInt(start, 10) || 0,

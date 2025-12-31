@@ -1,5 +1,4 @@
 const { Menu, Akses} = require('../models');
-const menuService = require('../services/menu.service');
 
 
 const buildTree = (menus, parentId = null) => {
@@ -37,7 +36,6 @@ const loadSidebar = async (req, res, next) => {
     const user = req.session.user;
     if (!user) {
       res.locals.sidebarMenus = [];
-      res.locals.activeMenu = null; // Tidak ada menu aktif
       return next();
     }
 
@@ -60,26 +58,41 @@ const loadSidebar = async (req, res, next) => {
       order: [[{ model: Menu }, 'urutan', 'ASC']],
     });
 
-    const rawMenus = await menuService.getAllMenu();
     const menuMap = {};
-
-    rawMenus.forEach(menu => {
-      menu.children = [];
-      menuMap[menu.id_menu] = menu;
-    });
-
-    const menuTree = [];
-    rawMenus.forEach(menu => {
-      if(menu.parent_id) {
-        if(menuMap[menu.parent_id]){
-          menuMap[menu.parent_id].children.push(menu);
-        }
-      } else {
-        menuTree.push(menu);
+    aksesMenus.forEach(akses => {
+      if(!menuMap[akses.Menu.id_menu]){
+        menuMap[akses.Menu.id_menu] = akses.Menu;
       }
-    });
+    }) 
 
-    res.locals.sidebarMenus = menuTree;
+
+    if(!aksesMenus.length){
+      res.locals.sidebarMenus = [];
+      return next();
+    }
+
+    // const rawMenus = await menuService.getAllMenu();
+    // const menuMap = {};
+
+    // rawMenus.forEach(menu => {
+    //   menu.children = [];
+    //   menuMap[menu.id_menu] = menu;
+    // });
+
+    // const menuTree = [];
+    // rawMenus.forEach(menu => {
+    //   if(menu.parent_id) {
+    //     if(menuMap[menu.parent_id]){
+    //       menuMap[menu.parent_id].children.push(menu);
+    //     }
+    //   } else {
+    //     menuTree.push(menu);
+    //   }
+    // });
+    
+    
+    const menus = Object.values(menuMap);
+    res.locals.sidebarMenus = buildTree(menus);
    // Ambil id_menu aktif
 
     next();
