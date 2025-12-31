@@ -30,7 +30,7 @@ class SubmenuController {
             return res.status(403).json({ error: "Akses ditolak" });
           }
     
-          const result = SubmenuService.getSubmenuPaginated(req.query);
+          const result = await SubmenuService.getSubmenuPaginated(req.query);
     
           result.data = result.data.map(row => ({
             ...row.get({ plain: true }),

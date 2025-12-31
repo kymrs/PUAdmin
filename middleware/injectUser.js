@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
     return next();
     }
     // SUPERADMIN → full akses
-    if (user.id_level === 1) {
+    if (user.id_level === 6) {
       res.locals.akses = getFullAkses();
       res.locals.user = user;
       return next();
@@ -53,17 +53,17 @@ module.exports = async (req, res, next) => {
       if(!link.startsWith("/")) link = "/" + link;
 
        aksesMap[link] = {
-          view_level: item.view_level,
-          add_level: item.add_level,
-          edit_level: item.edit_level,
-          delete_level: item.delete_level,
-          print_level: item.print_level,
-          upload_level: item.upload_level,
+          view_level: row.view_level,
+          add_level: row.add_level,
+          edit_level: row.edit_level,
+          delete_level: row.delete_level,
+          print_level: row.print_level,
+          upload_level: row.upload_level,
       };
     }
 
     // Cari matching akses berdasarkan link terpanjang
-    const akses = matchAkses(currentPath, aksesMap) || getDefaultAkses
+    const akses = matchAkses(currentPath, aksesMap) || getDefaultAkses()
     ;
     
 
@@ -102,7 +102,7 @@ function getFullAkses() {
   };
 }
 
-function matchAkses(link, aksesMap) {
+function matchAkses(currentPath, aksesMap) {
   let bestMatch = null;
   let longest = 0;
 

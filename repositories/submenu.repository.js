@@ -1,5 +1,5 @@
 const { Model, Op, where } = require("sequelize");
-const { sequelize, Menu } = require("../models");
+const { sequelize, Menu, Akses } = require("../models");
 const aksesRepository = require('./akses.repository');
 
 class SubmenuRepository {
@@ -8,15 +8,28 @@ class SubmenuRepository {
       where:{
         parent_id: {[Op.ne]: null}
       },
+      include: [{
+        model: Akses,
+        as: 'akses',
+        required: false
+      }],
       order: [['urutan', 'ASC']]
     })
   }
 
-  async getPaginatedSubmenu({ start, length, search, order, columns }) {
-    const where = {
-      parent_id: {[Op.ne]: null},
-      ...(search && {
-        [Op.or]: [
+  async getPaginatedSubmenu({ start, length, search, order, columns, filter={} }) {
+    const where = {};
+
+    if( filter.parent_id === null){
+      where.parent_id = null;
+    }
+
+    if(filter.parent_not_null){
+      where.parent_id = {[Op.ne]: null};
+    }
+
+    if(search){
+      where[Op.or] = [
           { id_menu: { [Op.like]: `%${search}%` } },
           { parent_id: { [Op.like]: `%${search}%` } },
           { nama_menu: { [Op.like]: `%${search}%` } },
@@ -25,14 +38,12 @@ class SubmenuRepository {
           { urutan: { [Op.like]: `%${search}%` } },
           { is_active: { [Op.like]: `%${search}%` } }
         ]
-      })
-      // Add any other filters you need here
-    };
+    }
 
     const sort =
       order && order.length > 0
         ? [[columns[order[0].column].data, order[0].dir]]
-        : [["created_at", "DESC"]];
+        : [["urutan", "ASC"]];
 
     const offset = start || 0; // Default to 0 if start is not provided
     const limit = length || 10; // Default to 10 if length is not provided

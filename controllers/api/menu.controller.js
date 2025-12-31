@@ -3,6 +3,7 @@ const menuService = require("../../services/menu.service");
 const response = require("../../utils/response");
 
 
+
 class MenuController {
   async getAllMenu(req, res) {
     try {
@@ -22,8 +23,8 @@ class MenuController {
   }
   async getMenuById(req, res){
       try{
-        const {id} = req.params;
-        const menu = await menuRepository.getMenuById(id);
+        const {id_menu} = req.params;
+        const menu = await menuRepository.getMenuById(id_menu);
 
         return res.status(200).json({
           success: true,
@@ -42,8 +43,8 @@ class MenuController {
     async getParentPaginatedMenu(req, res){
       try{
         const {akses} = res.locals;
-        if( akses.view_menu !== "Y"){
-          return response.forbidden(res, "Akses ditolak");
+        if( akses.view_level !== "Y"){
+          return res.status(403).json({error: "Akses ditolak" });
         }
 
         const parentMenu = await menuService.getParentsMenusDatatable({
@@ -53,8 +54,8 @@ class MenuController {
         const data = parentMenu.map(menu => ({
           ...menu,
           akses: {
-            edit: akses.edit_menu === "Y",
-            delete: akses.delete_menu === "Y"
+            edit: akses.edit_level === "Y",
+            delete: akses.delete_level === "Y"
           }
         }))
 
@@ -72,30 +73,7 @@ class MenuController {
         });
       }
     }
-    async getSubmenuPaginated(req, res) {
-       try {
-        const { akses } = res.locals;
-        
-         if (akses.view_level !== 'Y') {
-            return res.status(403).json({ error: "Akses ditolak" });
-         }
-        
-          const result = menuService.getAllMenuDatatables(req.query);
-        
-          result.data = result.data.map(row => ({
-            ...row.get({ plain: true }),
-            akses: {
-               edit: akses.edit_level === 'Y',
-               delete: akses.delete_level === 'Y'
-            }
-         }));
-        
-          return response.datatables(res, result);
-        } catch (error) {
-          console.error("Error getSubmenuPaginated:", error);
-          return response.error(res, error.message);
-      } 
-    }
+ 
   //  async getPaginatedMenu(req, res){
   //     try{
   //       const {start, length, search, order, columns} = req.body;
@@ -122,9 +100,10 @@ class MenuController {
   //       });
   //     }
   //    }
-    async getParentsController(req, res){
+    async getParentsController(req, res, ){
       try {
-        const parentMenu = await menuService.getParentsMenusDatatable();
+        const { id_level } = req.session.user.id_level;
+        const parentMenu = await menuService.getParentsMenusDatatable(id_level);
 
         res.json({
           success: true,
@@ -197,16 +176,16 @@ class MenuController {
 
   async updateMenu(req, res) {
     try {
-      const {id} = req.params;
-      const menu = await menuRepository.getMenuById(id);
+      const {id_menu} = req.params;
+      const menu = await menuRepository.getMenuById(id_menu);
       if (!menu) {
         return res.status(404).json({
           status: "error",
-          message: "Menu tidak ditemukan",
+          message:"Menu tidak ditemukan",
         });
       }
 
-      await menuRepository.updateMenu(id, req.body)
+      await menuRepository.updateMenu(id_menu, req.body)
 
       return res.status(200).json({
         success: true,

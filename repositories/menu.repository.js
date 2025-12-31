@@ -43,8 +43,13 @@ class MenuRepository {
   }
 
   async getParentMenus() {
-    return await Menu.findAll({
+  return await Menu.findAll({
       where: {parent_id: null},
+      include: [{
+        model: Akses,
+        as: 'akses',
+        required: false
+      }],
       order: [['urutan', 'ASC']],
     })
   }
@@ -76,7 +81,7 @@ class MenuRepository {
     const sort =
       order && order.length > 0
         ? [[columns[order[0].column].data, order[0].dir]]
-        : [["created_at", "DESC"]];
+        : [["urutan", "ASC"]];
 
     const offset = start || 0; // Default to 0 if start is not provided
     const limit = length || 10; // Default to 10 if length is not provided
@@ -107,11 +112,11 @@ class MenuRepository {
     try {
       // Hapus akses menu terlebih dahulu
       await aksesRepository.deleteAksesById_menu(id_menu, transaction);
-      const id_menu = await submenuRepository.getSubmenuById_menu(id_menu);
+      const menu = await submenuRepository.getSubmenuById_menu(id_menu);
 
       if (id_menu) {
         // Hapus submenu terkait
-        await submenuRepository.deleteSubmenu(id_menu.id_menu, transaction);
+        await submenuRepository.deleteSubmenu(menu.id_menu, transaction);
       }
 
       // Hapus menu

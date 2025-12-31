@@ -1,4 +1,6 @@
 const MenuRepository = require("../repositories/menu.repository");
+const { mapMenuWithAcces } = require("../utils/menuAcces");
+
 
 class MenuService {
   async getAllMenu() {
@@ -39,9 +41,9 @@ class MenuService {
     };
   }
 
-  async getParentsMenusDatatable() {
-    const parentMenus = await MenuRepository.getParentMenus();
-    return parentMenus || [];
+  async getParentsMenusDatatable(id_level) {
+    const menus = await MenuRepository.getParentMenus(id_level);
+    return menus.map(menu => mapMenuWithAcces(menu));
   }
   
   async createMenu(menuData) {
@@ -86,9 +88,9 @@ class MenuService {
 
   // 🆕 Fungsi baru: Ambil menu dalam struktur bertingkat (multi-level)
   async getNestedMenu() {
-    const menus = await MenuRepository.getAllMenu();
+    // const menus = await MenuRepository.getAllMenu();
     //recursive builder
-    const buildTree = (parentId = null) => {
+    const buildTree = (parentId = null, menus) => {
       return menus
         .filter(menu => menu.parent_id === parentId)
         .map(menu => ({
@@ -98,7 +100,7 @@ class MenuService {
           link: menu.link,
           urutan: menu.urutan,
           is_active: menu.is_active,
-          children: buildTree(menu.id_menu)
+          children: buildTree(menus, menu.id_menu)
         }))
     }
     
@@ -114,11 +116,6 @@ class MenuService {
       is_active: menuData.is_active,
       parent_id: parentId
     })
-
-    // const requiredNestedFields = ['nama_menu', 'link', 'icon', 'urutan', 'is_active', 'parent_id'];
-    // if(!requiredNestedFields.every(field => menuData[field])){
-    //   throw new Error("Semua field wajib diisi");
-    // } else 
       if (menuData.children && menuData.children.length > 0){
       for(const child of menuData.children){
         await this.createNestedMenu(child, 
