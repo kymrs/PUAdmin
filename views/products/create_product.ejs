@@ -1,0 +1,184 @@
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+        <!-- PRODUK -->
+        <form action="/products" method="POST" id="formProduct">
+         <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Tambah Produk</div>
+                    </div>
+                    <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-md-3">
+                                    Nama Produk<span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="product_name" id="product_name" placeholder="Masukkan Nama Produk" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3">
+                                    Harga <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="price" id="price" placeholder="40.000.000" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3">
+                                    Durasi (Hari)<span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" name="duration" id="duration" placeholder="9 Hari" value="9" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3">
+                                    Thumbnail Produk<span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="file" class="form-control-file" name="thumbnail" onchange="validateFileExtension(this)">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3">
+                                    Deskripsi Produk<span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <textarea name="product_description" id="product_description" class="form-control" rows="5" placeholder="Masukkan Deskripsi Produk" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 form-label">Status</label>
+                                    <div class="col-sm-8">
+                                        <select name="status" class="form-select">
+                                            <option value="DRAFT">Draft</option>
+                                            <option value="ACTIVE">Publish</option>
+                                        </select>
+                                    </div>                     
+                            </div>
+                    </div>
+                </div>
+         </div>
+        </form>
+        <!-- HOTEL -->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Hotel</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3">
+                          Hotel<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <select name="hotels[0][city]" class="form-select">
+                                <option value="MEKKAH">Mekkah</option>
+                                <option value="MADINAH">Madinah</option>
+                            </select>
+                        </div>     
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Nama</label>
+                        <div class="col-sm-8">
+                             <input type="text" name="hotels[0][name]" class="form-control" placeholder="Nama Hotel">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Fasilitas</label>
+                       <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Masukan Semua Fasilitas">
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- AIRLINES -->
+         <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Airlines</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3">Departure Airline<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="departure_ailines" class="form-control" placeholder="Masukan Departure Airline">
+                        </div>      
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Return Airline<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">      
+                            <input type="text" name="return_airline" class="form-control" placeholder="Masukan Return Airline">
+                        </div>      
+                    </div>
+                </div>
+            </div>
+         </div>
+         <!-- FASILITAS -->
+          <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Fasilitas Tambahan</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3">Fasilitas include<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="facilities" class="form-control" placeholder="Ketik dan tekan enter">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Fasilitas exclude<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="facilities" class="form-control" placeholder="Ketik dan tekan enter">
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <!-- ITENERARY -->
+           <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Rencana Perjalanan</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row g-5">
+                        <div class="col-md-11">
+                            <button type="button" class="btn btn-success btn-block action-btn" id="roadmap_attributes" name="roadmap_attributes">Add Roadmap</button>
+                        </div>
+                        <div class="roadmap_option" id="roadmap_option">
+                            <div class="form-group row" id="row_roadmap_1">
+                                <div class="col-md-1">
+                                    <input type="text" class="form-control" name="" value="1" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="roadmap[0][location]" placeholder="Location" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="roadmap[0][activity]" placeholder="Activity" required>
+                                </div>
+                                <div class="col-md-2">
+                                     <a href="#" class="btn btn-sm btn-danger transactionDelete" ">
+                                <i class="fa fa-times"></i>
+                            </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           </div>
+           <!-- SUBMIT -->
+            <div class="col-12 ">
+                <div class="float-right mb-3">
+                         <button type="cancel" class="btn btn-primary">Batal</button>
+                        <button type="submit" class="btn btn-success">Simpan Produk</button>                     
+                </div>
+            </div>
+       </div>
+    </div> 
+</div>
