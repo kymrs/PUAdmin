@@ -1,0 +1,121 @@
+<div class="container">
+  <div class="page-inner">
+    <!-- <div class="page-header">
+      <h3 class="fw-bold mb-3">Travels</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home"><a href="#"><i class="icon-home"></i></a></li>
+        <li class="separator"><i class="icon-arrow-right"></i></li>
+        <li class="nav-item"><a href="#">Tables</a></li>
+        <li class="separator"><i class="icon-arrow-right"></i></li>
+        <li class="nav-item"><a href="#">Datatables</a></li>
+      </ul>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <h4 class="card-title">Products Table</h4>
+              <a class="btn btn-primary btn-round ms-auto" href="/createProduct"><i class="fa fa-plus"></i> Add Product</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" style="overflow-x: auto;">
+              <table id="productTable" class="display table table-striped table-hover w-100" style="width: 100%">
+                <thead>
+                  <tr>   
+                    <th>Nama</th>
+                    <th>Harga</th>
+                    <th>Stock</th>
+                    <th>Status</th>   
+                    <th>Action</th>       
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Harga</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Action</th>   
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <!-- Data rows will be dynamically rendered here -->
+                   <!-- <td class="d-flex">
+                        <div class="img-container-product">
+                            <img src="../assets/img/logo/favicon-pu.png" alt="product" class="img-product object-fit-sm-contain " sizes="10px">
+                        </div>
+                        <div class="col">
+                            <span class="p-2">sssssssssssssssssssss</span>
+                        </div>
+                   </td> -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- MODAL FORM TRAVEL -->
+          <div class="modal fade" id="productFormModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title"><span class="fw-mediumbold">Form Product</span> </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="transactionForm">
+                    <div class="row"> 
+                      <input type="hidden" id="hidden_id">
+
+                      <div class="col-sm-12">
+                        <div class="form-group form-group-default">
+                          <label>Nama</label>
+                          <input id="name" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group form-group-default">
+                          <label>Tanggal</label>
+                          <input id="" type="date" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group form-group-default">
+                          <label>No Transaksi</label>
+                          <input id="" type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group form-group-default">
+                          <label>Amount</label>
+                          <input id="" type="amount" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group form-group-default">
+                          <label>Status</label>
+                          <input type="hidden" id="" class="form-control">
+                          <select name="status" id="" class="form-control select2">
+                            <option value="">Pilih Status</option>
+                            <option value="Pending">PENDING</option>
+                            <option value="Success">SUCCES</option>
+                            <option value="Failed">FAILED</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="" class="btn btn-success">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END MODAL FORM -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

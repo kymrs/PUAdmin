@@ -8,7 +8,7 @@ router.get("/", auth.ensureAuth, loadSidebar, loadNotification, async (req, res)
     try{
         res.render("home", {
             link: "products/create_product",
-            jslink: "javasctipts/create_product.js",
+            jslink: "javascripts/createProduct_javascript.js",
             sideBarMenus: res.locals.sideBarMenus,
             activeMenu: req.path,
             user: req.session.user,
