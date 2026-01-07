@@ -114,7 +114,7 @@
 .tag i{
   font-size: 12px;
   margin-left: 5px;
-
+  color: crimson;
   transition: .2s ease-in;
 }
 /* .tag i:hover{
@@ -129,4 +129,9 @@
   padding: 6px;
   border: none;
   box-sizing: border-box;
+}
+.form-select{
+  width: 98%;
+  padding: 8px;
+  border: 2px solid #f1f0f0;
 }

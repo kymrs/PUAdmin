@@ -44,7 +44,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll(".tag-name")
     .forEach(initTagComponent);
 });
-
+new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR"
+}).format(harga)
 function validateFileExtension(thumbnail) {
     if(!/.(\.jpg|\.jpeg|\.png|\.gif)$/i.test(thumbnail.value)) {
         alert("Hanya file gambar yang diizinkan (jpg, jpeg, png, gif).");
@@ -89,9 +92,12 @@ function initTagComponent(tagInclude) {
     }
 
 
-    input.addEventListener('keyup', function(e) {
+    input.addEventListener('keydown', function(e) {
         if(e.key === 'Enter'){
-            tags.push(input.value);
+            e.preventDefault();
+            if(!input.value.trim()) return;
+
+            tags.push(input.value.trim());
             addTag();
             input.value = "";
         }
