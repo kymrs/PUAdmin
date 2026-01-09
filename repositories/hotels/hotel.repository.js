@@ -3,7 +3,10 @@ const { Hotel } = require("../../models");
 
 class HotelRepository {
   async getAllHotels() {
-    return await Hotel.findAll();
+    return await Hotel.findAll({
+      attributes: ["id", "name", "location"],
+      order: [['location', 'ASC'], ['name', 'ASC']]
+    });
   }
 
   async getPaginatedHotels({ start, length, search, order, columns }) {

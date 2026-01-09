@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     let roadmapIndex = 0 ;
     document.getElementById('addRoadmap').addEventListener('click', addRoadmap );
+    document.getElementById('addHotel').addEventListener('click', addHotel);
 
     function addRoadmap() {
         const container = document.getElementById('roadmap_option');
@@ -9,8 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
         row.className = 'row align-items-center mb-2';
 
         row.innerHTML = `
-                                    <div class="col-md-1">
-                                        <input type="text" class="form-control" value="${roadmapIndex + 1}" readonly>
+                                    <div class="col-2">
+                                        <input type="text" class="form-control" value="Hari ${roadmapIndex + 1}" readonly>
                                     </div>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control" name="roadmap[${roadmapIndex}][location]" placeholder="Location" required>
@@ -34,6 +35,44 @@ document.addEventListener("DOMContentLoaded", function() {
             roadmapIndex++;
     }
 
+    // function addHotel() {
+    //     const hotelForm = document.getElementById('additional_hotel');
+
+    //     const row = document.createElement('div');
+
+    //     row.innerHTML = `
+    //                            <div class="form-group col">
+    //                             <label class="col">
+    //                             Hotel<span class="text-danger">*</span>
+    //                             </label>
+    //                              <div class="col">
+    //                                 <select name="hotels[0][city]" class="form-select">
+    //                                     <option value="MEKKAH">Mekkah</option>
+    //                                     <option value="MADINAH">Madinah</option>
+    //                                 </select>
+    //                              </div>     
+    //                         </div>
+    //                         <div class="form-group col">
+    //                             <label >Fasilitas<span class="text-danger">*</span></label>
+    //                                  <div class="container-tag" data-name="hotel_facilities">
+    //                                     <div class="tag-name">
+    //                                         <input type="text" class="input-tag-custom" placeholder="Type and hit enter">
+    //                                     </div>
+                                        
+    //                                 </div>
+    //                         </div>
+    //                         <div class="form-group row">
+    //                                 <label class="col-md-3">
+    //                                     Gallery<span class="text-danger">*</span>
+    //                                 </label>
+    //                                 <div class="col-sm-8">
+    //                                     <input type="file" class="form-control-file" name="gallery" onchange="validateFileExtension(this)">
+    //                                 </div>
+    //                         </div>
+    //     `;
+    //     hotelForm.appendChild(row);
+    // }
+
     function updateRoadmapOrder() {
         const rows = document.querySelectorAll("#roadmap_option .row");
         rows.forEach((row, index) => {
@@ -44,10 +83,12 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll(".tag-name")
     .forEach(initTagComponent);
 });
+
 new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR"
 }).format(harga)
+
 function validateFileExtension(thumbnail) {
     if(!/.(\.jpg|\.jpeg|\.png|\.gif)$/i.test(thumbnail.value)) {
         alert("Hanya file gambar yang diizinkan (jpg, jpeg, png, gif).");
