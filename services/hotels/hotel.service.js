@@ -37,15 +37,15 @@ class HotelService {
 
   async createHotel(hotelData) {
     try {
-      const requiredFields = ["name", "location", "rating", "description"];
+      const requiredFields = ["name", "location", "rating", "jarak", "description"];
 
       if (!requiredFields.every(field => hotelData[field])) {
-        throw new Error("Semua field wajib diisi"); // Validasi input
+        throw new Error("Semua field wajib diisi");     // Validasi input
       }
 
       return await HotelRepository.createHotel(hotelData);
     } catch (error) {
-      throw new Error(error.message);
+      console.log(error);
     }
   }
 

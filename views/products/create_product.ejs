@@ -111,22 +111,20 @@
                             <h4 class="card-title">Hotel</h4>
                         </div>
                         <div class="card-body"> 
-                            <!-- <div class="form-group">
-                                <button type="button" class="btn btn-block btn-primary" id="addHotel">
+                            <div class="form-group">
+                                <!-- <button type="button" class="btn btn-block btn-primary" id="addHotel">
                                     Tambah Hotel
-                                </button>
-                            </div> -->
-                            <div class="form-group col">
+                                </button> -->
+                            </div>
+                           <div class="form-group col">
                                 <label class="col">
-                                Hotel Mekkah<span class="text-danger">*</span>
+                                Hotel<span class="text-danger">*</span>
                                 </label>
                                  <div class="col">
-                                   <select name="hotels[]" class="form-select" multiple required>
-                                    <% hotels.forEach(hotel => { %>
-                                        <option value="<%= hotel.id %>">
-                                        <%= hotel.name %> - <%= hotel.city %>
-                                        </option>
-                                    <% }) %>
+                                   <select name="hotel_ids[]" 
+                                   id="hotelSelect"
+                                   class="form-select" >         
+                                        <option >Pilih hotel...</option>
                                     </select>
                                  </div>     
                             </div>
@@ -146,37 +144,7 @@
                                     <div class="col-sm-8">
                                         <input type="file" class="form-control-file" name="gallery" onchange="validateFileExtension(this)">
                                     </div>
-                            </div>
-                            <div class="madinah-hotel" >
-                                 <div class="form-group col">
-                                <label class="col">
-                                Hotel Madinah<span class="text-danger">*</span>
-                                </label>
-                                 <div class="col">
-                                    <select name="hotels[0][city]" class="form-select">
-                                        <option value="MEKKAH">Mekkah</option>
-                                        <option value="MADINAH">Madinah</option>
-                                    </select>
-                                 </div>     
-                            </div>
-                            <div class="form-group col">
-                                <label >Fasilitas<span class="text-danger">*</span></label>
-                                     <div class="container-tag" data-name="hotel_facilities">
-                                        <div class="tag-name">
-                                            <input type="text" class="input-tag-custom" placeholder="Type and hit enter">
-                                        </div>
-                                        
-                                    </div>
-                            </div>
-                            <div class="form-group row">
-                                    <label class="col-md-3">
-                                        Gallery<span class="text-danger">*</span>
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input type="file" class="form-control-file" name="gallery" onchange="validateFileExtension(this)">
-                                    </div>
-                            </div>
-                            </div>
+                            </div> 
                     </div>
                     </div>
                        <div class="card">
@@ -226,7 +194,9 @@
             <div class="col-12 ">
                 <div class="float-right mb-3">
                         <button type="cancel" class="btn btn-primary">Batal</button>
-                        <button type="submit" class="btn btn-success">Simpan Produk</button>                     
+                        <button type="submit" 
+                        id="submitProductBtn"
+                        class="btn btn-success">Simpan Produk</button>                     
                 </div>
             </div>  
         </form>

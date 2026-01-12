@@ -35,12 +35,13 @@ class ProductController {
       const product = await productService.createProduct(productData);
       const hotels = await hotelService.getAllHotels();
 
-      res.status(201).json({ success: true, data: product });
-      
-      res.render("createProduct", {
-         hotels,
+      res.locals.hotels = hotels;
+      res.render ("home",{
+        link: "products/create_product",
+        hotels
       })
 
+      res.status(201).json({ success: true, data: product });
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, message: "Internal Server Error" });

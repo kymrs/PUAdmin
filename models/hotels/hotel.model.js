@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     product_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     name: {
       type: DataTypes.STRING,
@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     rating: {
       type: DataTypes.INTEGER, // rating 1-5
+      allowNull: false,
+    },
+    jarak: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     description: {

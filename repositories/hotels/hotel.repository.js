@@ -13,9 +13,11 @@ class HotelRepository {
     const where = {
       ...(search && {
         [Op.or]: [
+          { id: {[Op.like]: `${search}`}},
           { name: { [Op.like]: `%${search}%` } },
           { location: { [Op.like]: `%${search}%` } },
           { rating: { [Op.like]: `%${search}%` } },
+          { jarak: {[Op.like]: `%${search}`}},
           { description: { [Op.like]: `%${search}%` } },
           { createdAt: { [Op.like]: `%${search}%` } }
         ]
