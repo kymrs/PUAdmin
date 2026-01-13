@@ -5090,13 +5090,19 @@ div.table-responsive > div.dataTables_wrapper > div.row {
     margin-right: 10px; }
   .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #e4e4e4;
-    border: 1px solid #aaa;
+    border: 1px #aaa;
     border-radius: 4px;
     cursor: default;
     float: left;
     margin-right: 5px;
     margin-top: 5px;
-    padding: 0 5px; }
+    padding: 0 5px; 
+    transition: .2s ease-in;
+  }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice:hover{
+       background: #ff5050ed;
+      color: #ffffff;
+    }
   .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
     color: #999;
     cursor: pointer;
@@ -5164,7 +5170,7 @@ div.table-responsive > div.dataTables_wrapper > div.row {
             margin-left: -5em;
             padding-left: 6em; }
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #5897fb;
+  background-color: #FF6900;
   color: white; }
 .select2-container--default .select2-results__group {
   cursor: default;

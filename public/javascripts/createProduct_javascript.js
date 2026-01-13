@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let roadmapIndex = 0 ;
     document.getElementById('addRoadmap').addEventListener('click', addRoadmap );
-    // document.getElementById('addHotel').addEventListener('click', addHotel);
-
+   
     // Tambah Itinerary 
     function addRoadmap() {
         const container = document.getElementById('roadmap_option');
@@ -36,17 +35,6 @@ document.addEventListener("DOMContentLoaded", function() {
             container.appendChild(row);
             roadmapIndex++;
     }
-
-    // function addHotel() {
-    //     const hotelForm = document.getElementById('additional_hotel');
-
-    //     const row = document.createElement('div');
-
-    //     row.innerHTML = `
-                  
-    //     `;
-    //     hotelForm.appendChild(row);
-    // }
 
     function updateRoadmapOrder() {
         const rows = document.querySelectorAll("#roadmap_option .row");
@@ -100,6 +88,8 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 });
 
+
+
 async function loadHotels() {
     try {
         const res = await fetch('/api/hotels/hotel/');
@@ -111,6 +101,13 @@ async function loadHotels() {
 
         const select = document.getElementById("hotelSelect");
         select.innerHTML = "";
+
+        // Multiple Select Hotel
+        $(document).ready(function (){
+            $(select).select2({
+                placeholder: "Pilih Hotel..."
+            })
+        })
 
          result.data.forEach(hotel => {
             const option = document.createElement("option");
@@ -153,8 +150,9 @@ function initTagComponent(tagInclude) {
         closeBtn.setAttribute('class', 'fas fa-times');
         closeBtn.setAttribute('data-item', label)
 
-        div.appendChild(span);
         div.appendChild(closeBtn);
+        div.appendChild(span);
+      
         return div;
 
     }

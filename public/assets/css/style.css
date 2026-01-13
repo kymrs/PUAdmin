@@ -82,7 +82,7 @@
 }
 /* facilities include */
 .container-tag {
-  width: 100%;
+  width: 90%;
   height: 30%;
 }
 .tag-name{
@@ -98,13 +98,11 @@
   display: flex;
   align-items: center;
   white-space: nowrap;
-  padding: 5px 10px;
-  border-radius: 10px;
-  margin-right: 5px;
-  display: flex;
-  align-items: center;
+  padding: 0px 5px;
+  border-radius:3px;
+  margin: 5px 5px 0px 5px;
   cursor: pointer;
-  background: #d5d5d5;
+  background: #e4e4e4;
   transition: .2s ease-in;
 }
 .tag:hover{
@@ -112,16 +110,15 @@
   color: #ffffff;
 }
 .tag i{
-  font-size: 12px;
-  margin-left: 5px;
-  color: crimson;
-  transition: .2s ease-in;
+  font-size: 9px;
+  color: #999999;
+  margin:2px 5px;
+  transition: .1s ease-in;
 }
-/* .tag i:hover{
-  color: #ffffff;
-  background: #ff0000;
-  padding: 1px;
-} */
+.tag i:hover{
+  color: #000000;
+}
+
 .tag-name input{
   flex: 11 200px;
   min-width: 160px;
@@ -140,3 +137,30 @@
   top: 95px;
   right: 10px;
 }
+.list-group-item {
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-color: #eee !important;
+  }
+
+  .list-group-item:hover {
+    background-color: #f1f1f1;
+  }
+
+  .nav-tabs .nav-link {
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  /* Mengatur tombol kotak di sebelah kanan list */
+  .btn-light, .btn-primary {
+    border-radius: 8px;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
