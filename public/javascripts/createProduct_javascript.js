@@ -86,9 +86,46 @@ document.addEventListener("DOMContentLoaded", function() {
         swal("Error", "Gagal menghubungi server", "error");
         }
     })
+    // LOAD FASILITAS TAMBAHAN
+    loadFacilities();
 });
 
+async function loadFacilities() {
+    const container = document.getElementById('facility-list-container')
+    try {
+        const res = await fetch('/api/facilities/facility');
+        const result = await res.json();
 
+        if(result.status !== "success"){
+            throw new Error("Gagal ambil fasilitas")
+        }
+
+        const facilities = result.data;
+        facilities.innerHTML = '';
+
+        if(facilities.length === 0){
+            container.innerHTML = "<p class='text-center'>Kosong</p> ";
+            return;
+        }
+        
+        facilities.forEach(item => {
+            const facilityItem = `
+                             <div class="d-flex align-items-center gap-2">
+                                <div class="list-group-item d-flex justify-content-between align-items-center flex-grow-1 border-1 rounded-3">
+                                        <span><i class="${item.icon} text-muted me-2" style="font-size: 0.8rem;"></i> ${item.name}</span>
+                                        <i class="fas fa-check-circle text-success"></i>
+                                </div>
+                                 <button class="btn btn-light border btn-sm py-2 px-3 text-muted">—</button>
+                            </div>
+                        `;
+            container.insertAdjacentHTML('beforeend', facilityItem)
+        })
+
+    } catch (error) {
+        console.error(error);
+        container.innerHTML = `<p class="text-center text-danger small">Error: ${error.message}</p>`;
+    }
+}
 
 async function loadHotels() {
     try {
