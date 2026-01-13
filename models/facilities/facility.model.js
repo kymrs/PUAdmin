@@ -5,22 +5,14 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    product_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     name: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    include: {
+    icon: {
       type: DataTypes.STRING(45),
-      allowNull: false
+      allowNull: true
     },
-    exclude: {
-      type: DataTypes.STRING(45),
-      allowNullL: false
-    }
   }, {
     tableName: 'facilities',
     timestamps: false

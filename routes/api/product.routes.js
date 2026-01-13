@@ -5,4 +5,5 @@ const productController = require("../../controllers/api/products/product.contro
 
 router.get("/", productController.getAllProduct);
 
+
 module.exports = router;

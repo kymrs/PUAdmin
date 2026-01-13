@@ -1,10 +1,12 @@
 const response = require("../../../utils/response");
 const hotelService = require("../../../services/hotels/hotel.service");
+const { link } = require("../../../routes/api/product.routes");
 
 class HotelController {
   async getAllHotels(req, res) {
     try {
       const hotels = await hotelService.getAllHotels();
+
       return response.success(res, "All hotels fetched", hotels);
     } catch (error) {
       return response.error(res, error.message);

@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
+
     let roadmapIndex = 0 ;
     document.getElementById('addRoadmap').addEventListener('click', addRoadmap );
-    document.getElementById('addHotel').addEventListener('click', addHotel);
-
+   
+    // Tambah Itinerary 
     function addRoadmap() {
         const container = document.getElementById('roadmap_option');
 
@@ -35,44 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
             roadmapIndex++;
     }
 
-    // function addHotel() {
-    //     const hotelForm = document.getElementById('additional_hotel');
-
-    //     const row = document.createElement('div');
-
-    //     row.innerHTML = `
-    //                            <div class="form-group col">
-    //                             <label class="col">
-    //                             Hotel<span class="text-danger">*</span>
-    //                             </label>
-    //                              <div class="col">
-    //                                 <select name="hotels[0][city]" class="form-select">
-    //                                     <option value="MEKKAH">Mekkah</option>
-    //                                     <option value="MADINAH">Madinah</option>
-    //                                 </select>
-    //                              </div>     
-    //                         </div>
-    //                         <div class="form-group col">
-    //                             <label >Fasilitas<span class="text-danger">*</span></label>
-    //                                  <div class="container-tag" data-name="hotel_facilities">
-    //                                     <div class="tag-name">
-    //                                         <input type="text" class="input-tag-custom" placeholder="Type and hit enter">
-    //                                     </div>
-                                        
-    //                                 </div>
-    //                         </div>
-    //                         <div class="form-group row">
-    //                                 <label class="col-md-3">
-    //                                     Gallery<span class="text-danger">*</span>
-    //                                 </label>
-    //                                 <div class="col-sm-8">
-    //                                     <input type="file" class="form-control-file" name="gallery" onchange="validateFileExtension(this)">
-    //                                 </div>
-    //                         </div>
-    //     `;
-    //     hotelForm.appendChild(row);
-    // }
-
     function updateRoadmapOrder() {
         const rows = document.querySelectorAll("#roadmap_option .row");
         rows.forEach((row, index) => {
@@ -82,7 +45,119 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelectorAll(".tag-name")
     .forEach(initTagComponent);
+
+    // LOAD DATA HOTEL UNTUK PRODUCT
+    loadHotels();
+    document.getElementById("formProduct").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        // Ambil hotel_ids (multi select)
+        const selectedHotels = Array.from(
+        document.getElementById("hotelSelect").selectedOptions
+        ).map(opt => opt.value);
+
+        formData.delete("hotel_ids[]");
+        selectedHotels.forEach(id => {
+        formData.append("hotel_ids[]", id);
+        });
+
+        try {
+        const res = await fetch("/api/product", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            swal("Berhasil", "Produk berhasil disimpan", "success");
+            setTimeout(() => {
+            window.location.href = "/products";
+            }, 1500);
+        } else {
+            swal("Gagal", data.message || "Terjadi kesalahan", "error");
+        }
+
+        } catch (err) {
+        console.error(err);
+        swal("Error", "Gagal menghubungi server", "error");
+        }
+    })
+    // LOAD FASILITAS TAMBAHAN
+    loadFacilities();
 });
+
+async function loadFacilities() {
+    const container = document.getElementById('facility-list-container')
+    try {
+        const res = await fetch('/api/facilities/facility');
+        const result = await res.json();
+
+        if(result.status !== "success"){
+            throw new Error("Gagal ambil fasilitas")
+        }
+
+        const facilities = result.data;
+        facilities.innerHTML = '';
+
+        if(facilities.length === 0){
+            container.innerHTML = "<p class='text-center'>Kosong</p> ";
+            return;
+        }
+        
+        facilities.forEach(item => {
+            const facilityItem = `
+                             <div class="d-flex align-items-center gap-2">
+                                <div class="list-group-item d-flex justify-content-between align-items-center flex-grow-1 border-1 rounded-3">
+                                        <span><i class="${item.icon} text-muted me-2" style="font-size: 0.8rem;"></i> ${item.name}</span>
+                                        <i class="fas fa-check-circle text-success"></i>
+                                </div>
+                                 <button class="btn btn-light border btn-sm py-2 px-3 text-muted">—</button>
+                            </div>
+                        `;
+            container.insertAdjacentHTML('beforeend', facilityItem)
+        })
+
+    } catch (error) {
+        console.error(error);
+        container.innerHTML = `<p class="text-center text-danger small">Error: ${error.message}</p>`;
+    }
+}
+
+async function loadHotels() {
+    try {
+        const res = await fetch('/api/hotels/hotel/');
+        const result = await res.json();
+
+        if(result.status !== "success"){
+            throw new Error("Gagal ambil hotel");
+        }
+
+        const select = document.getElementById("hotelSelect");
+        select.innerHTML = "";
+
+        // Multiple Select Hotel
+        $(document).ready(function (){
+            $(select).select2({
+                placeholder: "Pilih Hotel..."
+            })
+        })
+
+         result.data.forEach(hotel => {
+            const option = document.createElement("option");
+            option.value = hotel.id;
+            option.textContent = `${hotel.name} - ${hotel.location}`;
+            select.appendChild(option);
+        });
+
+    } catch (error) {
+         console.error(err);
+         alert("Gagal memuat data hotel");
+    }
+}
 
 new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -112,8 +187,9 @@ function initTagComponent(tagInclude) {
         closeBtn.setAttribute('class', 'fas fa-times');
         closeBtn.setAttribute('data-item', label)
 
-        div.appendChild(span);
         div.appendChild(closeBtn);
+        div.appendChild(span);
+      
         return div;
 
     }
