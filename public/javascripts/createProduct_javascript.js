@@ -2,7 +2,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let roadmapIndex = 0 ;
     document.getElementById('addRoadmap').addEventListener('click', addRoadmap );
+    document.getElementById('addFacilityBtn').addEventListener("click", addFacility)
    
+    function addFacility(){
+        const container = document.getElementById('formAddFacility');
+
+        const row = document.createElement('div');
+        row.className = 'row align-tems-center mt-1 g-2'
+        row.innerHTML = `
+                             
+                                    <div class="col-lg-5">
+                                        <input type="hidden" id="hidden_id">
+                                        <input type="text"
+                                        id="icon" class="form-control" name="icon" placeholder="Masukan Icon" >
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input type="text" id="name" class="form-control" name="name" placeholder="Masukan Name" >
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button id="submitFacilityBtn" class="btn btn-success btn-sm py-2 px-3 text-muted addFa"><i class="fa fa-check-circle"></i></button>
+                                    </div>
+        `
+
+        container.appendChild(row);
+    }
     // Tambah Itinerary 
     function addRoadmap() {
         const container = document.getElementById('roadmap_option');
@@ -11,8 +34,9 @@ document.addEventListener("DOMContentLoaded", function() {
         row.className = 'row align-items-center mb-2';
 
         row.innerHTML = `
-                                    <div class="col-2">
-                                        <input type="text" class="form-control" value="Hari ${roadmapIndex + 1}" readonly>
+                                    <div class="col-2 ">
+                                        
+                                        <input type="text" class="form-control" value="${roadmapIndex + 1}" readonly>
                                     </div>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control" name="roadmap[${roadmapIndex}][location]" placeholder="Location" required>
@@ -88,7 +112,9 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     // LOAD FASILITAS TAMBAHAN
     loadFacilities();
-});
+    // 
+    loadCategory();
+
 
 async function loadFacilities() {
     const container = document.getElementById('facility-list-container')
@@ -115,7 +141,7 @@ async function loadFacilities() {
                                         <span><i class="${item.icon} text-muted me-2" style="font-size: 0.8rem;"></i> ${item.name}</span>
                                         <i class="fas fa-check-circle text-success"></i>
                                 </div>
-                                 <button class="btn btn-light border btn-sm py-2 px-3 text-muted">—</button>
+                                 <button class="btn btn-light border deleteFacility btn-sm py-2 px-3 text-muted" data-id="${item.id}">—</button>
                             </div>
                         `;
             container.insertAdjacentHTML('beforeend', facilityItem)
@@ -124,6 +150,117 @@ async function loadFacilities() {
     } catch (error) {
         console.error(error);
         container.innerHTML = `<p class="text-center text-danger small">Error: ${error.message}</p>`;
+    }
+}
+    // CREATE OR UPDATE
+    document.getElementById('submitFacilityBtn').addEventListener("click", async () => {
+        const id = document.getElementById("hidden_id").value;
+        const icon = document.getElementById('icon').value;
+        const name = document.getElementById('name').value;
+
+        const isUpdate = id !== "";
+        const url = isUpdate ? `/api/facilities/facility/${id}` : `/api/facilities/facility`;
+        const method = isUpdate ? "PUT" : "POST";
+
+        try {
+            const res = await fetch(url, {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json",
+                }, 
+                body: JSON.stringify({
+                icon,
+                name,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+            swal("Berhasil!", data.message || "Hotel berhasil ditambahkan", "success");
+            setTimeout(() => name.reload(), 1500);
+        } else {
+            swal("Gagal!", data.message || "Terjadi kesalahan saat menyimpan data", "error");
+        }
+        } catch (err) {
+            swal("Error!", "Gagal menghubungi server", "error");
+        }
+
+    })
+    // RESET SAAT MENUTUP MODAL
+    document.getElementById('facilityFormModal').addEventListener('hidden.bs.modal', function () {
+        document.getElementById("facilityInputForm").reset();
+        document.getElementById("hidden_id").value = '';
+    });
+    // DELETE FACILITY
+    document.addEventListener("click", (e) => {
+        if(e.target.closest(".deleteFacility")) {
+            e.preventDefault();
+            const btn = e.target.closest(".deleteFacility");
+            const id = btn?.dataset?.id || btn?.getAttribute("data-id");
+            if (!id) {
+                swal("Error!", "ID fasilitas tidak ditemukan.", "error");
+                return;
+            }
+
+            swal({
+                title: "Yakin ingin menghapus?",
+                icon: "warning",
+                buttons: ["Batal", "Ya, hapus!"],
+                dangerMode: true,
+            }).then( async (willDelete) => {
+                if(willDelete) {
+                    try {
+                        const res = await fetch(`/api/facilities/facility/${id}`, {
+                            method: "DELETE",
+                        });
+
+                        const data = await res.json();
+
+                        if (data.status === "success") {
+                        swal({
+                            icon: "success",
+                            title: "Terhapus!",
+                            text: data.message,
+                            timer: 1500,
+                            buttons: false,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        swal("Gagal!", data.message || "Terjadi kesalahan", "error");
+                    }
+                } catch (err) {
+                    swal("Error!", "Gagal menghubungi server", "error");
+                }
+            }
+        });
+        }
+    })
+
+async function loadCategory() {
+    try {
+        const res = await fetch('/api/galleries/galleryCategory/')
+        const result = await res.json();
+
+        if(result.status !== "success"){
+            throw new Error("Gagal ambil hotel");
+        }
+        
+        const select = document.getElementById("kategory");
+        select.innerHTML = "";
+
+        result.data.forEach(category => {
+            const option = document.createElement("option");
+            option.value = category.id;
+            option.textContent = `${category.name}`;
+            select.appendChild(option);
+        });
+
+
+    } catch(error) {
+        console.error(err);
+         alert("Gagal memuat data category");
     }
 }
 
@@ -232,3 +369,4 @@ function initTagComponent(tagInclude) {
  
  
 }
+});
