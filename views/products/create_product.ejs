@@ -87,10 +87,10 @@
                                 <div class="form-group col">
                                 <label >Fasilitas Tambahan<span class="text-danger">*</span></label>
                                     <div class="col">
-                                        <a data-bs-toggle="modal" data-bs-target="#facilityFormModal" class="btn btn-block btn-secondary-emphasis" href=""><i class="fa fa-plus"></i> Tambahkan Fasilitas Tambahan</a>
+                                        <a data-bs-toggle="modal" data-bs-target="#facilityFormModal" class="text-dark" href=""><i class="fa fa-plus"></i> Tambahkan Fasilitas Tambahan</a>
                                     </div>
                             </div>
-                            <div class="modal fade" id="facilityFormModal" tabindex="-1" 
+                            <div class="modal modal-lg fade" id="facilityFormModal" tabindex="-1" 
                             aria-labelledby="facilityFormModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content" style="border-radius: 15px; border: none; background-color: #f8f9fa;">
@@ -109,18 +109,6 @@
                                 <div class="modal-body pt-1">
                                     <h4 class="modal-title fw-bold mb-3" id="partsModalLabel">Fasilitas Tambahan</h4>
                                     
-                                    <!-- <ul class="nav nav-tabs mb-3 border-0">
-                                    <li class="nav-item">
-                                        <a class="nav-link active fw-bold border-0 border-bottom border-dark text-dark" href="#">Parts</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-muted border-0" href="#">Settings</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-muted border-0" href="#">Notes</a>
-                                    </li>
-                                    </ul> -->
-
                                     <p class="text-muted small fw-bold text-uppercase mb-2">Include & Exclude</p>
 
                                     <div class="list-group gap-2" id="facility-list-container">
@@ -128,8 +116,12 @@
                                     
 
                                     </div>
-
-                                    <button class="btn btn-outline-primary w-100 mt-4 py-2 fw-bold" style="background-color: #e9f2ff; border: none;">
+                                    <form id="facilityInputForm">
+                                        <div class="formAddFacility" id="formAddFacility">
+                                        </div>
+                                    </form>
+                                    
+                                    <button class="btn btn-outline-primary w-100 mt-4 py-2 fw-bold" style="background-color: #e9f2ff; border: none;" id="addFacilityBtn">
                                     + Add Additional
                                     </button>
                                 </div>
