@@ -4905,11 +4905,13 @@ div.table-responsive > div.dataTables_wrapper > div.row {
     box-sizing: border-box;
     cursor: pointer;
     display: block;
-    height: 28px;
+    width: 100%;
+    height: 45px;
     user-select: none;
     -webkit-user-select: none; }
     .select2-container .select2-selection--single .select2-selection__rendered {
       display: block;
+      padding-top: 5px;
       padding-left: 8px;
       padding-right: 20px;
       overflow: hidden;
@@ -4940,7 +4942,7 @@ div.table-responsive > div.dataTables_wrapper > div.row {
       border: none;
       font-size: 100%;
       margin-top: 5px;
-      padding: 0; }
+      padding: .3rem 2px; }
       .select2-container .select2-search--inline .select2-search__field::-webkit-search-cancel-button {
         -webkit-appearance: none; }
 
@@ -5024,7 +5026,7 @@ div.table-responsive > div.dataTables_wrapper > div.row {
 
 .select2-container--default .select2-selection--single {
   background-color: #ffffff;
-  border: 1px solid #aaa;
+  border: 2px solid #dee2e6;
   border-radius: 4px; }
   .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #444;
@@ -5038,7 +5040,7 @@ div.table-responsive > div.dataTables_wrapper > div.row {
   .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 26px;
     position: absolute;
-    top: 1px;
+    top: 7px;
     right: 1px;
     width: 20px; }
     .select2-container--default .select2-selection--single .select2-selection__arrow b {
@@ -5067,7 +5069,7 @@ div.table-responsive > div.dataTables_wrapper > div.row {
   border-width: 0 4px 5px 4px; }
 .select2-container--default .select2-selection--multiple {
   background-color: white;
-  border: 1px solid #aaa;
+  border: 2px solid #dee2e6;
   border-radius: 4px;
   cursor: text; }
   .select2-container--default .select2-selection--multiple .select2-selection__rendered {
