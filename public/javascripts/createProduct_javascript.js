@@ -2,30 +2,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let roadmapIndex = 0 ;
     document.getElementById('addRoadmap').addEventListener('click', addRoadmap );
-    document.getElementById('addFacilityBtn').addEventListener("click", addFacility)
    
-    function addFacility(){
-        const container = document.getElementById('formAddFacility');
-
-        const row = document.createElement('div');
-        row.className = 'row align-tems-center mt-1 g-2'
-        row.innerHTML = `
-                             
-                                    <div class="col-lg-5">
-                                        <input type="hidden" id="hidden_id">
-                                        <input type="text"
-                                        id="icon" class="form-control" name="icon" placeholder="Masukan Icon" >
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" id="name" class="form-control" name="name" placeholder="Masukan Name" >
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button id="submitFacilityBtn" class="btn btn-success btn-sm py-2 px-3 text-muted addFa"><i class="fa fa-check-circle"></i></button>
-                                    </div>
-        `
-
-        container.appendChild(row);
-    }
+   
     // Tambah Itinerary 
     function addRoadmap() {
         const container = document.getElementById('roadmap_option');
@@ -111,11 +89,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
     // LOAD FASILITAS TAMBAHAN
-    loadFacilities();
     // 
     loadCategory();
     // 
     loadFlights();
+
+    window.facilityState = {
+        include: new Set(),
+        exclude: new Set()
+    };
 
 
 async function loadFacilities() {
@@ -129,7 +111,6 @@ async function loadFacilities() {
         }
 
         const facilities = result.data;
-        facilities.innerHTML = '';
 
         if(facilities.length === 0){
             container.innerHTML = "<p class='text-center'>Kosong</p> ";
@@ -137,17 +118,8 @@ async function loadFacilities() {
         }
         
         facilities.forEach(item => {
-            const facilityItem = `
-                             <div class="d-flex align-items-center gap-2">
-                                <div class="list-group-item d-flex justify-content-between align-items-center flex-grow-1 border-1 rounded-3">
-                                        <span><i class="${item.icon} text-muted me-2" style="font-size: 0.8rem;"></i> ${item.name}</span>
-                                        <i class="fas fa-check-circle text-success"></i>
-                                </div>
-                                 <button class="btn btn-light border deleteFacility btn-sm py-2 px-3 text-muted" data-id="${item.id}">—</button>
-                            </div>
-                        `;
-            container.insertAdjacentHTML('beforeend', facilityItem)
-        })
+            renderFacilityItem(item, container);
+        });
 
     } catch (error) {
         console.error(error);
@@ -155,47 +127,58 @@ async function loadFacilities() {
     }
 }
     // CREATE OR UPDATE
-    document.getElementById('submitFacilityBtn').addEventListener("click", async () => {
-        const id = document.getElementById("hidden_id").value;
-        const icon = document.getElementById('icon').value;
-        const name = document.getElementById('name').value;
+    function renderFacilityItem(item, container){
+         const isInclude = facilityState.include.has(item.id);
+         const isExclude = facilityState.exclude.has(item.id);
 
-        const isUpdate = id !== "";
-        const url = isUpdate ? `/api/facilities/facility/${id}` : `/api/facilities/facility`;
-        const method = isUpdate ? "PUT" : "POST";
+         let statusIcon = '';
+         let statusClass = '';
 
-        try {
-            const res = await fetch(url, {
-                method: method,
-                headers: {
-                    "Content-Type": "application/json",
-                }, 
-                body: JSON.stringify({
-                icon,
-                name,
-                }),
-            });
+         if(isInclude) {
+            statusIcon = 'fas fa-check-circle text-success';
+            statusClass = 'included';
+         } else if(isExclude) {
+            statusIcon = 'fas fa-times text-danger';
+            statusClass = 'excluded';
+         } else {
+            statusIcon = '';
+            statusClass = '';
+         }
 
-            const data = await res.json();
-
-            if (res.ok) {
-            swal("Berhasil!", data.message || "Hotel berhasil ditambahkan", "success");
-            setTimeout(() => name.reload(), 1500);
-        } else {
-            swal("Gagal!", data.message || "Terjadi kesalahan saat menyimpan data", "error");
-        }
-        } catch (err) {
-            swal("Error!", "Gagal menghubungi server ${err}", "error");
-        }
-
-    })
+         const innerHTML =`
+                <div class="d-flex align-items-center gap-2 facility-item facility-toggle" data-id="${item.id} " data-status="${statusClass}">
+                                <div class="list-group-item d-flex justify-content-between align-items-center flex-grow-1 border-1 rounded-3">
+                                        <span><i class="${item.icon} text-muted me-2" style="font-size: 0.8rem;"></i> ${item.name}</span>
+                                        <i class="${statusIcon}"></i>
+                                </div>
+                                 <button class="btn btn-light border deleteFacility btn-sm py-2 px-3 text-muted" data-id="${item.id}">—</button>
+                    </div>
+         `;
+        container.insertAdjacentHTML('beforeend', innerHTML);
+    }
     // RESET SAAT MENUTUP MODAL
-    document.getElementById('facilityFormModal').addEventListener('hidden.bs.modal', function () {
-        document.getElementById("facilityInputForm").reset();
-        document.getElementById("hidden_id").value = '';
-    });
-    // DELETE FACILITY
     document.addEventListener("click", (e) => {
+        // toggle include / exclude
+        if (e.target.closest('.facility-toggle')) {
+            const item = e.target.closest('.facility-item');
+            const id = Number(item.dataset.id);
+
+            if (facilityState.include.has(id)) {
+                facilityState.include.delete(id);
+                facilityState.exclude.add(id);
+            } else if (facilityState.exclude.has(id)) {
+                facilityState.exclude.delete(id);
+            } else {
+                facilityState.include.add(id);
+            }
+
+            // console.log("INCLUDE", [...facilityState.include]);
+            // console.log("EXCLUDE", [...facilityState.exclude]);
+
+            reloadFacilitiesUI();
+        }
+
+        // delete facility
         if(e.target.closest(".deleteFacility")) {
             e.preventDefault();
             const btn = e.target.closest(".deleteFacility");
@@ -239,6 +222,16 @@ async function loadFacilities() {
         });
         }
     })
+
+    function reloadFacilitiesUI() {
+        const container = document.getElementById('facility-list-container');
+        container.innerHTML = '';
+
+        // fetch ulang biar aman (atau simpan master di memory)
+        loadFacilities();
+    }
+
+    loadFacilities();
 
 async function loadCategory() {
     try {
