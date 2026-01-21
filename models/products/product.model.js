@@ -17,10 +17,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false
         },
-        harga: {
-            type: DataTypes.DECIMAL(15,2),
-            allowNull: false
-        },
         duration: {
             type: DataTypes.INTEGER,
             allowNull: false

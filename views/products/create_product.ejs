@@ -11,7 +11,7 @@
                         </div>
                         <div class="card-body row row-cols-2">
                                 <div class="form-group col">
-                                    <label class="col">
+                                    <label class="col fw-bold">
                                         Nama Produk<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
@@ -19,19 +19,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group col">
-                                    <label class="col">
-                                        Harga <span class="text-danger">*</span>
-                                    </label>
-                                    <div class="col">
-                                        <input type="text" class="form-control" name="harga" id="harga" placeholder="40.000.000" required>
-                                    </div>
-                                </div>
-                                <div class="form-group col">
-                                    <label class="col">
+                                    <label class="col fw-bold">
                                         Kategori<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <select name="kategory" id="kategory" class="form-select" >
+                                        <select name="kategory" id="kategory" class="form-select kategory" >
                                                 <option 
                                                 disabled
                                                 selected
@@ -41,7 +33,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col">
-                                    <label class="col">
+                                    <label class="col fw-bold">
                                         Tanggal<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
@@ -49,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col">
-                                    <label class="col">
+                                    <label class="col fw-bold">
                                         Durasi (Hari)<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
@@ -57,40 +49,46 @@
                                     </div>
                                 </div>
                                  <div class="form-group col">
-                                    <label class="col">
-                                       Kouta<span class="text-danger">*</span>
+                                    <label class="col fw-bold">
+                                       Qouta<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
                                         <input type="number" class="form-control" name="kouta" id="kouta" placeholder="9 Hari" value="1" required>
                                     </div>
                                 </div>
-                                       <div class="form-group col">
-                            <label class="col">Departure Airline<span class="text-danger">*</span></label>
+                                <div class="form-group col">
+                                <label class="fw-bold">Fasilitas Tambahan<span class="text-danger">*</span></label>
+                                    <div class="col">
+                                        <a data-bs-toggle="modal" data-bs-target="#facilityFormModal" class="text-dark" href=""><i class="fa fa-plus"></i> Tambahkan Fasilitas Tambahan</a>
+                                    </div>
+                            </div>
+                            <div class="form-group col">
+                             <label class="col fw-bold">Departure Airline<span class="text-danger">*</span></label>
                             <div class="col">
-                                <input type="text" name="departure_ailines" class="form-control" placeholder="Masukan Departure Airline">
+                               <select name="flight_ids[]"           
+                                        class="form-select form-control flight-select" >         
+                                            <option></option>
+                                </select>
                             </div>      
                         </div>
                         <div class="form-group col">
-                            <label class="col">Return Airline<span class="text-danger">*</span></label>
+                            <label class="col fw-bold">Return Airline<span class="text-danger">*</span></label>
                             <div class="col">      
-                                <input type="text" name="return_airlines" class="form-control" placeholder="Masukan Return Airline">
+                                <select name="flight_ids[]"           
+                                        class="form-select flight-select" >         
+                                            <option></option>
+                                </select>
                             </div>      
                         </div>
                                 <div class="form-group col">
-                                    <label class="col">
+                                    <label class="col fw-bold">
                                         Deskripsi Produk<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
                                         <textarea name="product_description" id="product_description" class="form-control" rows="5" placeholder="Masukan Deskripsi Produk" required></textarea>
                                     </div>
                                 </div>
-                                <div class="form-group col">
-                                <label >Fasilitas Tambahan<span class="text-danger">*</span></label>
-                                    <div class="col">
-                                        <a data-bs-toggle="modal" data-bs-target="#facilityFormModal" class="text-dark" href=""><i class="fa fa-plus"></i> Tambahkan Fasilitas Tambahan</a>
-                                    </div>
-                            </div>
-                            <div class="modal modal-lg fade" id="facilityFormModal" tabindex="-1" 
+                            <div class="modal  fade" id="facilityFormModal" tabindex="-1" 
                             aria-labelledby="facilityFormModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content" style="border-radius: 15px; border: none; background-color: #f8f9fa;">
@@ -107,7 +105,7 @@
                                 </div>
 
                                 <div class="modal-body pt-1">
-                                    <h4 class="modal-title fw-bold mb-3" id="partsModalLabel">Fasilitas Tambahan</h4>
+                                    <h4 class="modal-title mb-3" id="partsModalLabel">Fasilitas Tambahan</h4>
                                     
                                     <p class="text-muted small fw-bold text-uppercase mb-2">Include & Exclude</p>
 
@@ -121,7 +119,7 @@
                                         </div>
                                     </form>
                                     
-                                    <button class="btn btn-outline-primary w-100 mt-4 py-2 fw-bold" style="background-color: #e9f2ff; border: none;" id="addFacilityBtn">
+                                    <button class="btn d-none btn-outline-primary w-100 mt-4 py-2 fw-bold" style="background-color: #e9f2ff; border: none;" id="addFacilityBtn">
                                     + Add Additional
                                     </button>
                                 </div>
@@ -129,7 +127,7 @@
                             </div>
                             </div>
                             <div class="form-group col">
-                                    <label class="col form-label">Status</label>
+                                    <label class="col fw-bold  form-label">Status</label>
                                         <div class="col">
                                             <select name="status" class="form-select">
                                                 <option value="DRAFT">Draft</option>
@@ -138,7 +136,7 @@
                                         </div>                     
                             </div>
                             <div class="form-group col">
-                                    <label class="col">
+                                    <label class="col fw-bold">
                                         Thumbnail Produk<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
@@ -155,8 +153,8 @@
                             <h4 class="card-title">Hotel</h4>
                         </div>
                         <div class="card-body"> 
-                                <div class="form-group col">
-                                    <label class="col">Hotel<span class="text-danger">*</span>
+                                <div class="form-group col ">
+                                    <label class="col fw-bold">Hotel<span class="text-danger">*</span>
                                    </label>
                                     <div class="col">
                                         <select name="hotel_ids[]" 
@@ -164,9 +162,10 @@
                                         class="form-select" multiple="multiple">         
                                             <option></option>
                                         </select>
+                                        
                                     </div>     
                                 </div>
-                                <div class="form-group col">
+                                <!-- <div class="form-group col">
                                 <label >Fasilitas<span class="text-danger">*</span></label>
                                      <div class="container-tag" data-name="hotel_facilities">
                                         <div class="tag-name">
@@ -174,18 +173,34 @@
                                         </div>
                                         
                                     </div>
-                            </div>
-                            <div class="form-group row">
+                            </div> -->
+                            <!-- <div class="form-group row">
                                     <label class="col-md-3">
                                         Gallery<span class="text-danger">*</span>
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="file" class="form-control-file" name="gallery" onchange="validateFileExtension(this)" multiple="multiple">
                                     </div>
-                            </div>  
+                            </div>   -->
                             
                            
+                        </div>
                     </div>
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h4 class="card-title mb-0">Harga Paket Travel</h4>
+                        </div>
+                        <div class="card-body"> 
+                               <div class="col">
+                                    <%- include('../partials/price_input', { label: 'Quad', name: 'price_quad' }) %>
+                                </div>
+                                <div class="col">
+                                    <%- include('../partials/price_input', { label: 'Triple', name: 'price_triple' }) %>
+                                </div>
+                                <div class="col">
+                                    <%- include('../partials/price_input', { label: 'Double', name: 'price_double' }) %>
+                                </div>
+                        </div>
                     </div>
          </div>
         <!-- ITINERARY -->

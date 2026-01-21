@@ -11,6 +11,29 @@ class FacilityController {
     }
   }
 
+  async getAllFacilityDatatables(req, res) {
+    try {
+      const { akses } = res.locals;
+      // console.log("akses", akses);
+      if (akses.view_level !== "Y") {
+        return res.status(403).json({ error: "Akses ditolak" });
+      }
+      const result = await facilityService.getAllFacilityDatatables(req.query);
+      result.data = result.data.map(row => ({
+        ...row.get({ plain: true }),
+        akses: {
+          edit: akses.edit_level === "Y",
+          delete: akses.delete_level === "Y"
+        }
+      }));
+      return response.datatables(res, result);
+    } catch (error) {
+      console.error("Error getAllFacilitiesDatatables:", error);
+      return response.error(res, error.message);
+    }
+  }
+
+
   async getFacilityById(req, res) {
     try {
       const facility = await facilityService.getFacilityById(req.params.id);

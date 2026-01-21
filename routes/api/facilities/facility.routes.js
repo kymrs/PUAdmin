@@ -4,6 +4,7 @@ const { injectUser } = require('../../../middleware');
 const router = express.Router();
 
 router.get("/", facilitiesController.getAllFacilities);
+router.get("/datatables", injectUser, facilitiesController.getAllFacilityDatatables);
 router.get("/:id", facilitiesController.getFacilityById);
 router.post("/", injectUser, facilitiesController.createFacility);
 router.put("/:id", injectUser, facilitiesController.updateFacility);

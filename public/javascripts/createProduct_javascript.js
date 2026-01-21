@@ -114,6 +114,8 @@ document.addEventListener("DOMContentLoaded", function() {
     loadFacilities();
     // 
     loadCategory();
+    // 
+    loadFlights();
 
 
 async function loadFacilities() {
@@ -183,7 +185,7 @@ async function loadFacilities() {
             swal("Gagal!", data.message || "Terjadi kesalahan saat menyimpan data", "error");
         }
         } catch (err) {
-            swal("Error!", "Gagal menghubungi server", "error");
+            swal("Error!", "Gagal menghubungi server ${err}", "error");
         }
 
     })
@@ -247,20 +249,59 @@ async function loadCategory() {
             throw new Error("Gagal ambil hotel");
         }
         
-        const select = document.getElementById("kategory");
-        select.innerHTML = "";
+        const selectElements = document.querySelectorAll(".kategory");
+        selectElements.forEach(select=>{
+            select.innerHTML = "<option value=''>Pilih Kategori...</option>";
 
-        result.data.forEach(category => {
-            const option = document.createElement("option");
-            option.value = category.id;
-            option.textContent = `${category.name}`;
-            select.appendChild(option);
+            result.data.forEach(category => {
+                const option = document.createElement("option");
+                option.value = category.id;
+                option.textContent = `${category.name}`;
+                select.appendChild(option);
+            });
+        })
+
+         $('.kategory').select2({
+            placeholder: "Pilih Category...",
+            allowClear: true,
+            width: '100%'
         });
 
 
     } catch(error) {
-        console.error(err);
-         alert("Gagal memuat data category");
+        console.error(error);
+         alert("Gagal memuat data category ");
+    }
+}
+
+async function loadFlights() {
+    try {
+        const res = await fetch('/api/flights/flight');
+        const result = await res.json();
+
+        if(result.status !== "success"){
+            throw new Error("Gagal ambil maskapai")
+        }
+
+        const selectElements = document.querySelectorAll('.flight-select');
+        selectElements.forEach(select=> {
+            select.innerHTML='<option value="">Pilih Maskapai...</option';
+
+            result.data.forEach(flight => {
+                const option = document.createElement("option");
+                option.value = flight.id;
+                option.textContent = `${flight.airline}`;
+                select.appendChild(option);
+            });
+        });
+        $('.flight-select').select2({
+            placeholder: "Pilih Maskapai...",
+            allowClear: true,
+            width: '100%'
+        });
+    } catch (error) {
+         console.error(error);
+         alert("Gagal memuat data maskapai");
     }
 }
 
@@ -291,7 +332,7 @@ async function loadHotels() {
         });
 
     } catch (error) {
-         console.error(err);
+         console.error(error);
          alert("Gagal memuat data hotel");
     }
 }
