@@ -42,8 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
       { data: 'location', title: 'Location' },
       { data: 'rating', title: 'Rating' },
       { data: 'jarak', title: 'Jarak' },
+      { data: 'fasilitas', title: 'Fasilitas' },
       { data: 'description', title: 'Deskripsi' },
-      { data: 'createdAt', title: 'Dibuat Pada' }
+      
     ],
     drawCallback: function () {
       // Force redraw untuk sync header & body
@@ -67,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const location = document.getElementById("location").value;
     const rating = document.getElementById("rating").value;
     const jarak = document.getElementById("jarak").value;
+    const fasilitas = document.getElementById("fasilitas").value;
     const description = document.getElementById("description").value;
 
     // Tentukan URL dan method berdasarkan id
@@ -85,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
           location,
           rating,
           jarak,
+          fasilitas,
           description,
         }),
       });
@@ -121,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("location").value = travel.location;
             document.getElementById("rating").value = travel.rating;
             document.getElementById("jarak").value = travel.jarak;
+            document.getElementById("fasilitas").value = travel.fasilitas;
             document.getElementById("description").value = travel.description;
 
           const modal = new bootstrap.Modal(document.getElementById("hotelFormModal"));

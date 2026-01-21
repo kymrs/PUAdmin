@@ -237,8 +237,24 @@ input:checked + .slider:before {
   .addFa i{
      color: #ffffff;
   }
-  select {
+  select, ::picker(select){
+    appearance: base-select;
     padding: .4rem 2px;
+    background-color: #ffffff;
+  }
+  ::picker(select){
+    padding: .4rem 2px;
+    background-color: #ffffff;
+  }
+  option {
+    background-color: #fff;
+    color: #000;
+    font-size: 14px;
+    padding: 5px; /* Padding on options often doesn't work */
+  }
+option:hover {
+    background-color: #007bff; /* Hover styles are also inconsistent */
+    color: #fff;
   }
 
   small {

@@ -14,10 +14,26 @@ class FacilityService {
       throw new Error(error.message);
     }
   }
+  async getAllFacilityDatatables({ draw, start, length, search, order, columns }) {
+      const searchValue = search?.value || "";
+      const { count, rows } = await FacilityRepository.getPaginatedFacilities({
+        start: parseInt(start, 10) || 0,
+        length: parseInt(length, 10) || 10,
+        search: searchValue,
+        order,
+        columns
+      });
+      return {
+        draw: parseInt(draw, 10),
+        recordsTotal: count,
+        recordsFiltered: count,
+        data: rows
+      };
+    }
 
   async createFacility(facilityData) {
     try {
-      const requiredFields = ["name"];
+      const requiredFields = ["name", 'icon'];
 
       if (!requiredFields.every(field => facilityData[field])) {
         throw new Error("Semua field wajib diisi"); // Validasi input

@@ -11,7 +11,7 @@ class FacilityRepository {
       ...(search && {
         [Op.or]: [
           { name: { [Op.like]: `%${search}%` } },
-          { created_at: { [Op.like]: `%${search}%` } }
+          { icon: { [Op.like]: `%${search}%` } },
         ]
       }),
     };
@@ -19,7 +19,7 @@ class FacilityRepository {
     const sort =
       order && order.length > 0
         ? [[columns[order[0].column].data, order[0].dir]]
-        : [["created_at", "DESC"]];
+        : [["created_at", "ASC"]];
 
     const offset = start || 0; // Default to 0 if start is not provided
     const limit = length || 10; // Default to 10 if length is not provided
