@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
+    image: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
     createdAt: {
@@ -46,8 +46,13 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Hotel.associate = models => {
-    Hotel.hasMany(models.HotelFacility, { foreignKey: 'hotel_id' });
+
     Hotel.hasMany(models.HotelPackage, { foreignKey: 'hotel_id' });
+    // Hotel.belongsTo(
+    //   models.Product, 
+    //   through: productHotel,
+    //   { foreignKey: 'product_id' }
+    // );
   };
 
   return Hotel;

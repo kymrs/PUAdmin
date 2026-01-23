@@ -9,7 +9,7 @@ const path = require("path");
 const http = require("http"); // Tambahan
 const { Server } = require("socket.io"); // Tambahan
 const { injectUser } = require("./middleware"); // Pastikan middleware ini ada
-
+const multer = require("multer");
 const app = express();
 const server = http.createServer(app); // Ganti dari app.listen
 const io = new Server(server); // Socket.IO instance
@@ -64,6 +64,8 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.static('public'));
+
 // 📂 Static dan View
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -74,6 +76,32 @@ app.use("/", authRoutes);
 
 // 📦 Auto-load UI Routes (nested-friendly)
 const uiRoutesPath = path.join(__dirname, "routes", "ui");
+
+// Multer put file upload setup
+const FILE_TYPE ={
+    'image/png': 'png',
+    'image/jpeg': 'jpeg',
+    'image/jpg': 'jpg'
+}
+
+
+
+// app.post("/api/hotels/hotel", upload.single('image'), (req, res) => {
+//   const hotelName = req.body.name;
+//   const photoPath = req.file ? `/assets/img/uploads/${req.file.filename}` : null;
+
+//   // SIMPAN KE DB: Kolom photo diisi string dari `photoPath`
+//   // query: INSERT INTO hotels (name, photo) VALUES (hotelName, photoPath)
+
+//   res.json({
+//     status: "success",
+//     message: "Hotel created successfully",
+//     data: {
+//       name: hotelName,
+//       image: photoPath
+//     }
+//   })
+// })
 
 function loadUiRoutes(basePath, parentRoute = "") {
   if (!fs.existsSync(basePath)) return;

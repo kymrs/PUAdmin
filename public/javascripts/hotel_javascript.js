@@ -43,7 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
       { data: 'rating', title: 'Rating' },
       { data: 'jarak', title: 'Jarak' },
       { data: 'fasilitas', title: 'Fasilitas' },
-      { data: 'description', title: 'Deskripsi' },
+      { data: 'image', title: 'Image', render: function(data, type, row){
+        if(data){
+          return `<img src="public/assets/img/uploads/${data}" alt="Hotel Image" class="img-hotel" />`;
+        } 
+          return 'No Image';
+      } },
       
     ],
     drawCallback: function () {
@@ -62,14 +67,20 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // CREATE OR UPDATE
-  document.getElementById("submitHotelBtn").addEventListener("click", async () => {
+  document.getElementById("submitHotelBtn").addEventListener("click", async (e) => {
+    const formData = new FormData();
     const id = document.getElementById("hidden_id").value;
-    const name = document.getElementById("name").value;
-    const location = document.getElementById("location").value;
-    const rating = document.getElementById("rating").value;
-    const jarak = document.getElementById("jarak").value;
-    const fasilitas = document.getElementById("fasilitas").value;
-    const description = document.getElementById("description").value;
+    formData.append("name", document.getElementById("name").value);
+    formData.append("location", document.getElementById("location").value);
+    formData.append("rating", document.getElementById("rating").value);
+    formData.append("jarak", document.getElementById("jarak").value);
+    formData.append("fasilitas", document.getElementById("fasilitas").value);
+
+    const image = document.getElementById("image");
+    if(image.files[0]){
+      formData.append("image", image.files[0]);
+    }
+
 
     // Tentukan URL dan method berdasarkan id
     const isUpdate = id !== "";
@@ -79,19 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(url, {
         method: method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          location,
-          rating,
-          jarak,
-          fasilitas,
-          description,
-        }),
+        body: formData,
       });
 
+     
       const data = await res.json();
 
       if (res.ok) {
@@ -117,15 +119,24 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (data.status === "success") {
-          const travel = data.data;
+          const hotel = data.data;
 
-            document.getElementById("hidden_id").value = travel.id;
-            document.getElementById("name").value = travel.name;
-            document.getElementById("location").value = travel.location;
-            document.getElementById("rating").value = travel.rating;
-            document.getElementById("jarak").value = travel.jarak;
-            document.getElementById("fasilitas").value = travel.fasilitas;
-            document.getElementById("description").value = travel.description;
+            document.getElementById("hidden_id").value = hotel.id;
+            document.getElementById("name").value = hotel.name;
+            document.getElementById("location").value = hotel.location;
+            document.getElementById("rating").value = hotel.rating;
+            document.getElementById("jarak").value = hotel.jarak;
+            document.getElementById("fasilitas").value = hotel.fasilitas;
+            document.getElementById("image").value = hotel.image;
+            const preview = document.getElementById("previewImage");
+
+            if (hotel.image) {
+              preview.src = `/assets/img/uploads/${hotel.image}`;
+              preview.style.display = "block";
+            } else {
+              preview.style.display = "none";
+            }
+
 
           const modal = new bootstrap.Modal(document.getElementById("hotelFormModal"));
           modal.show();

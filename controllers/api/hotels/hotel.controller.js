@@ -1,6 +1,7 @@
 const response = require("../../../utils/response");
 const hotelService = require("../../../services/hotels/hotel.service");
 const { link } = require("../../../routes/api/product.routes");
+// const { upload } = require("../../../utils/uploadFileHandler");
 
 class HotelController {
   async getAllHotels(req, res) {
@@ -46,19 +47,45 @@ class HotelController {
 
   async createHotel(req, res) {
     try {
-      const hotel = await hotelService.createHotel(req.body);
+      let image = null;
+      if (req.file) {
+        image = req.file.filename;
+      }
+
+      const payload = {
+      ...req.body,
+      image,
+    };
+
+      const hotel = await hotelService.createHotel(payload);
       return response.success(res, "Hotel created", hotel);
     } catch (error) {
-      return response.error(res, error.message);
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+        error: error.message,
+      });
     }
   }
 
   async updateHotel(req, res) {
     try {
-      const updatedHotel = await hotelService.updateHotel(req.params.id, req.body);
+      const payload = {
+      ...req.body,
+      };
+
+      if (req.file) {
+        payload.image = req.file.filename;
+      }
+      
+      const updatedHotel = await hotelService.updateHotel(req.params.id, payload);
       return response.success(res, "Hotel updated", updatedHotel);
     } catch (error) {
-      return response.error(res, error.message);
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+        error: error.message,
+      });
     }
   }
 
@@ -67,9 +94,29 @@ class HotelController {
       await hotelService.deleteHotel(req.params.id);
       return response.success(res, "Hotel deleted");
     } catch (error) {
-      return response.error(res, error.message);
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+        error: error.message,
+      });
     }
   }
+
+  async uploadImage(req, res) {
+    const file = req.file;
+    if (!file) {
+      return response.error(res, "No file uploaded");
+    }
+
+    const imageFileName = file.filename;
+    const pathImage = `/assets/img/uploads/${imageFileName}`;
+
+    return response.success(res, "Image uploaded successfully", {
+      pathImage
+    });
+  }
+
 }
+
 
 module.exports = new HotelController();

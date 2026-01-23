@@ -20,7 +20,7 @@
                     <th>Rating</th>
                     <th>Jarak</th>
                     <th>Fasilitas</th>
-                    <th>Deskripsi</th>
+                    <th>Image</th>
                     
                   </tr>
                 </thead>
@@ -32,7 +32,7 @@
                     <th>Rating</th>
                     <th>Jarak</th>
                     <th>Fasilitas</th>
-                    <th>Deskripsi</th>
+                    <th>Image</th>
                     
                   </tr>
                 </tfoot>
@@ -94,8 +94,14 @@
                       </div>
                       <div class="col-md-12">
                         <div class="form-group form-group-default">
-                          <label>Deskripsi</label>
-                          <input id="description" type="text" class="form-control">
+                          <label>Image</label>
+                          <img 
+                              id="previewImage"
+                              src=""
+                              style="max-width: 120px; display: none; margin-bottom: 8px;"
+                            />
+                          <input id="image" type="file"   accept="image/*" class="form-control" onchange="validateFileExtension(this)">
+                         
                         </div>
                       </div>
                     </div>
