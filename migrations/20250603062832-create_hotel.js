@@ -8,7 +8,7 @@ module.exports = {
       name: { type: Sequelize.STRING, allowNull: false },
       location: { type: Sequelize.STRING, allowNull: false },
       rating: { type: Sequelize.INTEGER, allowNull: false },
-      description: { type: Sequelize.TEXT },
+      image: { type: Sequelize.STRING, allowNull: false },
       createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
       updatedAt: { type: Sequelize.DATE, defaultValue: Sequelize.NOW }
     });

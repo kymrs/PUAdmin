@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         { data: 'name', title: 'Nama Kategori' },
         { data: 'slug', title: 'Slug' },
-        { data: 'created_at', title: 'Dibuat Pada' }
       ],
       columnDefs: [
         // { responsivePriority: 1, targets: 0 }, // Title

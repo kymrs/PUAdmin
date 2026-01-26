@@ -3,10 +3,7 @@ const { Hotel } = require("../../models");
 
 class HotelRepository {
   async getAllHotels() {
-    return await Hotel.findAll({
-      attributes: ["id", "name", "location"],
-      order: [['location', 'ASC'], ['name', 'ASC']]
-    });
+    return await Hotel.findAll();
   }
 
   async getPaginatedHotels({ start, length, search, order, columns }) {
@@ -18,7 +15,8 @@ class HotelRepository {
           { location: { [Op.like]: `%${search}%` } },
           { rating: { [Op.like]: `%${search}%` } },
           { jarak: {[Op.like]: `%${search}`}},
-          { description: { [Op.like]: `%${search}%` } },
+          { fasilitas: { [Op.like]: `%${search}%` } },
+          { image: { [Op.like]: `%${search}%` } },
           { createdAt: { [Op.like]: `%${search}%` } }
         ]
       }),
