@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { data: 'fasilitas', title: 'Fasilitas' },
       { data: 'image', title: 'Image', render: function(data, type, row){
         if(data){
-          return `<img src="public/assets/img/uploads/${data}" alt="Hotel Image" class="img-hotel" />`;
+          return `<img src="/assets/img/hotels/${data}" alt="Hotel Image" class="img-hotel" />`;
         } 
           return 'No Image';
       } },
@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
         swal("Gagal!", data.message || "Terjadi kesalahan saat menyimpan data", "error");
       }
     } catch (err) {
+      console.error(err);
       swal("Error!", "Gagal menghubungi server", "error");
     }
   });
@@ -127,11 +128,11 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("rating").value = hotel.rating;
             document.getElementById("jarak").value = hotel.jarak;
             document.getElementById("fasilitas").value = hotel.fasilitas;
-            document.getElementById("image").value = hotel.image;
+            document.getElementById("image").value = "";
             const preview = document.getElementById("previewImage");
 
             if (hotel.image) {
-              preview.src = `/assets/img/uploads/${hotel.image}`;
+              preview.src = `/assets/img/hotels/${hotel.image}`;
               preview.style.display = "block";
             } else {
               preview.style.display = "none";
@@ -144,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
           swal("Gagal", "Hotel tidak ditemukan", "error");
         }
       } catch (err) {
+        console.error(err);
         swal("Error", "Gagal menghubungi server", "error");
       }
     }

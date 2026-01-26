@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data: 'id',
         render: function (data, type, row) {
         //   console.log("Data ID:", row); // Debugging log
-          let buttons = `<div class="d-flex gap-2 justify-content-center">`;
+          let buttons = `<div class="d-flex gap-2 justify-content-left">`;
 
           if (row.akses && row.akses.edit) {
             buttons += `
@@ -39,11 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       },
       { data: 'airline', title: 'Airline' },
-      { data: 'flight_number', title: 'Flight Number' },
-      { data: 'departure_airport', title: 'Departure' },
-      { data: 'arrival_airport', title: 'Arrival' },
-      { data: 'departure_time', title: 'Departure Time' },
-      { data: 'arrival_time', title: 'Arrival Time' }
     ],
     drawCallback: function () {
       // Force redraw untuk sync header & body
@@ -64,11 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("submitFlightBtn").addEventListener("click", async () => {
     const id = document.getElementById("hidden_id").value;
     const airline = document.getElementById("airline").value;
-    const flight_number = document.getElementById("flight_number").value;
-    const departure_airport = document.getElementById("departure_airport").value;
-    const arrival_airport = document.getElementById("arrival_airport").value;
-    const departure_time = document.getElementById("departure_time").value;
-    const arrival_time = document.getElementById("arrival_time").value;
 
     // Tentukan URL dan method berdasarkan id
     const isUpdate = id !== "";
@@ -83,11 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         body: JSON.stringify({
           airline,
-          flight_number,
-          departure_airport,
-          arrival_airport,
-          departure_time,
-          arrival_time,
         }),
       });
 
@@ -120,11 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById("hidden_id").value = flight.id;
             document.getElementById("airline").value = flight.airline;
-            document.getElementById("flight_number").value = flight.flight_number;
-            document.getElementById("departure_airport").value = flight.departure_airport;
-            document.getElementById("arrival_airport").value = flight.arrival_airport;
-            document.getElementById("departure_time").value = flight.departure_time;
-            document.getElementById("arrival_time").value = flight.departure_time;
 
           const modal = new bootstrap.Modal(document.getElementById("flightFormModal"));
           modal.show();
@@ -139,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //   // RESET SAAT MENUTUP MODAL
   document.getElementById('flightFormModal').addEventListener('hidden.bs.modal', function () {
-    document.getElementById("hotelInput").reset();
+    document.getElementById("flightInput").reset();
     document.getElementById("hidden_id").value = '';
   });
 
