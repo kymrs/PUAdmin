@@ -34,7 +34,7 @@ class FlightService {
 
   async createFlight(flightData) {
     try {
-      const requiredFields = ["airline", "flight_number", "departure_airport", "arrival_airport", "departure_time", "arrival_time"];
+      const requiredFields = ["airline"];
 
       if (!requiredFields.every(field => flightData[field])) {
         throw new Error("Semua field wajib diisi"); // Validasi input

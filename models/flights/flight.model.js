@@ -9,26 +9,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        flight_number: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
-        departure_airport: {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-        },
-        arrival_airport: {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-        },
-        departure_time: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        arrival_time: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,

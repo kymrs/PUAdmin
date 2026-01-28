@@ -20,10 +20,10 @@ const diskStrorage = multer.diskStorage({
         uploadError = null;
     }
 
-    cb(uploadError, path.resolve("public/assets/img/uploads"));
+    cb(uploadError, path.resolve("public/assets/img/hotels"));
   },
   filename: function(req, file, cb) {
-    cb(null, file.originalname + "-" + Date.now() + path.extname(file.originalname));
+    cb(null, file.originalname);
   }
 })
 
