@@ -37,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         description: {
-            type: DataTypes.STRING(100),
-            allowNull: false,
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
         status: {
             type: DataTypes.ENUM('draft', 'submit'),

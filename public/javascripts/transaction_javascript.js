@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             },
             { data: 'name', title: 'Nama' },
-            { data: 'transaction_date', title: 'Tanggal' },
+            { data: 'created_at', title: 'Tanggal' },
             { data: 'transaction_no', title: 'No Transaksi' },
             { data: 'amount', title: 'Amount' },
             { data: 'status', title: 'Status' },
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("submitTransactionBtn").addEventListener("click", async () => {
         const id = document.getElementById("hidden_id").value;
         const name = document.getElementById("name").value;
-        const transaction_date = document.getElementById("transaction_date").value;
+        const transaction_date = document.getElementById("created_at").value;
         const transaction_no = document.getElementById("transaction_no").value;
         const amount = document.getElementById("amount").value;
         const status = document.getElementById("status").value;
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     document.getElementById("hidden_id").value = transaction.id;
                     document.getElementById("name").value = transaction.name;
-                    document.getElementById("transaction_date").value = transaction.transaction_date;
+                    document.getElementById("created_at").value;
                     document.getElementById("transaction_no").value = transaction.transaction_no;
                     document.getElementById("amount").value = transaction.amount;
                     document.getElementById("status").value = transaction.status;

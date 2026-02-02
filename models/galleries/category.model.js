@@ -6,16 +6,16 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(45),
         allowNull: false,
       },
       slug: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(45),
         allowNull: false,
         unique: true,
       },
     }, {
-      tableName: 'gallery_categories',
+      tableName: 'categories',
       timestamps: true,
       createdAt: 'created_at',
       updatedAt: false,
