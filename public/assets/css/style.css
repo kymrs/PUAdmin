@@ -266,3 +266,17 @@ option:hover {
     color: #939393;
     font-size: 12px;
   }
+  .include-list {
+    background-color: #d4edda;
+    border-radius: 5px;
+    border: 2px solid #e4e4e4;
+  }
+  .exclude-list {
+    background-color: #f8d7da;
+    border-radius: 5px;
+    border: 2px solid #e4e4e4;
+  } 
+  .include-list span, .exclude-list span {
+    font-size: 15px;
+    font-weight: 500;
+  }
