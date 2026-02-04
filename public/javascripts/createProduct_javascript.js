@@ -1,10 +1,106 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+    const noteInput = document.getElementById('note');
+    const btnAddNote = document.getElementById('addNote');
+    const noteContainer = document.getElementById('note-container');
     let roadmapIndex = 0 ;
     document.getElementById('addRoadmap').addEventListener('click', addRoadmap );
    
+    // Tamabah Note START
+    function addNewNote() {
+        
+        const inputValue = noteInput.value.trim();
+        if(inputValue !== ""){
+                        const li = document.createElement('li');
+                        li.className = "note-list d-flex justify-content-between align-items-center border-radius px-2";
+
+                        li.innerHTML = `
+                        <span>${inputValue}</span>
+                        <button class="btn btn-sm " onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+
+                        // Masukkan ke dalam container ul
+                        noteContainer.appendChild(li);
+
+                        //meng kosongkan input
+                        noteInput.value = "";
+                        noteInput.focus();
+
+                    } else {
+                        alert("Catatan tidak boleh kosong");
+                    }
+    }
+    btnAddNote.addEventListener("click", function() {
+        addNewNote();
+    })
+
+    noteInput.addEventListener("keydown", function(e) {
+        if(e.key === "Enter"){
+            e.preventDefault();
+            addNewNote();
+        }
+    })
+    // Tambah Note END
+
+    // Tmbah Include Fasilitas START
+    const includeInput = document.getElementById('includde-fclty');
+    const includeContainer = document.getElementById('include-container');
+
+    function addIncludeFacility() {
+        const inputValue = includeInput.value.trim();
+        if(inputValue !== ""){
+            const li = document.createElement("li");
+            li.className = "include-list d-flex justify-content-between align-items-center border-radius px-2";
+
+            li.innerHTML = `
+            <span>${inputValue}</span>
+            <button class="btn btn-sm " onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+
+            includeContainer.appendChild(li);
+            includeInput.value = "";
+            includeInput.focus();
+        } else {
+            alert("Fasilitas tidak boleh kosong");
+        }
+    }
+    
+    includeInput.addEventListener("keydown", function(e) {
+        if(e.key === "Enter"){
+            e.preventDefault();
+            addIncludeFacility();
+        }
+    })
+    // Tmbah Include Fasilitas END
+
+    // Tmbah Exclude Fasilitas START
+    const excludeInput = document.getElementById('exclude-fclty');
+    const excludeContainer = document.getElementById('exclude-container');
+
+    function addExcludeFacility() {
+        const inputValue = excludeInput.value.trim();
+        if(inputValue !== ""){
+            const li = document.createElement("li");
+            li.className = "exclude-list d-flex justify-content-between align-items-center border-radius px-2";
+
+            li.innerHTML = `
+            <span>${inputValue}</span>
+            <button class="btn btn-sm " onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+
+            excludeContainer.appendChild(li);
+            excludeInput.value = "";
+            excludeInput.focus();
+        } else {
+            alert("Fasilitas tidak boleh kosong");
+        }
+    }
+    
+    excludeInput.addEventListener("keydown", function(e) {
+        if(e.key === "Enter"){
+            e.preventDefault();
+            addExcludeFacility();
+        }
+    })
+    // Tmbah Exclude Fasilitas END
    
-    // Tambah Itinerary 
+    // Tambah Itinerary START
     function addRoadmap() {
         const container = document.getElementById('roadmap_option');
 
@@ -37,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function() {
             container.appendChild(row);
             roadmapIndex++;
     }
+    // Tambah Itinerary END
 
     function updateRoadmapOrder() {
         const rows = document.querySelectorAll("#roadmap_option .row");
@@ -50,44 +147,44 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // LOAD DATA HOTEL UNTUK PRODUCT
     loadHotels();
-    document.getElementById("formProduct").addEventListener("submit", async (e) => {
-        e.preventDefault();
+    // document.getElementById("formProduct").addEventListener("submit", async (e) => {
+    //     e.preventDefault();
 
-        const form = e.target;
-        const formData = new FormData(form);
+    //     const form = e.target;
+    //     const formData = new FormData(form);
 
-        // Ambil hotel_ids (multi select)
-        const selectedHotels = Array.from(
-        document.getElementById("hotelSelect").selectedOptions
-        ).map(opt => opt.value);
+    //     // Ambil hotel_ids (multi select)
+    //     const selectedHotels = Array.from(
+    //     document.getElementById("hotelSelect").selectedOptions
+    //     ).map(opt => opt.value);
 
-        formData.delete("hotel_ids[]");
-        selectedHotels.forEach(id => {
-        formData.append("hotel_ids[]", id);
-        });
+    //     formData.delete("hotel_ids[]");
+    //     selectedHotels.forEach(id => {
+    //     formData.append("hotel_ids[]", id);
+    //     });
 
-        try {
-        const res = await fetch("/api/product", {
-            method: "POST",
-            body: formData
-        });
+    //     try {
+    //     const res = await fetch("/api/product", {
+    //         method: "POST",
+    //         body: formData
+    //     });
 
-        const data = await res.json();
+    //     const data = await res.json();
 
-        if (res.ok) {
-            swal("Berhasil", "Produk berhasil disimpan", "success");
-            setTimeout(() => {
-            window.location.href = "/products";
-            }, 1500);
-        } else {
-            swal("Gagal", data.message || "Terjadi kesalahan", "error");
-        }
+    //     if (res.ok) {
+    //         swal("Berhasil", "Produk berhasil disimpan", "success");
+    //         setTimeout(() => {
+    //         window.location.href = "/products";
+    //         }, 1500);
+    //     } else {
+    //         swal("Gagal", data.message || "Terjadi kesalahan", "error");
+    //     }
 
-        } catch (err) {
-        console.error(err);
-        swal("Error", "Gagal menghubungi server", "error");
-        }
-    })
+    //     } catch (err) {
+    //     console.error(err);
+    //     swal("Error", "Gagal menghubungi server", "error");
+    //     }
+    // })
     // LOAD FASILITAS TAMBAHAN
     // 
     loadCategory();
@@ -344,6 +441,38 @@ function validateFileExtension(thumbnail) {
     }
     return true;
 }
+// HIT ENTER FOR NOTE TAGS
+
+    // window.onload = function() {
+    //     const noteInput = document.getElementById('note');
+    //     const noteContainer = document.getElementById('note-container');
+
+    //     if(noteInput && noteContainer) {
+    //         noteInput.addEventListener('keydown', function(e) {
+    //             if(e.key === "Enter"){
+    //                 e.preventDefault();
+
+    //                 const inputValue = this.value.trim();
+                 
+    //                 if(inputValue !== ""){
+    //                     const li = document.createElement('li');
+    //                     li.className = "note-list d-flex justify-content-between align-items-center border-radius px-2";
+
+    //                     li.innerHTML = `
+    //                     <span>${inputValue}</span>
+    //                     <button class="btn btn-sm text-danger" onclick="this.parentElement.remove()">x</button>`;
+
+    //                     // Masukkan ke dalam container ul
+    //                     noteContainer.appendChild(li);
+
+    //                     //meng kosongkan input
+    //                     this.value = "";
+    //                 }
+    //             }
+    //         })
+    //     }
+
+    // }
 
 function initTagComponent(tagInclude) {
     const input = tagInclude.querySelector('.tag-name input');

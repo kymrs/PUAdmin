@@ -88,27 +88,20 @@
                                 </select>
                             </div>      
                         </div>
-                                <div class="form-group col">
-                                    <label class="col fw-bold">
-                                        Deskripsi Produk<span class="text-danger">*</span>
-                                    </label>
-                                    <div class="col">
-                                        <textarea name="product_description" id="product_description" class="form-control" rows="5" placeholder="Masukan Deskripsi Produk" required></textarea>
-                                    </div>
-                                </div>
-                            <div class="modal  fade" id="facilityFormModal" tabindex="-1" 
+                               
+                            <!-- <div class="modal  fade" id="facilityFormModal" tabindex="-1" 
                             aria-labelledby="facilityFormModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content" style="border-radius: 15px; border: none; background-color: #f8f9fa;">
                                 
                                 <div class="modal-header border-0 pb-0">
-                                    <!-- <nav aria-label="breadcrumb">
+                                    <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb mb-1" style="font-size: 0.85rem;">
                                         <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Damien</a></li>
                                         <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Projects</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">New Build</li>
                                     </ol>
-                                    </nav> -->
+                                    </nav>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
@@ -128,7 +121,7 @@
                                 </div>
                                 </div>
                             </div>
-                            </div>
+                            </div> -->
                             <div class="form-group col">
                                     <label class="col fw-bold  form-label">Status</label>
                                         <div class="col">
@@ -146,7 +139,29 @@
                                         <input type="file" class="form-control-file" name="thumbnail" onchange="validateFileExtension(this)">
                                     </div>
                             </div>
-                                
+                             <div class="form-group col-lg-12">
+                                    <label class="col fw-bold">
+                                        Deskripsi Produk<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col">
+                                        <textarea name="product_description" id="product_description" class="form-control" rows="5" placeholder="Contoh: Paket Umrah Easy ini dirancang khusus untuk jamaah yang menginginkan kenyamanan dengan harga terjangkau..." required></textarea>
+                                    </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="" class="col fw-bold">Catatan<span class="text-danger">*</span></label>
+                                 <div class="col d-flex justify-content-between">
+                                      <input type="text" class="form-control" name="note" id="note" placeholder="Ketik poin catatan lalu Enter (Misal: Harga dapat berubah sewaktu-waktu)" required>
+                                      <button type="button" id="addNote" class="btn rounded btn-primary ms-2">
+                                        <i class="fas fa-plus"></i>                                                                 </button>
+                                 </div>
+                            </div>  
+                            <div class="form-group col-lg-12">
+                                    <div class="col">
+                                        <ul class="list-unstyled" id="note-container">
+                                            
+                                        </ul>
+                                    </div>
+                            </div>   
                         </div>
                     </div>
             </div>    
@@ -206,7 +221,7 @@
                         </div>
                     </div>
          </div>
-        <!-- ITINERARY -->
+ 
           <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
@@ -220,7 +235,7 @@
                                         Include<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="text" class="form-control" name="nama_produk" id="nama_produk" placeholder="Ketik lalu tekan Enter" required>
+                                        <input type="text" class="form-control" name="include" id="includde-fclty" placeholder="Ketik lalu tekan Enter" required>
                                     </div>
                                 </div>
                                
@@ -229,26 +244,20 @@
                                         Exclude<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="text" class="form-control" name="departure" id="departure" placeholder="Ketik lalu tekan Enter" required>
+                                        <input type="text" class="form-control" name="exclude" id="exclude-fclty" placeholder="Ketik lalu tekan Enter" required>
                                     </div>
                                 </div>
                                   <div class="form-group col">
                                     <div class="col">
-                                        <ul class="list-unstyled">
-                                            <li class="include-list d-flex justify-content-between align-items-center border-radius px-2">
-                                                <span>Makan 3x Sehari</span>
-                                                <button class="btn">x</button>
-                                            </li>
+                                        <ul class="list-unstyled" id="include-container">
+                                            
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="form-group col">
                                     <div class="col">
-                                        <ul class="list-unstyled">
-                                            <li class="exclude-list d-flex justify-content-between align-items-center border-radius px-2">
-                                                <span>Vaksin</span>
-                                                <button class="btn">x</button>
-                                            </li>
+                                        <ul class="list-unstyled" id="exclude-container">
+                                            
                                         </ul>
                                     </div>
                                 </div>
