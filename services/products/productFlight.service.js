@@ -1,0 +1,37 @@
+const ProductFlightRepository = require("../../repositories/products/productFlight.repository");
+
+
+class ProductFlightService {
+
+    async createFlights(flights, productId, transaction) {
+        if(!flights || flights.length === 0) return [];
+
+        const flightPayload = flights.map(f => ({
+
+            product_id: productId, 
+            airline_name: f.airline_name, 
+            type: f.type
+            
+        }))
+
+        return await ProductFlightRepository.create(flightPayload);
+    }
+
+    async replaceFlight(productId, flights, transaction = null) {
+        if (!flights || flights.length === 0) return [];
+
+        await ProductFlightRepository.deleteByProduct(productId, transaction);
+
+        const flightPayload = flights.map(f => ({
+
+            product_id: productId, 
+            airline_name: f.airline_name, 
+            type: f.type
+            
+        }));
+
+        return await ProductFlightRepository.create(flightPayload, transaction);
+    }
+}
+
+module.exports = new ProductFlightService();

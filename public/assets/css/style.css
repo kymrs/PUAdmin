@@ -280,6 +280,13 @@ option:hover {
     min-height: 40px;
     margin-bottom: 5px;
   } 
+  .snk-list {
+    background-color: #cce5ff;
+    border-radius: 5px;
+    border: 2px solid #e4e4e4;
+    min-height: 40px;
+    margin: 5px 0 5px 0;
+  }
   .include-list span, .exclude-list span {
     font-size: 15px;
     font-weight: 500;
@@ -291,3 +298,22 @@ option:hover {
     border-radius: 5px;
     border: 2px solid #e4e4e4;
   }
+  .facility-container label{
+    flex: 1 0 calc(33.333% - 10px); /* Membagi 3 kolom minus jarak gap */
+    min-width: 120px; /* Batas minimum agar tidak terlalu gepeng di layar kecil */
+    text-align: center;
+  }
+  .facility-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Membagi 3 kolom sama rata */
+    gap: 8px; /* Jarak antar tombol */
+    width: 100%;
+  }
+
+/* Membuat tombol menyesuaikan lebar grid */
+  .facility-container .btn {
+      text-align: center;     /* Agar teks tetap di tengah saat melipat */
+      display: flex;          /* Membantu penyelarasan */
+      align-items: center;
+      justify-content: center;
+  } 

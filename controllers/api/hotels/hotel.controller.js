@@ -1,6 +1,6 @@
 const response = require("../../../utils/response");
 const hotelService = require("../../../services/hotels/hotel.service");
-const { link } = require("../../../routes/api/product.routes");
+// const { link } = require("../../../routes/api/products/products.routes");
 // const { upload } = require("../../../utils/uploadFileHandler");
 
 class HotelController {

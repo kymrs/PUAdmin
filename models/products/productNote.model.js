@@ -1,0 +1,31 @@
+module.exports = (sequelize, DataTypes) => {
+    const ProductNote = sequelize.define('ProductNote', {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        product_id:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        note: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        }
+    }, {
+        tableName: 'product_notes',
+        timestamp: true,
+        underscored: true
+    });
+
+    ProductNote.associate = (models) => {
+       ProductNote.belongsTo(models.Product, {
+            foreignKey: 'product_id',
+            as: 'product',
+       });
+    }
+
+
+    return ProductNote;
+};

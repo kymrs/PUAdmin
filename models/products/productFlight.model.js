@@ -11,10 +11,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      flight_id: {
-        type: DataTypes.INTEGER,
+      airline_name: {
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
+      type: {
+        type: DataTypes.ENUM("Departure", "Return"),
+        allowNull: false,
+      }
     },
     {
       tableName: "product_flight",
@@ -22,6 +26,13 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
+
+  ProductFlight.associate = (models) => {
+    ProductFlight.belongsTo(models.Product, {
+      foreignKey: "product_id",
+      as: "product",
+    });
+  }
 
   return ProductFlight;
 };

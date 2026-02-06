@@ -1,0 +1,46 @@
+const ProductHotelRepository = require('../../repositories/products/productHotel.repository');
+
+class ProductHotelService {
+    async createHotels(hotels, productId, transaction) {
+        if (!hotels || hotels.length === 0) return [];
+
+        const hotelPayload = hotels.map(h => ({
+            product_id: productId,
+            name: h.name,
+            city: h.city,
+            rating: h.rating,
+            jarak: h.jarak,
+            image: h.image,
+        }));
+
+        if (hotels.facilities?.length) {
+        await FacilityService.replace(
+          createdHotel.id,
+          hotel.facilities,
+          transaction
+        );
+      }
+
+
+        return await ProductHotelRepository.create(hotelPayload, transaction);
+    }
+
+    async replaceHotels(productId, hotels, transaction = null) {
+        if (!hotels || hotels.length === 0) return [];
+
+        await ProductHotelRepository.deleteByProductId(productId, transaction);
+
+        const hotelPayload = hotels.map(h => ({
+            product_id: productId,
+            name: h.name,
+            city: h.city,
+            rating: h.rating,
+            jarak: h.jarak,
+            image: h.image,
+        }));
+
+        return await ProductHotelRepository.create(hotelPayload, transaction);
+    }
+}
+
+module.exports = new ProductHotelService();

@@ -11,21 +11,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      facility_id: {
-        type: DataTypes.INTEGER,
+      facility: {
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
       type: {
         type: DataTypes.ENUM("INCLUDE", "EXCLUDE"),
         allowNull: false,
       },
-    },
-    {
-      tableName: "product_facilities",
+    },{
+      tableName: "product_facility",
       timestamps: false,
       underscored: true,
+    });
+
+    ProductFacility.associate = (models) => {
+      ProductFacility.belongsTo(models.Product, {
+        foreignKey: "product_id",
+        as: "product", 
+      });
     }
-  );
 
   return ProductFacility;
 };
