@@ -1,5 +1,4 @@
-const productService = require("../../../services/product.service");
-const hotelService = require("../../../services/hotels/hotel.service");
+const productService = require("../../../services/products/product.service");
 
 class ProductController {
   // List all products
@@ -33,13 +32,7 @@ class ProductController {
     try {
       const productData = req.body;
       const product = await productService.createProduct(productData);
-      const hotels = await hotelService.getAllHotels();
 
-      res.locals.hotels = hotels;
-      res.render ("home",{
-        link: "products/create_product",
-        hotels
-      })
 
       res.status(201).json({ success: true, data: product });
     } catch (error) {

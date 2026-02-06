@@ -9,32 +9,32 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true,
         },
+        category_id:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         nama_produk: {
-            type: DataTypes.STRING(45),
+            type: DataTypes.STRING(255),
             allowNull: false,
         },
-        date: {
+        tgl_keberangkatan: {
             type: DataTypes.DATE,
+            allowNull: false
+        },
+        tmp_keberangkatan: {
+            type: DataTypes.STRING(255),
             allowNull: false
         },
         duration: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        kouta: {
+        qouta: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
         thumbnail_url: {
             type: DataTypes.STRING(255)
-        },
-        departure_airlines: {
-            type: DataTypes.STRING(45),
-            allowNull: false
-        },
-        return_airlines: {
-            type: DataTypes.STRING(45),
-            allowNull: false
         },
         description: {
             type: DataTypes.TEXT,
@@ -45,9 +45,44 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         }
     }, {
-        tableName: 'tbl_product',
+        tableName: 'product',
         timestamp: true,
         underscored: true
     })
+
+    Product.associate = (models) => {
+        Product.hasMany(models.ProductPrices, {
+            foreignKey: 'product_id',
+            as: 'prices',
+            onDelete: 'CASCADE'
+       });
+        Product.hasMany(models.ProductFlight, {
+            foreignKey: 'product_id',
+            as: 'flights',
+            onDelete: 'CASCADE'
+       });
+        Product.hasMany(models.ProductSnK, {
+            foreignKey: 'product_id',
+            as: 'snk',
+            onDelete: 'CASCADE'
+       });
+        Product.hasMany(models.ProductFacility, {
+            foreignKey: 'product_id',
+            as: 'facility',
+            onDelete: 'CASCADE'
+       });
+        Product.hasMany(models.ProductNote, {
+            foreignKey: 'product_id',
+            as: 'notes',
+            onDelete: 'CASCADE'
+       });
+        Product.hasMany(models.ProductHotel, {
+            foreignKey: 'product_id',
+            as: 'hotels',
+            onDelete: 'CASCADE'
+       });
+    }
+
+
     return Product;
 }

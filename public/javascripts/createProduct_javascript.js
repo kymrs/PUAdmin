@@ -99,6 +99,35 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
     // Tmbah Exclude Fasilitas END
+
+    // Tambah Syarat & Ketentuan START
+        const termsInput = document.getElementById('snk');
+        const termsContainer = document.getElementById('snk-container');
+
+        function addTerms() {
+            const inputValue = termsInput.value.trim();
+            if(inputValue !== ""){
+                const li = document.createElement("li");
+                li.className = "snk-list d-flex justify-content-between align-items-center border-radius px-2";
+
+                li.innerHTML = `
+                <span>${inputValue}</span>
+                <button class="btn btn-sm " onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+
+                termsContainer.appendChild(li);
+                termsInput.value = "";
+                termsInput.focus();
+            } else {
+                alert("Syarat & Ketentuan tidak boleh kosong");
+            }
+        }
+        termsInput.addEventListener("keydown", function(e) {
+            if(e.key === "Enter"){
+                e.preventDefault();
+                addTerms();
+            }
+        })
+    // Tmbah Syarat & Ketentuan END
    
     // Tambah Itinerary START
     function addRoadmap() {
@@ -146,7 +175,6 @@ document.addEventListener("DOMContentLoaded", function() {
     .forEach(initTagComponent);
 
     // LOAD DATA HOTEL UNTUK PRODUCT
-    loadHotels();
     // document.getElementById("formProduct").addEventListener("submit", async (e) => {
     //     e.preventDefault();
 
@@ -189,248 +217,19 @@ document.addEventListener("DOMContentLoaded", function() {
     // 
     loadCategory();
     // 
-    loadFlights();
+    fetchHotelFacility()
+
 
     window.facilityState = {
         include: new Set(),
         exclude: new Set()
     };
 
-
-async function loadFacilities() {
-    const container = document.getElementById('facility-list-container')
-    try {
-        const res = await fetch('/api/facilities/facility');
-        const result = await res.json();
-
-        if(result.status !== "success"){
-            throw new Error("Gagal ambil fasilitas")
-        }
-
-        const facilities = result.data;
-
-        if(facilities.length === 0){
-            container.innerHTML = "<p class='text-center'>Kosong</p> ";
-            return;
-        }
-        
-        facilities.forEach(item => {
-            renderFacilityItem(item, container);
-        });
-
-    } catch (error) {
-        console.error(error);
-        container.innerHTML = `<p class="text-center text-danger small">Error: ${error.message}</p>`;
-    }
-}
-    // CREATE OR UPDATE
-    function renderFacilityItem(item, container){
-         const isInclude = facilityState.include.has(item.id);
-         const isExclude = facilityState.exclude.has(item.id);
-
-         let statusIcon = '';
-         let statusClass = '';
-
-         if(isInclude) {
-            statusIcon = 'fas fa-check-circle text-success';
-            statusClass = 'included';
-         } else if(isExclude) {
-            statusIcon = 'fas fa-times text-danger';
-            statusClass = 'excluded';
-         } else {
-            statusIcon = '';
-            statusClass = '';
-         }
-
-         const innerHTML =`
-                <div class="d-flex align-items-center gap-2 facility-item facility-toggle" data-id="${item.id} " data-status="${statusClass}">
-                                <div class="list-group-item d-flex justify-content-between align-items-center flex-grow-1 border-1 rounded-3">
-                                        <span><i class="${item.icon} text-muted me-2" style="font-size: 0.8rem;"></i> ${item.name}</span>
-                                        <i class="${statusIcon}"></i>
-                                </div>
-                                 <button class="btn btn-light border deleteFacility btn-sm py-2 px-3 text-muted" data-id="${item.id}">—</button>
-                    </div>
-         `;
-        container.insertAdjacentHTML('beforeend', innerHTML);
-    }
-    // RESET SAAT MENUTUP MODAL
-    document.addEventListener("click", (e) => {
-        // toggle include / exclude
-        if (e.target.closest('.facility-toggle')) {
-            const item = e.target.closest('.facility-item');
-            const id = Number(item.dataset.id);
-
-            if (facilityState.include.has(id)) {
-                facilityState.include.delete(id);
-                facilityState.exclude.add(id);
-            } else if (facilityState.exclude.has(id)) {
-                facilityState.exclude.delete(id);
-            } else {
-                facilityState.include.add(id);
-            }
-
-            // console.log("INCLUDE", [...facilityState.include]);
-            // console.log("EXCLUDE", [...facilityState.exclude]);
-
-            reloadFacilitiesUI();
-        }
-
-        // delete facility
-        if(e.target.closest(".deleteFacility")) {
-            e.preventDefault();
-            const btn = e.target.closest(".deleteFacility");
-            const id = btn?.dataset?.id || btn?.getAttribute("data-id");
-            if (!id) {
-                swal("Error!", "ID fasilitas tidak ditemukan.", "error");
-                return;
-            }
-
-            swal({
-                title: "Yakin ingin menghapus?",
-                icon: "warning",
-                buttons: ["Batal", "Ya, hapus!"],
-                dangerMode: true,
-            }).then( async (willDelete) => {
-                if(willDelete) {
-                    try {
-                        const res = await fetch(`/api/facilities/facility/${id}`, {
-                            method: "DELETE",
-                        });
-
-                        const data = await res.json();
-
-                        if (data.status === "success") {
-                        swal({
-                            icon: "success",
-                            title: "Terhapus!",
-                            text: data.message,
-                            timer: 1500,
-                            buttons: false,
-                        }).then(() => {
-                            location.reload();
-                        });
-                    } else {
-                        swal("Gagal!", data.message || "Terjadi kesalahan", "error");
-                    }
-                } catch (err) {
-                    swal("Error!", "Gagal menghubungi server", "error");
-                }
-            }
-        });
-        }
-    })
-
-    function reloadFacilitiesUI() {
-        const container = document.getElementById('facility-list-container');
-        container.innerHTML = '';
-
-        // fetch ulang biar aman (atau simpan master di memory)
-        loadFacilities();
-    }
-
-    loadFacilities();
-
-async function loadCategory() {
-    try {
-        const res = await fetch('/api/galleries/galleryCategory/')
-        const result = await res.json();
-
-        if(result.status !== "success"){
-            throw new Error("Gagal ambil hotel");
-        }
-        
-        const selectElements = document.querySelectorAll(".kategory");
-        selectElements.forEach(select=>{
-            select.innerHTML = "<option value=''>Pilih Kategori...</option>";
-
-            result.data.forEach(category => {
-                const option = document.createElement("option");
-                option.value = category.id;
-                option.textContent = `${category.name}`;
-                select.appendChild(option);
-            });
-        })
-
-         $('.kategory').select2({
-            placeholder: "Pilih Category...",
-            allowClear: true,
-            width: '100%'
-        });
+   
 
 
-    } catch(error) {
-        console.error(error);
-         alert("Gagal memuat data category ");
-    }
-}
 
-async function loadFlights() {
-    try {
-        const res = await fetch('/api/flights/flight');
-        const result = await res.json();
 
-        if(result.status !== "success"){
-            throw new Error("Gagal ambil maskapai")
-        }
-
-        const selectElements = document.querySelectorAll('.flight-select');
-        selectElements.forEach(select=> {
-            select.innerHTML='<option value="">Pilih Maskapai...</option';
-
-            result.data.forEach(flight => {
-                const option = document.createElement("option");
-                option.value = flight.id;
-                option.textContent = `${flight.airline}`;
-                select.appendChild(option);
-            });
-        });
-        $('.flight-select').select2({
-            placeholder: "Pilih Maskapai...",
-            allowClear: true,
-            width: '100%'
-        });
-    } catch (error) {
-         console.error(error);
-         alert("Gagal memuat data maskapai");
-    }
-}
-
-async function loadHotels() {
-    try {
-        const res = await fetch('/api/hotels/hotel/');
-        const result = await res.json();
-
-        if(result.status !== "success"){
-            throw new Error("Gagal ambil hotel");
-        }
-
-        const select = document.getElementById("hotelSelect");
-        select.innerHTML = "";
-
-        // Multiple Select Hotel
-        $(document).ready(function (){
-            $(select).select2({
-                placeholder: "Pilih Hotel..."
-            })
-        })
-
-         result.data.forEach(hotel => {
-            const option = document.createElement("option");
-            option.value = hotel.id;
-            option.textContent = `${hotel.name} - ${hotel.location}`;
-            select.appendChild(option);
-        });
-
-    } catch (error) {
-         console.error(error);
-         alert("Gagal memuat data hotel");
-    }
-}
-
-new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR"
-}).format(harga)
 
 function validateFileExtension(thumbnail) {
     if(!/.(\.jpg|\.jpeg|\.png|\.gif)$/i.test(thumbnail.value)) {
@@ -441,38 +240,6 @@ function validateFileExtension(thumbnail) {
     }
     return true;
 }
-// HIT ENTER FOR NOTE TAGS
-
-    // window.onload = function() {
-    //     const noteInput = document.getElementById('note');
-    //     const noteContainer = document.getElementById('note-container');
-
-    //     if(noteInput && noteContainer) {
-    //         noteInput.addEventListener('keydown', function(e) {
-    //             if(e.key === "Enter"){
-    //                 e.preventDefault();
-
-    //                 const inputValue = this.value.trim();
-                 
-    //                 if(inputValue !== ""){
-    //                     const li = document.createElement('li');
-    //                     li.className = "note-list d-flex justify-content-between align-items-center border-radius px-2";
-
-    //                     li.innerHTML = `
-    //                     <span>${inputValue}</span>
-    //                     <button class="btn btn-sm text-danger" onclick="this.parentElement.remove()">x</button>`;
-
-    //                     // Masukkan ke dalam container ul
-    //                     noteContainer.appendChild(li);
-
-    //                     //meng kosongkan input
-    //                     this.value = "";
-    //                 }
-    //             }
-    //         })
-    //     }
-
-    // }
 
 function initTagComponent(tagInclude) {
     const input = tagInclude.querySelector('.tag-name input');
@@ -533,3 +300,120 @@ function initTagComponent(tagInclude) {
  
 }
 });
+
+ async function fetchHotelFacility() {
+    // Ambil semua elemen dengan class tersebut
+    const containers = document.querySelectorAll(".facility-container");
+    
+    try {
+        const res = await fetch("/api/facilities/facility/");
+        const result = await res.json();
+
+        if (result.status !== "success") {
+            throw new Error("Gagal ambil fasilitas hotel");
+        }
+
+        // Kita looping setiap container yang ada di halaman (Mekkah & Madinah)
+        containers.forEach((container) => {
+            container.innerHTML = ""; // Kosongkan loading
+
+            // Di dalam setiap container, kita looping data fasilitasnya
+            result.data.forEach((facility) => {
+                // Beri prefix unik pada ID agar ID checkbox Mekkah tidak bentrok dengan Madinah
+                const uniqueId = `${container.id || 'fac'}-${facility.id}`;
+                
+                const checkboxHTML = `
+                    <input type="checkbox" 
+                           name="facility_ids[]" 
+                           class="btn-check" 
+                           id="${uniqueId}" 
+                           autocomplete="off" 
+                           value="${facility.id}">
+                    <label class="btn btn-outline-primary text-dark mb-1" for="${uniqueId}">
+                        ${facility.name}
+                    </label>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', checkboxHTML);
+            });
+        });
+
+    } catch (error) {
+        console.error(error);
+        // Tampilkan error di semua container
+        containers.forEach(c => c.innerHTML = `<span class="text-danger">Gagal memuat.</span>`);
+    }
+}
+    //  async function fetchHotelFacility() {
+//     const container = document.querySelectorAll('.facility-container');
+    
+//     try {
+//         const res = await fetch("/api/facilities/facility/");
+//         const result = await res.json();
+
+//         if (result.status !== "success") {
+//             throw new Error("Gagal ambil fasilitas hotel");
+//         }
+
+//         // Kosongkan loading text
+//         container.innerHTML = "";
+
+//         // Asumsi data fasilitas ada di result.data
+//         // Contoh struktur data: [{id: 1, name: 'Wifi'}, {id: 2, name: 'AC'}]
+//         result.data.forEach((facility, index) => {
+//             const checkboxHTML = `
+//                 <input type="checkbox" 
+//                        class="btn-check" 
+//                        name="facilities[]" 
+//                        id="facility-${facility.id}" 
+//                        value="${facility.id}" 
+//                        autocomplete="off">
+//                 <label class="btn btn-outline-primary rounded-pill" for="facility-${facility.id}">
+//                     ${facility.name}
+//                 </label>
+//             `;
+            
+//             // Masukkan ke dalam container
+//             container.insertAdjacentHTML('beforeend', checkboxHTML);
+//         });
+
+//     } catch (error) {
+//         console.error(error);
+//         container.innerHTML = `<span class="text-danger">Gagal memuat fasilitas.</span>`;
+//     }
+// }
+
+
+    async function loadCategory() {
+        try {
+            const res = await fetch('/api/galleries/galleryCategory/')
+            const result = await res.json();
+
+            if(result.status !== "success"){
+                throw new Error("Gagal ambil hotel");
+            }
+            
+            const selectElements = document.querySelectorAll(".kategory");
+            selectElements.forEach(select=>{
+                select.innerHTML = "<option value=''>Pilih Kategori...</option>";
+
+                result.data.forEach(category => {
+                    const option = document.createElement("option");
+                    option.value = category.id;
+                    option.textContent = `${category.name}`;
+                    select.appendChild(option);
+                });
+            })
+
+            $('.kategory').select2({
+                placeholder: "Pilih Category...",
+                allowClear: true,
+                width: '100%'
+            });
+
+
+        } catch(error) {
+            console.error(error);
+            alert("Gagal memuat data category ");
+        }
+    }

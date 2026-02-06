@@ -11,10 +11,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      hotel_id: {
+      name: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
+      city: {
+        type: DataTypes.ENUM("Mekkah", "Madinah"),
+        allowNull: false,
+      },
+      rating: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      jarak:{
+        type:DataTypes.STRING(100),
+        allowNull: false
+      },
+      image:{
+        type: DataTypes.STRING(255),
+        allowNull: true
+      }
     },
     {
       tableName: "product_hotels",
@@ -22,6 +38,17 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
+  ProductHotel.associate = (models)=> {
+    ProductHotel.belongsTo(models.Product, {
+      foreignKey: 'product_id',
+      as: 'product'
+    });
+    ProductHotel.hasMany(models.ProductHotelFaciility, {
+      foreignKey: 'product_hotel_id',
+      as: 'facilities',
+      onDelete: 'CASCADE'
+    });
+  }
 
   return ProductHotel;
 };
