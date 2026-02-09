@@ -3,6 +3,10 @@ const ProductFlightRepository = require("../../repositories/products/productFlig
 
 class ProductFlightService {
 
+    async getFlights() {
+        return await ProductFlightRepository.findByProduct();
+    }
+
     async createFlights(flights, productId, transaction) {
         if(!flights || flights.length === 0) return [];
 
@@ -14,7 +18,7 @@ class ProductFlightService {
             
         }))
 
-        return await ProductFlightRepository.create(flightPayload);
+        return await ProductFlightRepository.create(flightPayload, transaction);
     }
 
     async replaceFlight(productId, flights, transaction = null) {

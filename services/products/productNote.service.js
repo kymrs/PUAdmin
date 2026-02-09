@@ -1,6 +1,9 @@
 const ProductNoteRepository = require('../../repositories/products/productNote.repository');
 
 class ProductNoteService {
+    async getNote() {
+        return await ProductNoteRepository.findByProduct();
+    }
 
     async createNotes(notes, productId, transaction) {
         if (!notes || notes.length === 0) return [];

@@ -1,6 +1,10 @@
 const ProductItineraryRepository = require("../../repositories/products/productItinerary.repository");
 
 class ProductItineraryService {
+    async getItinerary() {
+        return await ProductItineraryRepository.findByProduct();
+    }
+
     async createItinerary(itineraries, productId, transaction) {
         if(!itineraries || itineraries.length === 0) return [];
 

@@ -3,7 +3,9 @@ const FacilityRepo = require(
 );
 
 class ProductHotelFacilityService {
-
+  async getHotelFacility() {
+    return await fi
+  }
   async replace(productHotelId, facilities, transaction) {
     await FacilityRepo.deleteByHotel(productHotelId, transaction);
 

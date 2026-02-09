@@ -1,7 +1,10 @@
 const ProductSnKRepository = require("../../repositories/products/productSnK.repository");
 
 class ProductSnKService {
-    async createSnK(snks, prodcutId) {
+    async getSnK() {
+        return await ProductSnKRepository.findByProduct();
+    }
+    async createSnK(snks, prodcutId, transaction) {
         if (!snks || snks.length === 0) return [];
 
         const snkPayload = snks.map(s => ({
@@ -9,7 +12,7 @@ class ProductSnKService {
             snk: s.snk
         }));
 
-        return await ProductSnKRepository.create(snkPayload);
+        return await ProductSnKRepository.create(snkPayload, transaction);
     }
     async replaceSnK(productId, snks, transaction = null) {
         if (!snks || snks.length === 0) return [];

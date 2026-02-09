@@ -1,6 +1,10 @@
 const ProductHotelRepository = require('../../repositories/products/productHotel.repository');
 
 class ProductHotelService {
+    async getHotels() {
+      return await ProductHotelRepository.findByProduct();
+    }
+    
     async createHotels(hotels, productId, transaction) {
         if (!hotels || hotels.length === 0) return [];
 
@@ -16,7 +20,7 @@ class ProductHotelService {
         if (hotels.facilities?.length) {
         await FacilityService.replace(
           createdHotel.id,
-          hotel.facilities,
+          hotels.facilities,
           transaction
         );
       }
