@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        qouta: {
+        quota: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -41,13 +41,15 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
         status: {
-            type: DataTypes.ENUM('draft', 'submit'),
+            type: DataTypes.ENUM('draft', 'publish'),
             allowNull: true
-        }
+        },
+       
     }, {
         tableName: 'product',
-        timestamp: true,
+        timestamps: true,
         underscored: true
+        
     })
 
     Product.associate = (models) => {

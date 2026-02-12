@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "product_flight",
-      timestamps: false,
-      underscored: true,
+      timestamps: true,
+       underscored: true
     }
   );
 

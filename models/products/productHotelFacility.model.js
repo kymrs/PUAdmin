@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       {
         tableName: "product_hotel_facilities",
-        timestamps: false,
-        underscored: true,
+       timestamps: true,
+    underscored: true
       }
     );
     ProductHotelFaciility.associate = (models)=> {

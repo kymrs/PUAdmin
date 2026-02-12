@@ -2,7 +2,7 @@
     <div class="page-inner">
      <div class="col-lg-12">
         <!-- PRODUK -->
-        <form action="/products" method="POST" id="formProduct">
+        <form id="formProduct">
          <div class="row">
             <div class="col-lg-8">
                     <div class="card">
@@ -15,6 +15,7 @@
                                         Nama Produk<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
+                                        <input type="hidden" id="hidden_id">
                                         <input type="text" class="form-control" name="nama_produk" id="nama_produk" placeholder="Masukan Nama Produk" required>
                                     </div>
                                 </div>
@@ -23,7 +24,7 @@
                                         Kategori<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <select name="kategory" id="kategory" class="form-select kategory" >
+                                        <select name="category_id" id="category_id" class="form-select category_id" >
                                                 <option 
                                                 disabled
                                                 selected
@@ -45,7 +46,7 @@
                                         Keberangkatan<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="text" class="form-control" name="departure" id="departure" placeholder="Masukan Tempat Keberangkatan" required>
+                                        <input type="text" class="form-control" name="tmp_keberangkatan" id="tmp_keberangkatan" placeholder="Masukan Tempat Keberangkatan" required>
                                     </div>
                                 </div>
                                 <div class="form-group col">
@@ -53,15 +54,15 @@
                                         Durasi (Hari)<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="number" class="form-control" name="duration" id="duration" placeholder="9 Hari" value="9" required>
+                                        <input type="number" class="form-control" name="duration" id="duration" placeholder="9 Hari" required>
                                     </div>
                                 </div>
                                  <div class="form-group col">
                                     <label class="col fw-bold">
-                                       Qouta<span class="text-danger">*</span>
+                                       Quota<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="number" class="form-control" name="kouta" id="kouta" placeholder="9 Hari" value="1" required>
+                                        <input type="number" class="form-control" name="quota" id="quota" placeholder="9 Hari" value="1" required>
                                     </div>
                                 </div>
                                 <!-- <div class="form-group col">
@@ -73,13 +74,13 @@
                             <div class="form-group col">
                              <label class="col fw-bold">Maskapai Keberangkatan<span class="text-danger">*</span></label>
                             <div class="col">
-                              <input type="text" class="form-control" placeholder="Contoh: Garuda Indonesia">
+                              <input type="text" class="form-control" placeholder="Contoh: Garuda Indonesia" id="flight_kbrkt" name="flight_kbrkt">
                             </div>      
                         </div>
                         <div class="form-group col">
                             <label class="col fw-bold">Maskapai Kepulangan<span class="text-danger">*</span></label>
                             <div class="col">      
-                               <input type="text" class="form-control" placeholder="Contoh: Garuda Indonesia">
+                               <input id="flight_kplg" type="text" class="form-control" placeholder="Contoh: Garuda Indonesia">
                             </div>      
                         </div>
                                
@@ -119,9 +120,10 @@
                             <div class="form-group col">
                                     <label class="col fw-bold  form-label">Status</label>
                                         <div class="col">
-                                            <select name="status" class="form-select">
-                                                <option value="DRAFT">Draft</option>
-                                                <option value="ACTIVE">Publish</option>
+                                            <select name="status" class="form-select" id="status">
+                                                <option></option>
+                                                <option value="draft">Draft</option>
+                                                <option value="publish">Publish</option>
                                             </select>
                                         </div>                     
                             </div>
@@ -130,7 +132,8 @@
                                         Thumbnail Produk<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="file" class="form-control-file" name="thumbnail" onchange="validateFileExtension(this)">
+                                        <input type="file" class="form-control-file" 
+                                        id="thumbnail" name="thumbnail" onchange="validateFileExtension(this)">
                                     </div>
                             </div>
                              <div class="form-group col">
@@ -138,7 +141,7 @@
                                         Deskripsi Produk<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <textarea name="product_description" id="product_description" class="form-control" rows="5" placeholder="Contoh: Paket Umrah Easy ini dirancang khusus untuk jamaah yang menginginkan kenyamanan dengan harga terjangkau..." required></textarea>
+                                        <textarea name="description" id="description" class="form-control" rows="5" placeholder="Contoh: Paket Umrah Easy ini dirancang khusus untuk jamaah yang menginginkan kenyamanan dengan harga terjangkau..." required></textarea>
                                     </div>
                             </div>
                              <div class="form-group col">
@@ -146,7 +149,7 @@
                                         Syarat dan Ketentuan<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="text" class="form-control" name="Snk" id="snk" placeholder="Ketik lalu tekan Enter" required>
+                                        <input type="text" class="form-control" name="Snk" id="snk" placeholder="Ketik lalu tekan Enter" >
                                          
                                         <ul class="list-unstyled" id="snk-container">
                                             
@@ -160,7 +163,7 @@
                             <div class="form-group col-lg-12">
                                 <label for="" class="col fw-bold">Catatan<span class="text-danger">*</span></label>
                                  <div class="col d-flex justify-content-between">
-                                      <input type="text" class="form-control" name="note" id="note" placeholder="Ketik poin catatan lalu Enter (Misal: Harga dapat berubah sewaktu-waktu)" required>
+                                      <input type="text" class="form-control" name="note" id="note" placeholder="Ketik poin catatan lalu Enter (Misal: Harga dapat berubah sewaktu-waktu)" >
                                       <button type="button" id="addNote" class="btn rounded btn-primary ms-2">
                                         <i class="fas fa-plus"></i>                                                                 </button>
                                  </div>
@@ -222,12 +225,21 @@
                     <div class="card-body">
                         <div class="row g-4">
                              <div class="col-lg-6">
-                                <div class="hotel-container bg-light p-2 rounded">
+                                <div id="hotel_mekkah" class="hotel-container bg-light p-2 rounded" >
                                     <div class="form-group">
                                         <label class="col fw-bold">
                                             Hotel Mekkah<span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" name="include" placeholder="Contoh: Pullman ZamZam Tower" required>
+                                        <input type="text" class="form-control" name="include"  placeholder="Contoh: Pullman ZamZam Tower" required>
+                                    </div>
+                                    <div class="form-group col">
+                                            <label class="col fw-bold">
+                                                Image<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col">
+                                                <input type="file" class="form-control-file" 
+                                                id="hotel_mekkah_image" name="hotel_mekkah_image" onchange="validateFileExtension(this)">
+                                            </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col fw-bold">
@@ -247,7 +259,7 @@
                                         <label class="col fw-bold">
                                             Jarak Ke Masjidil Haram<span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" name="include" placeholder="Contoh: 50m(Pelantaran)" required>
+                                        <input type="text" class="form-control" name="include"  placeholder='Contoh: 50m(Pelantaran)' required>
                                     </div>
                                     <div class="form-group">
                                         <label class="col fw-bold">
@@ -260,13 +272,22 @@
                                 </div>
                              </div>
                              <div class="col-lg-6">
-                                 <div class="hotel-container bg-light p-2 rounded">
+                                 <div id="hotel_madinah" class="hotel-container bg-light p-2 rounded" >
                                      <div class="form-group">
                                         <label class="col fw-bold">
                                             Hotel Madinah<span class="text-danger">*</span>
                                         </label>
                                         <input type="text" class="form-control" name="exclude"  placeholder="Contoh: Anwar Al Madinah" required>
                                      </div>
+                                     <div class="form-group col">
+                                            <label class="col fw-bold">
+                                                Image<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col">
+                                                <input type="file" class="form-control-file" 
+                                               id="hotel_madinah_image"  name="hotel_madinah_image" onchange="validateFileExtension(this)">
+                                            </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="col fw-bold">
                                           Rating
@@ -285,7 +306,7 @@
                                         <label class="col fw-bold">
                                             Jarak Ke Masjid Nabawi<span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" name="include" placeholder="Contoh: 50m(Pelantaran)" required>
+                                        <input type="text" class="form-control" name="include" placeholder='Contoh: 50m(Pelantaran)' required>
                                     </div> 
                                     <div class="form-group">
                                         <label class="col fw-bold">
@@ -312,7 +333,7 @@
                                         Include<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="text" class="form-control" name="include" id="includde-fclty" placeholder="Ketik lalu tekan Enter" required>
+                                        <input type="text" class="form-control" name="include" id="include-fclty" placeholder="Ketik lalu tekan Enter" >
                                     </div>
                                 </div>
                                
@@ -321,7 +342,7 @@
                                         Exclude<span class="text-danger">*</span>
                                     </label>
                                     <div class="col">
-                                        <input type="text" class="form-control" name="exclude" id="exclude-fclty" placeholder="Ketik lalu tekan Enter" required>
+                                        <input type="text" class="form-control" name="exclude" id="exclude-fclty" placeholder="Ketik lalu tekan Enter" >
                                     </div>
                                 </div>
                                   <div class="form-group col">

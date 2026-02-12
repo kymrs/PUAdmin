@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         tableName: 'product_prices',
-        timestamp: false,
-        underscored: true
+       timestamps: true,
+    underscored: true
     });
 
     ProductPrices.associate = (models) => {

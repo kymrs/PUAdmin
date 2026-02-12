@@ -1,8 +1,13 @@
+const { sequelize } = require("../../models");
 const productRepository = require("../../repositories/products/product.repository");
 const productPricesRepository = require("../../repositories/products/productPrices.repository");
 const productFlightRepository = require("../../repositories/products/productFlight.repository");
 const productNoteRepository = require("../../repositories/products/productNote.repository");
 const productSnKRepository = require("../../repositories/products/productSnK.repository");
+const productHotelRepository = require("../../repositories/products/productHotel.repository")
+const productFacilityRepository = require("../../repositories/products/productFacility.repository");
+const productItineraryRepository = require("../../repositories/products/productItinerary.repository");
+
 
 
 
@@ -41,10 +46,10 @@ class ProductService {
        }
 
        async createProduct(productData) {
-            const transaction = await db.sequelize.transaction();
+            const transaction = await sequelize.transaction();
 
             try {
-            const { prices, flights, ...productFields } = productData;
+            const { prices, flights, notes, snks, facilities,hotels, itineraries,...productFields } = productData;
 
             //  create product
             const newProduct = await productRepository.createProduct(
@@ -60,10 +65,8 @@ class ProductService {
                 price: p.price
                 }));
 
-                await productPricesRepository.bulkCreate(
-                pricePayload,
-                transaction
-                );
+                await productPricesRepository.createMany(  pricePayload,
+                transaction);
             }
 
             // create flights
@@ -74,7 +77,7 @@ class ProductService {
                 maskapai: f.maskapai
                 }));
 
-                await productFlightRepository.bulkCreate(
+                await productFlightRepository.create(
                 flightPayload,
                 transaction
                 );
@@ -87,7 +90,7 @@ class ProductService {
                 note: n.note
                 }));
 
-                await productNoteRepository.bulkCreate(
+                await productNoteRepository.createNotes(
                 notePayload,
                 transaction
                 );
@@ -100,7 +103,7 @@ class ProductService {
                 snk: s.snk
                 }));
 
-                await productSnKRepository.bulkCreate(
+                await productSnKRepository.create(
                 snkPayload,
                 transaction
                 );
@@ -114,16 +117,16 @@ class ProductService {
                 type: f.type
                 }));
 
-                await productFacilityRepository.bulkCreate(
+                await productFacilityRepository.create(
                 facilityPayload,
                 transaction
                 );
             }
 
             // create Hotel
-            if(hotel?.length) {
-                const hotelPayload = hotel.map(h => ({
-                   product_id: productId,
+            if(hotels?.length) {
+                const hotelPayload = hotels.map(h => ({
+                   product_id: newProduct.id,
                     name: h.name,
                     city: h.city,
                     rating: h.rating,
@@ -131,10 +134,25 @@ class ProductService {
                     image: h.image,
                 }));
 
-                await productHotelRepository.bulkCreate(
+                await productHotelRepository.create(
                 hotelPayload,
                 transaction
                 );
+            }
+            // 
+            if(itineraries?.length){
+                const itineraryPayload = itineraries.map(i => ({
+                    product_id: newProduct.id,
+                    day_order: i.day_order,
+                    title: i.title,
+                    description: i.description
+                }));
+
+                await productItineraryRepository.createreate(
+                    itineraryPayload,
+                    transaction
+                );
+
             }
 
             await transaction.commit();
