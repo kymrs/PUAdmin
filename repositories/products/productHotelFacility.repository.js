@@ -1,6 +1,11 @@
+const { where } = require("sequelize");
 const { ProductHotelFacility } = require("../../models");
 
 class ProductHotelFacilityRepository {
+async get(product_hotel_id) {
+ return ProductHotelFacility.findAll({
+    where: {product_hotel_id}});
+  }  
   async create(payload, transaction = null) {
     return ProductHotelFacility.create(payload, { transaction });
   }

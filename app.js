@@ -25,7 +25,7 @@ setIO(io); // ✅ ini penting agar getIO() bisa dipakai di auth.service.js
 // app.use(
 //   session({
 //     secret: "rahasia_kamu",
-//     resave: false,
+//     resave: false,a
 //     saveUninitialized: true,
 //     cookie: { secure: false },
 //   })
@@ -77,12 +77,12 @@ app.use("/", authRoutes);
 // 📦 Auto-load UI Routes (nested-friendly)
 const uiRoutesPath = path.join(__dirname, "routes", "ui");
 
-// Multer put file upload setup
-const FILE_TYPE ={
-    'image/png': 'png',
-    'image/jpeg': 'jpeg',
-    'image/jpg': 'jpg'
-}
+
+// const FILE_TYPE ={
+//     'image/png': 'png',
+//     'image/jpeg': 'jpeg',
+//     'image/jpg': 'jpg'
+// }
 
 
 
@@ -127,24 +127,49 @@ function loadUiRoutes(basePath, parentRoute = "") {
 loadUiRoutes(uiRoutesPath);
 
 // 🔌 Auto-load API Routes (recursive)
+// const loadApiRoutes = (dir, baseRoute = "") => {
+//   fs.readdirSync(dir).forEach((file) => {
+//     const fullPath = path.join(dir, file);
+//     const stat = fs.lstatSync(fullPath);
+
+//     if (stat.isDirectory()) {
+//       // Rekursif jika folder
+//       const newBase = path.join(baseRoute, file);
+//       loadApiRoutes(fullPath, newBase);
+//     } else if (file.endsWith(".routes.js")) {
+//       const route = require(fullPath);
+//       const routeName = file.split(".")[0]; // gallery.routes.js => gallery
+//       const routePath = `/api/${path.join(baseRoute, routeName)}`.replace(/\\/g, "/");
+//       app.use(routePath, route);
+//       console.log(`✅ Loaded API route: ${routePath}`); //UNTUK MELIHAT HASIL ROUTES
+//     }
+//   });
+// };
+
 const loadApiRoutes = (dir, baseRoute = "") => {
   fs.readdirSync(dir).forEach((file) => {
     const fullPath = path.join(dir, file);
     const stat = fs.lstatSync(fullPath);
 
     if (stat.isDirectory()) {
-      // Rekursif jika folder
-      const newBase = path.join(baseRoute, file);
-      loadApiRoutes(fullPath, newBase);
-    } else if (file.endsWith(".routes.js")) {
+      loadApiRoutes(fullPath, path.join(baseRoute, file));
+    } 
+    else if (file.endsWith(".routes.js")) {
       const route = require(fullPath);
-      const routeName = file.split(".")[0]; // gallery.routes.js => gallery
-      const routePath = `/api/${path.join(baseRoute, routeName)}`.replace(/\\/g, "/");
+
+      const isIndex = file === "index.routes.js";
+      const routeName = isIndex ? "" : file.replace(".routes.js", "");
+
+      const routePath = `/api/${path.join(baseRoute, routeName)}`
+        .replace(/\\/g, "/")
+        .replace(/\/$/, "");
+
       app.use(routePath, route);
-      console.log(`✅ Loaded API route: ${routePath}`); //UNTUK MELIHAT HASIL ROUTES
+      console.log(`✅ Loaded API route: ${routePath}`);
     }
   });
 };
+
 
 loadApiRoutes(path.join(__dirname, "routes", "api"));
 

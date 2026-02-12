@@ -7,7 +7,7 @@ class ProductPricesRepository {
             room_types: p.room_types,
             price: p.price
         }))
-        return await ProductPrices.bulkCreate(payload)
+        return await ProductPrices.bulkCreate(payload, {transaction})
     }
 
     async findByProduct(productId){

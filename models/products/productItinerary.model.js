@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
 
     },{
         tableName: 'product_itineraries',
-        timestamps: false,
-        underscored: true,
+      timestamps: true,
+    underscored: true
     });
     ProductItinerary.associate = (models) => {
         ProductItinerary.belongsTo(models.Product, {

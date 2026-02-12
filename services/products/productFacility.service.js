@@ -1,6 +1,11 @@
 const ProductFacilityRepository = require("../../repositories/products/productFacility.repository");
 
 class ProductFacilityService {
+
+    async getFacility() {
+        return await ProductFacilityRepository.findByProduct();
+    }
+
     async createFacility(facilities, productId, transaction) {
         if(!facilities || facilities.length === 0) return [];
 
@@ -11,6 +16,7 @@ class ProductFacilityService {
         }))
         return await ProductFacilityRepository.create(facilityPayload, transaction);
     }
+    
     async replaceFacility(productId, facilities, transaction = null) {
         if (!facilities || facilities.length === 0) return [];
 

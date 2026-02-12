@@ -29,17 +29,36 @@ class ProductController {
 
   // Create new product
   async createProduct(req, res) {
-    try {
-      const productData = req.body;
-      const product = await productService.createProduct(productData);
+  try {
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
 
+    const productData = {
+      ...req.body,
+      prices: JSON.parse(req.body.prices || "[]"),
+      flights: JSON.parse(req.body.flights || "[]"),
+      hotels: JSON.parse(req.body.hotels || "[]"),
+      itineraries: JSON.parse(req.body.itineraries || "[]"),
+      snk: JSON.parse(req.body.snk || "[]"),
+      notes: JSON.parse(req.body.notes || "[]"),
+    };
 
-      res.status(201).json({ success: true, data: product });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: "Internal Server Error" });
-    }
+    const product = await productService.createProduct(productData);
+
+    res.status(201).json({
+      success: true,
+      data: product
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    });
   }
+}
+
 
   // Update product
   async updateProduct(req, res) {

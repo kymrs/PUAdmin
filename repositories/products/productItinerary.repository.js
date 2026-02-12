@@ -1,4 +1,4 @@
-const { ProductItinerary } = require("../models");
+const { ProductItinerary } = require("../../models");
 
 class ProductItineraryRepository {
     async create(itineraries, transaction = null) {

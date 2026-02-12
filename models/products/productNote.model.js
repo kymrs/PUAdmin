@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         tableName: 'product_notes',
-        timestamp: true,
-        underscored: true
+       timestamps: true,
+    underscored: true
     });
 
     ProductNote.associate = (models) => {

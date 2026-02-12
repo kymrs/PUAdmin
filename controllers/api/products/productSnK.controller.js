@@ -1,15 +1,15 @@
 const ProductService = require("../../../services/products/productService.service");
-const productFacilityRepository = require("../../../repositories/products/productFacility.repository");
+const productSnKRepository = require("../../../repositories/products/productSnK.repository");
 
-class ProductFacilityController {
-    async createFacilities(req, res) {
+class ProductSnKController {
+    async createsnks(req, res) {
         const t = sequelize.transaction();
 
         try {
-            const {facilities, ...productPayload} = req.body;
+            const {snks, ...productPayload} = req.body;
             const product = await ProductService.createProduct(productPayload, t);
 
-            await productFacilityRepository.createFacility(facilities, product.id, t);
+            await productSnKRepository.create(snks, product.id, t);
 
             await t.commit();
 
@@ -21,4 +21,4 @@ class ProductFacilityController {
         }
     }
 }                   
-module.exports = new ProductFacilityController();
+module.exports = new ProductSnKController();

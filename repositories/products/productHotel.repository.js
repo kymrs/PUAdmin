@@ -1,4 +1,4 @@
-const { ProductHotel } = require("../models");
+const { ProductHotel,  ProductHotelFaciility} = require("../../models");
 
 class ProductHotelRepository {
   async create(data, transaction = null) {
@@ -6,6 +6,12 @@ class ProductHotelRepository {
   }
   async findByProduct(productId) {
     return await ProductHotel.findAll({
+      // include: [
+      //   {
+      //     model: ProductHotelFaciility,
+      //     through: {attributes: []}
+      //   }
+      // ],
       where: { product_id: productId },
     });
   }

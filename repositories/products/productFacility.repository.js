@@ -1,4 +1,4 @@
-const { ProductFacility } = require("../models");
+const { ProductFacility } = require("../../models");
 
 class ProductFacilityRepository {
   async create(facility, transaction = null) {
