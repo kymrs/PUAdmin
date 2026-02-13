@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       product_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: 'product',
+          key: 'id'
+        }
       },
       airline_name: {
         type: DataTypes.STRING(255),

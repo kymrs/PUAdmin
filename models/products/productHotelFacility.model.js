@@ -8,9 +8,13 @@ module.exports = (sequelize, DataTypes) => {
           autoIncrement: true,
         },
         product_hotel_id: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'product_hotels',
+          key: 'id'
+        }
+      },
         name: {
           type: DataTypes.STRING(255),
           allowNull: false,

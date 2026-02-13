@@ -10,7 +10,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         prodcut_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'product',
+                key: 'id'
+            }
         },
         name: {
             type: DataTypes.STRING(255),

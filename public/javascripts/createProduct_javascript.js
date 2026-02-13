@@ -205,6 +205,8 @@ document.addEventListener("DOMContentLoaded", function() {
         ProductHotelState.Mekkah.jarak =
             document.querySelector("#hotel_mekkah input[placeholder='Contoh: 50m(Pelantaran)']").value;
 
+        ProductHotelState.Madinah.name =
+            document.querySelector("#hotel_madinah input[type=text]").value;
 
         ProductHotelState.Madinah.rating =
             document.querySelector("#hotel_madinah select").value;
