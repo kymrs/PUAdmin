@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         product_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: 'product',
+                key: 'id'
+            }
         },
         room_types: {
             type: DataTypes.ENUM('Quad', 'Triple', 'Double'),
