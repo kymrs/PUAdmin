@@ -1,8 +1,8 @@
 const { ProductSnK } = require("../../models")
 
 class ProductSnKRepository {
-    async create(snks, transaction = null){
-        return await ProductSnK.bulkCreate(snks, {transaction});
+    async create(payload, transaction = null){
+        return await ProductSnK.bulkCreate(payload, {transaction});
     }
     async findByProduct(productId){
         return await ProductSnK.findAll({

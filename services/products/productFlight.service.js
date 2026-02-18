@@ -7,10 +7,14 @@ class ProductFlightService {
         return await ProductFlightRepository.findByProduct();
     }
 
-    async createFlights(flights, productId, transaction) {
-        if(!flights || flights.length === 0) return [];
+    async createFlights(productId, flights, transaction) {
+        let validateFlights = flights;
+        if (typeof flights === "string") validateFlights = JSON.parse(flights);
+        if(!Array.isArray(validateFlights)) validateFlights = validateFlights ? [validateFlights] : [];
 
-        const flightPayload = flights.map(f => ({
+        if(validateFlights.length === 0) return [];
+
+        const flightPayload = validateFlights.map(f => ({
 
             product_id: productId, 
             airline_name: f.airline_name, 

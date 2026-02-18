@@ -1,12 +1,7 @@
 const { ProductPrices } = require("../../models")
 
 class ProductPricesRepository {
-    async createMany(productId, prices){
-        const payload = prices.map(p => ({
-            product_id: productId,
-            room_types: p.room_types,
-            price: p.price
-        }))
+    async createMany(payload, {transaction}){
         return await ProductPrices.bulkCreate(payload, {transaction})
     }
 
@@ -25,4 +20,3 @@ class ProductPricesRepository {
 }
 
 module.exports = new ProductPricesRepository();
-;

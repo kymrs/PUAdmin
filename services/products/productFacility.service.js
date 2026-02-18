@@ -7,9 +7,13 @@ class ProductFacilityService {
     }
 
     async createFacility(facilities, productId, transaction) {
-        if(!facilities || facilities.length === 0) return [];
+        let validateFacilities = facilities;
+        if (typeof facilities === "string") validateFacilities = JSON.parse(facilities);
+        if(!Array.isArray(validateFacilities)) validateFacilities = validateFacilities ? [validateFacilities] : [];
 
-        const facilityPayload = facilities.map(f => ({
+        if(validateFacilities.length === 0) return [];
+
+        const facilityPayload = validateFacilities.map(f => ({
             product_id: productId, 
             facility: f.facility, 
             type: f.type
