@@ -39,7 +39,7 @@ class ProductController {
       flights: JSON.parse(req.body.flights || "[]"),
       hotels: JSON.parse(req.body.hotels || "[]"),
       itineraries: JSON.parse(req.body.itineraries || "[]"),
-      snk: JSON.parse(req.body.snk || "[]"),
+      snks: JSON.parse(req.body.snks || "[]"),
       notes: JSON.parse(req.body.notes || "[]"),
     };
 

@@ -2,8 +2,8 @@ const { ProductNote } = require('../../models');
 
 class ProductNoteRepository {
 
-    async createNotes(notes, transaction=null) {
-        return await ProductNote.bulkCreate(notes, {transaction});
+    async createNotes(payload, transaction=null) {
+        return await ProductNote.bulkCreate(payload, {transaction});
     }
 
     async findByProduct(productId) {

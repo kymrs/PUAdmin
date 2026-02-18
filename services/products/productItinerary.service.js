@@ -6,11 +6,15 @@ class ProductItineraryService {
     }
 
     async createItinerary(itineraries, productId, transaction) {
-        if(!itineraries || itineraries.length === 0) return [];
+        let validateItineraries = itineraries;
+        if (typeof itineraries === "string") validateItineraries = JSON.parse(itineraries);
+        if(!Array.isArray(validateItineraries)) validateItineraries = validateItineraries ? [validateItineraries] : [];
 
-        const itineraryPayload = itineraries.map(i => ({
+        if(validateItineraries.length === 0) return [];
+
+        const itineraryPayload = validateItineraries.map(i => ({
             product_id: productId, 
-            day: i.day, 
+            day_order: i.day_order, 
             activity: i.activity,
             description: i.description
         }))

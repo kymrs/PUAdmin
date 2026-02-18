@@ -6,9 +6,13 @@ class ProductHotelService {
     }
     
     async createHotels(hotels, productId, transaction) {
-        if (!hotels || hotels.length === 0) return [];
+        let validateHotels = hotels;
+        if (typeof hotels === "string") validateHotels = JSON.parse(hotels);
+        if(!Array.isArray(validateHotels)) validateHotels = validateHotels ? [validateHotels] : [];
 
-        const hotelPayload = hotels.map(h => ({
+        if(validateHotels.length === 0) return [];
+
+        const hotelPayload = validateHotels.map(h => ({
             product_id: productId,
             name: h.name,
             city: h.city,

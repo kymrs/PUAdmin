@@ -35,24 +35,18 @@ document.addEventListener("DOMContentLoaded", function() {
         status: ""
     }
     // price State
-    const ProductPriceState = {
-        Quad: {
-            price: 0
-        },
-        Double: {
-            price: 0
-        },
-        Triple: {
-            price: 0
-        }
-    }
+    const ProductPriceState = [
+           { type: "Quad", price: 0 },
+           { type: "Double", price: 0 },
+           { type: "Triple", price: 0 }
+    ]
     // flight state
     const ProductFlightState = {
        Departure: {
-            airlane_name: ""
+            airline_name: ""
        },
        Return: {
-            airlane_name: ""
+            airline_name: ""
        }
     }
     //Facility state= 
@@ -114,23 +108,37 @@ document.addEventListener("DOMContentLoaded", function() {
         ProductState.description = e.target.value;
     })
     document.getElementById("flight_kbrkt").addEventListener("input", (e) => {
-        ProductFlightState.Departure.airlane_name = e.target.value
+        ProductFlightState.Departure.airline_name = e.target.value
     })
     document.getElementById("flight_kplg").addEventListener("input", (e) => {
-        ProductFlightState.Return.airlane_name = e.target.value
+        ProductFlightState.Return.airline_name = e.target.value
     })
     document.getElementById("status").addEventListener("change", (e) => {
         ProductState.status = e.target.value;
     })
-    document.getElementById("price_quad").addEventListener("input", (e) => {
-        ProductPriceState.Quad.price = Number(e.target.value);
-    })
-    document.getElementById("price_triple").addEventListener("input", (e) => {
-        ProductPriceState.Triple.price = Number(e.target.value);
-    })
-    document.getElementById("price_double").addEventListener("input", (e) => {
-        ProductPriceState.Double.price = Number(e.target.value);
-    })
+    document.querySelectorAll("[data-type]").forEach(input => {
+        input.addEventListener("input", (e) => {
+            const type = e.target.dataset.type;
+
+            const item = ProductPriceState.find(p => p.type === type)
+
+            if(item){
+                item.price = Number(e.target.value);
+            }
+        })
+    }, )
+    // document.getElementById("price_quad").addEventListener("input", (e) => {
+    //     ProductPriceState.type = "Quad";
+    //     ProductPriceState.price = Number(e.target.value);
+    // })
+    // document.getElementById("price_triple").addEventListener("input", (e) => {
+    //     ProductPriceState.type = "Triple"
+    //     ProductPriceState.price = Number(e.target.value);
+    // })
+    // document.getElementById("price_double").addEventListener("input", (e) => {
+    //     ProductPriceState.type = "Double";
+    //     ProductPriceState.price = Number(e.target.value);
+    // })
     document.getElementById("include-fclty").addEventListener("keydown", (e) => {
         if(e.key === "Enter"){
             e.preventDefault();
@@ -213,6 +221,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         ProductHotelState.Madinah.jarak =
             document.querySelector("#hotel_madinah input[placeholder='Contoh: 50m(Pelantaran)']").value;
+
+        
     }
     document.addEventListener("change", (e) => {
         if (!e.target.classList.contains("facility-checkbox")) return;
@@ -263,8 +273,8 @@ document.addEventListener("DOMContentLoaded", function() {
         })),
         
         flights: [
-            {type: "Departure", airlane_name: ProductFlightState.Departure.airlane_name},
-            {type: "Return", airlane_name: ProductFlightState.Return.airlane_name},
+            {type: "Departure", airline_name: ProductFlightState.Departure.airline_name},
+            {type: "Return", airline_name: ProductFlightState.Return.airline_name},
         ],
 
         hotels: [
@@ -299,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }))
         ],
 
-        snk: ProductSnKState,
+        snks: ProductSnKState,
         notes: ProductNoteState,
         itinerary: ProductItineraryState
     }
@@ -319,15 +329,13 @@ document.addEventListener("DOMContentLoaded", function() {
             formData.append(key, value);
         })
 
-        formData.append("prices", JSON.stringify(Object.entries(ProductPriceState).map(([type, val]) => ({
-                type,
-                price: Number(val.price)
-            }))
+        formData.append("prices", JSON.stringify(
+            ProductPriceState
         )),
         
         formData.append("flights", JSON.stringify([
-            {type: "Departure", airlane_name: ProductFlightState.Departure.airlane_name},
-            {type: "Return", airlane_name: ProductFlightState.Return.airlane_name},
+            {type: "Departure", airline_name: ProductFlightState.Departure.airline_name},
+            {type: "Return", airline_name: ProductFlightState.Return.airline_name},
         ]))
        
         formData.append("hotels", JSON.stringify([
@@ -360,8 +368,8 @@ document.addEventListener("DOMContentLoaded", function() {
         ));
 
         // 🔹 snk & note
-        formData.append("snk", JSON.stringify(ProductSnKState));
-        formData.append("notes", JSON.stringify(ProductNoteState));
+        formData.append("name", JSON.stringify(ProductSnKState));
+        formData.append("note", JSON.stringify(ProductNoteState));
         
 
         if(thumbnail_file){

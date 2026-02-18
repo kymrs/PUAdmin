@@ -1,8 +1,8 @@
 const { ProductFacility } = require("../../models");
 
 class ProductFacilityRepository {
-  async create(facility, transaction = null) {
-    return await ProductFacility.bulkCreate(facility, { transaction });
+  async create(payload, transaction) {
+    return await ProductFacility.bulkCreate(payload, { transaction });
   }
   async findByProduct(productId) {
     return await ProductFacility.findAll({
