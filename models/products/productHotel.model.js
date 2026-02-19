@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       image:{
         type: DataTypes.STRING(255),
         allowNull: true
+      },
+      facilities: {
+        type: DataTypes.TEXT,
+        allowNull: false
       }
     },
     {
@@ -46,11 +50,6 @@ module.exports = (sequelize, DataTypes) => {
     ProductHotel.belongsTo(models.Product, {
       foreignKey: 'product_id',
       as: 'product'
-    });
-    ProductHotel.hasMany(models.ProductHotelFaciility, {
-      foreignKey: 'product_hotel_id',
-      as: 'facilities',
-      onDelete: 'CASCADE'
     });
   }
 

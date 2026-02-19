@@ -30,14 +30,26 @@ class ProductController {
   // Create new product
   async createProduct(req, res) {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
+    // console.log("BODY:", req.body);
+    // console.log("FILES:", req.files);
+    let hotels = JSON.parse(req.body.hotels || "[]");
+
+    hotels = hotels.map(hotel => {
+      if (hotel.city === "Mekkah" && req.files?.hotel_image_mekkah) {
+        // Ambil nama file yang disimpan multer (misal: hotel-123.jpg)
+          hotel.image = req.files.hotel_image_mekkah[0].filename; 
+      }
+      if (hotel.city === "Madinah" && req.files?.hotel_image_madinah){
+          hotel.image = req.files.hotel_image_madinah[0].filename;
+      }
+         return hotel;
+    })
 
     const productData = {
       ...req.body,
       prices: JSON.parse(req.body.prices || "[]"),
       flights: JSON.parse(req.body.flights || "[]"),
-      hotels: JSON.parse(req.body.hotels || "[]"),
+      hotels: hotels,
       itineraries: JSON.parse(req.body.itineraries || "[]"),
       snks: JSON.parse(req.body.snks || "[]"),
       notes: JSON.parse(req.body.notes || "[]"),
