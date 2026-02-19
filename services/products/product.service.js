@@ -140,7 +140,7 @@ class ProductService {
             if(validateSnks?.length) {
                 const snkPayload = validateSnks.map(s => ({
                 product_id: newProduct.id,
-                name: s.snk
+                name: s.name
                 }));
 
                 await productSnKRepository.create(
@@ -174,6 +174,7 @@ class ProductService {
                     rating: h.rating,
                     jarak: h.jarak,
                     image: h.image,
+                    facilities: h.facilities
                 }));
 
                 await productHotelRepository.create(

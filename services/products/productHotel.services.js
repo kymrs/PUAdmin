@@ -19,6 +19,7 @@ class ProductHotelService {
             rating: h.rating,
             jarak: h.jarak,
             image: h.image,
+            facilities: h.facilities
         }));
 
         if (hotels.facilities?.length) {
