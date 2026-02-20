@@ -2,8 +2,8 @@ const {ProductFlight} = require("../../models")
 
 class ProductFlightRepository {
 
-    async create(flights, transaction = null){
-         return await ProductFlight.bulkCreate(flights, {transaction});
+    async create(payload, transaction){
+         return await ProductFlight.bulkCreate(payload, {transaction});
     }
     async findByProduct(productId) {
         return await ProductFlight.findAll({

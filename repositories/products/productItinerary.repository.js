@@ -1,8 +1,8 @@
 const { ProductItinerary } = require("../../models");
 
 class ProductItineraryRepository {
-    async create(itineraries, transaction = null) {
-        return await ProductItinerary.bulkCreate(itineraries, { transaction });
+    async create(payload, transaction = null) {
+        return await ProductItinerary.bulkCreate(payload, { transaction });
     }
     async findByProduct(productId) {
         return await ProductItinerary.findAll({

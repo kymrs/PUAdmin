@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       product_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: 'product',
+          key: 'id'
+        }
       },
       name: {
         type: DataTypes.STRING(255),
@@ -24,12 +28,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       jarak:{
-        type:DataTypes.STRING(100),
+        type:DataTypes.STRING(255),
         allowNull: false
       },
       image:{
         type: DataTypes.STRING(255),
         allowNull: true
+      },
+      facilities: {
+        type: DataTypes.TEXT,
+        allowNull: false
       }
     },
     {
@@ -42,11 +50,6 @@ module.exports = (sequelize, DataTypes) => {
     ProductHotel.belongsTo(models.Product, {
       foreignKey: 'product_id',
       as: 'product'
-    });
-    ProductHotel.hasMany(models.ProductHotelFaciility, {
-      foreignKey: 'product_hotel_id',
-      as: 'facilities',
-      onDelete: 'CASCADE'
     });
   }
 

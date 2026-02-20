@@ -9,11 +9,19 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      category_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       nama_produk: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      date: {
+      tmp_keberangkatan: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      tgl_keberangkatan: {
         type: Sequelize.DATE,
         allowNull: false,
       },
@@ -21,17 +29,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      kouta: {
+      quota: {
         type: Sequelize.INTEGER
         ,allowNull: false,
-      },
-      departure_airlines: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      return_airlines: {
-        type: Sequelize.STRING,
-        allowNull: false,
       },
       description: {
         type: Sequelize.STRING,

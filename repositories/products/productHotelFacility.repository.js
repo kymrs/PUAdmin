@@ -6,9 +6,9 @@ async get(product_hotel_id) {
  return ProductHotelFacility.findAll({
     where: {product_hotel_id}});
   }  
-  async create(payload, transaction = null) {
-    return ProductHotelFacility.create(payload, { transaction });
-  }
+  // async create(payload, transaction = null) {
+  //   return ProductHotelFacility.create(payload, { transaction });
+  // }
 
   async bulkCreate(payloads, transaction = null) {
     return ProductHotelFacility.bulkCreate(payloads, { transaction });

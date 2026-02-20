@@ -6,9 +6,13 @@ class ProductNoteService {
     }
 
     async createNotes(notes, productId, transaction) {
-        if (!notes || notes.length === 0) return [];
+        let validateNotes = notes;
+        if (typeof notes === "string") validateNotes = JSON.parse(notes);
+        if(!Array.isArray(validateNotes)) validateNotes = validateNotes ? [validateNotes] : [];
 
-        const notesPayload = notes.map(n => ({
+        if(validateNotes.length === 0) return [];
+
+        const notesPayload = validateNotes.map(n => ({
             product_id: productId,
             note: n.note
         }));

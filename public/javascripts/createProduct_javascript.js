@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
     loadCategory(); 
-    fetchHotelFacility()
 
     const noteInput = document.getElementById('note');
     const btnAddNote = document.getElementById('addNote');
@@ -35,24 +34,18 @@ document.addEventListener("DOMContentLoaded", function() {
         status: ""
     }
     // price State
-    const ProductPriceState = {
-        Quad: {
-            price: 0
-        },
-        Double: {
-            price: 0
-        },
-        Triple: {
-            price: 0
-        }
-    }
+    const ProductPriceState = [
+           { type: "Quad", price: 0 },
+           { type: "Double", price: 0 },
+           { type: "Triple", price: 0 }
+    ]
     // flight state
     const ProductFlightState = {
        Departure: {
-            airlane_name: ""
+            airline_name: ""
        },
        Return: {
-            airlane_name: ""
+            airline_name: ""
        }
     }
     //Facility state= 
@@ -71,14 +64,14 @@ document.addEventListener("DOMContentLoaded", function() {
             rating: null,
             jarak: "",
             image: "",
-            facilities: new Set()
+            facilities: ""
     },
         Madinah: {
             name: "",
             rating: null,
             jarak: "",
             image: "",
-            facilities: new Set()
+            facilities: ""
         }
     }
     const ProductItineraryState = []
@@ -114,22 +107,36 @@ document.addEventListener("DOMContentLoaded", function() {
         ProductState.description = e.target.value;
     })
     document.getElementById("flight_kbrkt").addEventListener("input", (e) => {
-        ProductFlightState.Departure.airlane_name = e.target.value
+        ProductFlightState.Departure.airline_name = e.target.value
     })
     document.getElementById("flight_kplg").addEventListener("input", (e) => {
-        ProductFlightState.Return.airlane_name = e.target.value
+        ProductFlightState.Return.airline_name = e.target.value
     })
     document.getElementById("status").addEventListener("change", (e) => {
         ProductState.status = e.target.value;
     })
+    document.querySelectorAll("[data-type]").forEach(input => {
+        input.addEventListener("input", (e) => {
+            const type = e.target.dataset.type;
+
+            const item = ProductPriceState.find(p => p.type === type)
+
+            if(item){
+                item.price = Number(e.target.value);
+            }
+        })
+    }, )
     document.getElementById("price_quad").addEventListener("input", (e) => {
-        ProductPriceState.Quad.price = Number(e.target.value);
+        ProductPriceState.type = "Quad";
+        ProductPriceState.price = Number(e.target.value);
     })
     document.getElementById("price_triple").addEventListener("input", (e) => {
-        ProductPriceState.Triple.price = Number(e.target.value);
+        ProductPriceState.type = "Triple"
+        ProductPriceState.price = Number(e.target.value);
     })
     document.getElementById("price_double").addEventListener("input", (e) => {
-        ProductPriceState.Double.price = Number(e.target.value);
+        ProductPriceState.type = "Double";
+        ProductPriceState.price = Number(e.target.value);
     })
     document.getElementById("include-fclty").addEventListener("keydown", (e) => {
         if(e.key === "Enter"){
@@ -205,12 +212,22 @@ document.addEventListener("DOMContentLoaded", function() {
         ProductHotelState.Mekkah.jarak =
             document.querySelector("#hotel_mekkah input[placeholder='Contoh: 50m(Pelantaran)']").value;
 
+        ProductHotelState.Mekkah.facilities = 
+            document.getElementById("mekkah_fclty").value;
+
+        ProductHotelState.Madinah.name =
+            document.querySelector("#hotel_madinah input[type=text]").value;
 
         ProductHotelState.Madinah.rating =
             document.querySelector("#hotel_madinah select").value;
 
         ProductHotelState.Madinah.jarak =
             document.querySelector("#hotel_madinah input[placeholder='Contoh: 50m(Pelantaran)']").value;
+
+        ProductHotelState.Madinah.facilities = 
+            document.getElementById("madinah_fclty").value;
+
+        
     }
     document.addEventListener("change", (e) => {
         if (!e.target.classList.contains("facility-checkbox")) return;
@@ -261,20 +278,18 @@ document.addEventListener("DOMContentLoaded", function() {
         })),
         
         flights: [
-            {type: "Departure", airlane_name: ProductFlightState.Departure.airlane_name},
-            {type: "Return", airlane_name: ProductFlightState.Return.airlane_name},
+            {type: "Departure", airline_name: ProductFlightState.Departure.airline_name},
+            {type: "Return", airline_name: ProductFlightState.Return.airline_name},
         ],
 
         hotels: [
             {
             city: "Mekkah",
             ...ProductHotelState.Mekkah,
-            facilities: [...ProductHotelState.Mekkah.facilities]
             },
             {
             city: "Madinah",
             ...ProductHotelState.Madinah,
-            facilities: [...ProductHotelState.Madinah.facilities]
             }
         ],
 
@@ -297,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }))
         ],
 
-        snk: ProductSnKState,
+        snks:  ProductSnKState,
         notes: ProductNoteState,
         itinerary: ProductItineraryState
     }
@@ -317,25 +332,21 @@ document.addEventListener("DOMContentLoaded", function() {
             formData.append(key, value);
         })
 
-        formData.append("prices", JSON.stringify(Object.entries(ProductPriceState).map(([type, val]) => ({
-                type,
-                price: Number(val.price)
-            }))
+        formData.append("prices", JSON.stringify(
+            ProductPriceState
         )),
         
         formData.append("flights", JSON.stringify([
-            {type: "Departure", airlane_name: ProductFlightState.Departure.airlane_name},
-            {type: "Return", airlane_name: ProductFlightState.Return.airlane_name},
+            {type: "Departure", airline_name: ProductFlightState.Departure.airline_name},
+            {type: "Return", airline_name: ProductFlightState.Return.airline_name},
         ]))
        
         formData.append("hotels", JSON.stringify([
             { city:"Mekkah",
             ...ProductHotelState.Mekkah,
-            facilities: [...ProductHotelState.Mekkah.facilities]
             },
             { city:"Madinah",
             ...ProductHotelState.Madinah,
-            facilities: [...ProductHotelState.Madinah.facilities]
             }
         ]));
 
@@ -358,8 +369,16 @@ document.addEventListener("DOMContentLoaded", function() {
         ));
 
         // 🔹 snk & note
-        formData.append("snk", JSON.stringify(ProductSnKState));
-        formData.append("notes", JSON.stringify(ProductNoteState));
+        formData.append("snks", JSON.stringify([
+            ...ProductSnKState.map(s => ({
+                name: s
+            }))
+        ]));
+        formData.append("notes", JSON.stringify([
+            ...ProductNoteState.map( n => ({
+                note: n
+            }))
+        ]));
         
 
         if(thumbnail_file){
@@ -385,8 +404,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const data = await res.json();
             if (res.ok) {
-                swal("Berhasil", data.message || "Product Berhasil Ditambahkan")
-                    console.log("FORM SUBMIT JALAN");
+                swal("Berhasil", data.message || "Product Berhasil Ditambahkan", "success")
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1500)
             } else {
                 swal("Gagal!", data.message || "Terjadi kesalahan saat menyimpan data", "error");
                     console.log("FORM SUBMIT TIDAK JALAN");
@@ -399,53 +420,53 @@ document.addEventListener("DOMContentLoaded", function() {
    
     // SUBMIT NEW PRODUCT END
 
-    async function fetchHotelFacility() {
-    // Ambil semua elemen dengan class tersebut
-    const containers = document.querySelectorAll(".facility-container");
+    // async function fetchHotelFacility() {
+    // // Ambil semua elemen dengan class tersebut
+    // const containers = document.querySelectorAll(".facility-container");
     
-    try {
-        const res = await fetch("/api/facilities/facility/");
-        const result = await res.json();
+    // try {
+    //     const res = await fetch("/api/facilities/facility/");
+    //     const result = await res.json();
 
-        if (result.status !== "success") {
-            throw new Error("Gagal ambil fasilitas hotel");
-        }
+    //     if (result.status !== "success") {
+    //         throw new Error("Gagal ambil fasilitas hotel");
+    //     }
 
-        // Kita looping setiap container yang ada di halaman (Mekkah & Madinah)
-        containers.forEach((container) => {
-            container.innerHTML = ""; // Kosongkan loading
+    //     // Kita looping setiap container yang ada di halaman (Mekkah & Madinah)
+    //     containers.forEach((container) => {
+    //         container.innerHTML = ""; // Kosongkan loading
 
-            // Di dalam setiap container, kita looping data fasilitasnya
-            result.data.forEach((facility) => {
-                // Beri prefix unik pada ID agar ID checkbox Mekkah tidak bentrok dengan Madinah
-                const uniqueId = `${container.id || 'fac'}-${facility.id}`;
-                const cityType = container.id === "mekkah_fclty" 
-                ? "Mekkah" 
-                : "Madinah";
+    //         // Di dalam setiap container, kita looping data fasilitasnya
+    //         result.data.forEach((facility) => {
+    //             // Beri prefix unik pada ID agar ID checkbox Mekkah tidak bentrok dengan Madinah
+    //             const uniqueId = `${container.id || 'fac'}-${facility.id}`;
+    //             const cityType = container.id === "mekkah_fclty" 
+    //             ? "Mekkah" 
+    //             : "Madinah";
                 
-                const checkboxHTML = `
-                    <input type="checkbox" 
-                           name="facility_ids" 
-                           class="btn-check facility-checkbox" 
-                           id="${uniqueId}" 
-                           autocomplete="off" 
-                           data-city="${cityType}"
-                           value="${facility.id}">
-                    <label class="btn btn-outline-primary text-dark mb-1" for="${uniqueId}">
-                        ${facility.name}
-                    </label>
-                `;
+    //             const checkboxHTML = `
+    //                 <input type="checkbox" 
+    //                        name="facility_ids" 
+    //                        class="btn-check facility-checkbox" 
+    //                        id="${uniqueId}" 
+    //                        autocomplete="off" 
+    //                        data-city="${cityType}"
+    //                        value="${facility.id}">
+    //                 <label class="btn btn-outline-primary text-dark mb-1" for="${uniqueId}">
+    //                     ${facility.name}
+    //                 </label>
+    //             `;
                 
-                container.insertAdjacentHTML('beforeend', checkboxHTML);
-            });
-        });
+    //             container.insertAdjacentHTML('beforeend', checkboxHTML);
+    //         });
+    //     });
 
-    } catch (error) {
-        console.error(error);
-        // Tampilkan error di semua container
-        containers.forEach(c => c.innerHTML = `<span class="text-danger">Gagal memuat.</span>`);
-    }
-    }
+    // } catch (error) {
+    //     console.error(error);
+    //     // Tampilkan error di semua container
+    //     containers.forEach(c => c.innerHTML = `<span class="text-danger">Gagal memuat.</span>`);
+    // }
+    // }
     async function loadCategory() {
         try {
             const res = await fetch('/api/galleries/galleryCategory/')

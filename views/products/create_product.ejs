@@ -121,7 +121,7 @@
                                     <label class="col fw-bold  form-label">Status</label>
                                         <div class="col">
                                             <select name="status" class="form-select" id="status">
-                                                <option></option>
+                                                <option>Contoh: Draft</option>
                                                 <option value="draft">Draft</option>
                                                 <option value="publish">Publish</option>
                                             </select>
@@ -205,13 +205,13 @@
                         </div>
                         <div class="card-body"> 
                                <div class="col">
-                                    <%- include('../partials/price_input', { label: 'Quad', name: 'price_quad' }) %>
+                                    <%- include('../partials/price_input', { label: 'Quad', name: 'price_quad', type:"Quad"}) %>
                                 </div>
                                 <div class="col">
-                                    <%- include('../partials/price_input', { label: 'Triple', name: 'price_triple' }) %>
+                                    <%- include('../partials/price_input', { label: 'Triple', name: 'price_triple',type:"Triple" })  %>
                                 </div>
                                 <div class="col">
-                                    <%- include('../partials/price_input', { label: 'Double', name: 'price_double' }) %>
+                                    <%- include('../partials/price_input', { label: 'Double', name: 'price_double',type:"Double" })  %>
                                 </div>
                         </div>
                     </div>
@@ -265,8 +265,8 @@
                                         <label class="col fw-bold">
                                             Fasilitas<span class="text-danger">*</span>
                                         </label>
-                                       <div id="mekkah_fclty" class=" mekkah_fclty facility-container d-flex flex-wrap gap-2" style="max-width: 400px;" role="group" aria-label="Basic checkbox toggle button group">
-
+                                       <div class="col">
+                                             <textarea name="facilities" id="mekkah_fclty" class="form-control" rows="5" placeholder="Contoh: AC, WI-FI, Laundry dll" required></textarea>
                                         </div>
                                     </div>    
                                 </div>
@@ -312,8 +312,8 @@
                                         <label class="col fw-bold">
                                             Fasilitas<span class="text-danger">*</span>
                                         </label>
-                                       <div id="madinah_fclty" class="facility-container d-flex flex-wrap gap-2" style="max-width: 400px;" role="group" aria-label="Basic checkbox toggle button group">
-                                           
+                                       <div class="col">
+                                            <textarea name="facilities" id="madinah_fclty" class="form-control" rows="5" placeholder="Contoh: AC, WI-FI, Laundry dll" required></textarea>
                                         </div>
                                   </div>                                               
                                 </div>
