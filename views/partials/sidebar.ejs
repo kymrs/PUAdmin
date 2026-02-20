@@ -37,7 +37,7 @@
           <div class="sidebar-content">
               <ul class="nav nav-secondary" id="sidebar-nav-container"> 
                 <% if (typeof sidebarMenus !== 'undefined' && Array.isArray(sidebarMenus)) { %>
-                   <% sidebarMenus.forEach(menu => { %>
+                  <% sidebarMenus.forEach(menu => { %>
                     <%- include('menu_item', {menu, parentId: null}) %> 
                   <% }); %>
                 <% } %>

@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "travels", // 👈 Tambahkan ini agar Sequelize pakai nama tabel yang benar
       timestamps: true, // Hapus jika pakai createdAt & updatedAt
       createdAt: 'created_at',
-      updatedAt: false,
+      updatedAt: 'updated_at'
     });
 
     Travel.associate = (models) => {
