@@ -1,321 +1,128 @@
-<div class="main-panel">
-    <div class="main-header">
-      <div class="main-header-logo">
-        <!-- Logo Header -->
-        <div class="logo-header" data-background-color="dark">
-          <a href="/" class="logo">
-            <img
-              src="/assets/img/kaiadmin/logo_light.svg"
-              alt="navbar brand"
-              class="navbar-brand"
-              height="20"
-            />
-          </a>
-          <div class="nav-toggle">
-            <button class="btn btn-toggle toggle-sidebar">
-              <i class="gg-menu-right"></i>
-            </button>
-            <button class="btn btn-toggle sidenav-toggler">
-              <i class="gg-menu-left"></i>
-            </button>
-          </div>
-          <button class="topbar-toggler more">
-            <i class="gg-more-vertical-alt"></i>
-          </button>
-        </div>
-        <!-- End Logo Header -->
-      </div>
-      <!-- Navbar Header -->
-      <nav
-        class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-      >
-        <div class="container-fluid">
-          <nav
-            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-          >
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <button type="submit" class="btn btn-search pe-1">
-                  <i class="fa fa-search search-icon"></i>
+
+        <main class="flex-1 flex flex-col h-full relative overflow-hidden">
+
+            <header
+                class="h-20 flex items-center justify-between px-6 lg:px-10 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-md sticky top-0 z-10">
+                <button onclick="toggleSidebar()"
+                    class="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg">
+                    <i class="ph ph-list text-2xl"></i>
                 </button>
-              </div>
-              <input
-                type="text"
-                placeholder="Search ..."
-                class="form-control"
-              />
-            </div>
-          </nav>
 
-          <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-            <li
-              class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
-            >
-              <a
-                class="nav-link dropdown-toggle"
-                data-bs-toggle="dropdown"
-                href="#"
-                role="button"
-                aria-expanded="false"
-                aria-haspopup="true"
-              >
-                <i class="fa fa-search"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-search animated fadeIn">
-                <form class="navbar-left navbar-form nav-search">
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      placeholder="Search ..."
-                      class="form-control"
-                    />
-                  </div>
-                </form>
-              </ul>
-            </li>
-            <li class="nav-item topbar-icon dropdown hidden-caret">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="messageDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i class="fa fa-envelope"></i>
-              </a>
-              <ul
-                class="dropdown-menu messages-notif-box animated fadeIn"
-                aria-labelledby="messageDropdown"
-              >
-                <li>
-                  <div
-                    class="dropdown-title d-flex justify-content-between align-items-center"
-                  >
-                    Messages
-                    <a href="#" class="small">Mark all as read</a>
-                  </div>
-                </li>
-                <li>
-                  <div class="message-notif-scroll scrollbar-outer">
-                    <div class="notif-center">
-                      <a href="#">
-                        <div class="notif-img">
-                          <img
-                            src="/assets/img/jm_denis.jpg"
-                            alt="Img Profile"
-                          />
-                        </div>
-                        <div class="notif-content">
-                          <span class="subject">Jimmy Denis</span>
-                          <span class="block"> How are you ? </span>
-                          <span class="time">5 minutes ago</span>
-                        </div>
-                      </a>
-                      <a href="#">
-                        <div class="notif-img">
-                          <img
-                            src="/assets/img/chadengle.jpg"
-                            alt="Img Profile"
-                          />
-                        </div>
-                        <div class="notif-content">
-                          <span class="subject">Chad</span>
-                          <span class="block"> Ok, Thanks ! </span>
-                          <span class="time">12 minutes ago</span>
-                        </div>
-                      </a>
-                      <a href="#">
-                        <div class="notif-img">
-                          <img
-                            src="/assets/img/mlane.jpg"
-                            alt="Img Profile"
-                          />
-                        </div>
-                        <div class="notif-content">
-                          <span class="subject">Jhon Doe</span>
-                          <span class="block">
-                            Ready for the meeting today...
-                          </span>
-                          <span class="time">12 minutes ago</span>
-                        </div>
-                      </a>
-                      <a href="#">
-                        <div class="notif-img">
-                          <img
-                            src="/assets/img/talha.jpg"
-                            alt="Img Profile"
-                          />
-                        </div>
-                        <div class="notif-content">
-                          <span class="subject">Talha</span>
-                          <span class="block"> Hi, Apa Kabar ? </span>
-                          <span class="time">17 minutes ago</span>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <a class="see-all" href="javascript:void(0);"
-                    >See all messages<i class="fa fa-angle-right"></i>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <!-- NOTIFICATION -->
-            <li class="nav-item topbar-icon dropdown hidden-caret">
-              <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-bell"></i>
-                <span class="notification" style="display: none;">0</span>
-              </a>
-              <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
-                <li>
-                  <div class="dropdown-title" id="notif-title">You have 0 new notification</div>
-                </li>
-                <li>
-                  <div class="notif-scroll scrollbar-outer">
-                    <div class="notif-center" id="notif-center">
-                      <!-- Notifikasi akan diisi di sini via JS -->
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <a class="see-all" href="javascript:void(0);">See all notifications <i class="fa fa-angle-right"></i></a>
-                </li>
-              </ul>
-            </li>
-            <!-- END NOTIFICATION -->
-            <li class="nav-item topbar-icon dropdown hidden-caret">
-              <a
-                class="nav-link"
-                data-bs-toggle="dropdown"
-                href="#"
-                aria-expanded="false"
-              >
-                <i class="fas fa-layer-group"></i>
-              </a>
-              <div class="dropdown-menu quick-actions animated fadeIn">
-                <div class="quick-actions-header">
-                  <span class="title mb-1">Quick Actions</span>
-                  <span class="subtitle op-7">Shortcuts</span>
+                <div class="hidden md:block">
+                    <h1 class="text-xl font-bold text-gray-800 dark:text-white">Dashboard Overview</h1>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Selamat datang, <%= fullname %>!</p>
                 </div>
-                <div class="quick-actions-scroll scrollbar-outer">
-                  <div class="quick-actions-items">
-                    <div class="row m-0">
-                      <a class="col-6 col-md-4 p-0" href="/products">
-                        <div class="quick-actions-item">
-                          <div class="avatar-item bg-danger rounded-circle">
-                            <i class="fas fa-store"></i>
-                          </div>
-                          <span class="text">Produk</span>
-                        </div>
-                      </a>
-                      <a class="col-6 col-md-4 p-0" href="/createProduct">
-                        <div class="quick-actions-item">
-                          <div
-                            class="avatar-item bg-warning rounded-circle"
-                          >
-                            <i class="fas fa-plus"></i>
-                          </div>
-                          <span class="text">Tambah Produk</span>
-                        </div>
-                      </a>
-                      <a class="col-6 col-md-4 p-0" href="/transaction">
-                        <div class="quick-actions-item">
-                          <div class="avatar-item bg-info rounded-circle">
-                            <i class="fas fa-wallet"></i>
-                          </div>
-                          <span class="text">Transaksi</span>
-                        </div>
-                      </a>
-                      <a class="col-6 col-md-4 p-0" href="#">
-                        <div class="quick-actions-item">
-                          <div
-                            class="avatar-item bg-success rounded-circle"
-                          >
-                            <i class="fas fa-envelope"></i>
-                          </div>
-                          <span class="text">Emails</span>
-                        </div>
-                      </a>
-                      <a class="col-6 col-md-4 p-0" href="#">
-                        <div class="quick-actions-item">
-                          <div
-                            class="avatar-item bg-primary rounded-circle"
-                          >
-                            <i class="fas fa-file-invoice-dollar"></i>
-                          </div>
-                          <span class="text">Invoice</span>
-                        </div>
-                      </a>
-                      <a class="col-6 col-md-4 p-0" href="#">
-                        <div class="quick-actions-item">
-                          <div
-                            class="avatar-item bg-secondary rounded-circle"
-                          >
-                            <i class="fas fa-credit-card"></i>
-                          </div>
-                          <span class="text">Payments</span>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
 
-            <li class="nav-item topbar-user dropdown hidden-caret">
-              <a
-                class="dropdown-toggle profile-pic"
-                data-bs-toggle="dropdown"
-                href="#"
-                aria-expanded="false"
-              >
-                <!-- <div class="avatar-sm">
-                  <img
-                    src="assets/img/profile.jpg"
-                    alt="..."
-                    class="avatar-img rounded-circle"
-                  />
-                </div> -->
-                <span class="profile-username">
-                  <span class="op-7">Hi,</span>
-                  <span class="fw-bold"><%= username ? username : 'Guest' %></span>
-                </span>
-              </a>
-              <ul class="dropdown-menu dropdown-user animated fadeIn">
-                <div class="dropdown-user-scroll scrollbar-outer">
-                  <li>
-                    <div class="user-box">
-                      <!-- <div class="avatar-lg">
-                        <img
-                          src="assets/img/profile.jpg"
-                          alt="image profile"
-                          class="avatar-img rounded"
-                        />
-                      </div> -->
-                      <div class="u-text">
-                        <h4><%= fullname ? fullname : 'Guest' %></h4>
-                        <p class="text-muted"></p>
-                        <a
-                          href="profile"
-                          class="btn btn-xs btn-secondary btn-sm"
-                          >View Profile</a
-                        >
-                      </div>
+                <div class="flex items-center gap-4">
+                    <div
+                        class="hidden md:flex items-center bg-gray-100 dark:bg-dark-card rounded-full px-4 py-2 w-64 border border-transparent focus-within:border-primary-500 focus-within:ring-2 focus-within:ring-primary-500/20 transition-all">
+                        <i class="ph ph-magnifying-glass text-gray-400 text-lg"></i>
+                        <input type="text" placeholder="Search..."
+                            class="bg-transparent border-none outline-none text-sm ml-2 w-full text-gray-700 dark:text-gray-200 placeholder-gray-400">
                     </div>
-                  </li>
-                  <li>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/logout">Logout</a>
-                  </li>
+
+                    <button id="theme-toggle"
+                        class="p-2.5 rounded-full bg-gray-100 dark:bg-dark-card text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all shadow-sm">
+                        <i id="theme-icon" class="ph ph-moon text-xl"></i>
+                    </button>
+
+                    <div class="relative">
+
+                        <button onclick="toggleNotification()" id="notification-btn"
+                            class="p-2.5 rounded-full bg-gray-100 dark:bg-dark-card text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all shadow-sm relative">
+                            <i class="ph ph-bell text-xl"></i>
+                            <span id="notif-indicator"
+                                class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-white dark:border-dark-card"></span>
+                        </button>
+
+                        <div id="notification-dropdown"
+                            class="hidden absolute right-0 top-full mt-3 w-80 sm:w-96 bg-white dark:bg-dark-card rounded-2xl shadow-xl border border-gray-100 dark:border-dark-border overflow-hidden z-50 origin-top-right transition-all duration-200 transform scale-95 opacity-0">
+
+                            <div
+                                class="px-5 py-4 border-b border-gray-100 dark:border-dark-border flex justify-between items-center bg-gray-50/50 dark:bg-slate-800/50">
+                                <h3 class="font-bold text-gray-900 dark:text-white">Notifikasi</h3>
+                                <button
+                                    class="text-xs font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400">
+                                    Tandai semua dibaca
+                                </button>
+                            </div>
+
+                            <div class="max-h-[400px] overflow-y-auto no-scrollbar">
+
+                                <a href="#"
+                                    class="block px-5 py-4 hover:bg-gray-50 dark:hover:bg-slate-800/50 border-b border-gray-50 dark:border-slate-800 transition-colors relative">
+                                    <span
+                                        class="absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-primary-600 rounded-full"></span>
+
+                                    <div class="flex gap-3">
+                                        <div
+                                            class="mt-1 w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+                                            <i class="ph-fill ph-bag text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Pesanan Baru
+                                                Masuk</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Order #1029 dari
+                                                Ahmad Santoso
+                                                sebesar Rp 15.000.000</p>
+                                            <p class="text-[10px] text-gray-400 mt-2">2 menit yang lalu</p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="#"
+                                    class="block px-5 py-4 hover:bg-gray-50 dark:hover:bg-slate-800/50 border-b border-gray-50 dark:border-slate-800 transition-colors">
+                                    <div class="flex gap-3">
+                                        <div
+                                            class="mt-1 w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 flex items-center justify-center flex-shrink-0">
+                                            <i class="ph-fill ph-warning-circle text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Stok Menipis
+                                            </p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Produk "Paket
+                                                Umrah Plus Turki"
+                                                tersisa 2 seat lagi.</p>
+                                            <p class="text-[10px] text-gray-400 mt-2">1 jam yang lalu</p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="#"
+                                    class="block px-5 py-4 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <div class="flex gap-3">
+                                        <div
+                                            class="mt-1 w-10 h-10 rounded-full bg-green-50 dark:bg-green-500/20 text-green-600 dark:text-green-400 flex items-center justify-center flex-shrink-0">
+                                            <i class="ph-fill ph-check-circle text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Pembayaran
+                                                Dikonfirmasi</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Pembayaran untuk
+                                                Invoice #INV-2026
+                                                berhasil diverifikasi.</p>
+                                            <p class="text-[10px] text-gray-400 mt-2">3 jam yang lalu</p>
+                                        </div>
+                                    </div>
+                                </a>
+
+                            </div>
+
+                            <div
+                                class="px-5 py-3 border-t border-gray-100 dark:border-dark-border bg-gray-50/50 dark:bg-slate-800/50 text-center">
+                                <a href="#"
+                                    class="text-xs font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 transition-colors">
+                                    Lihat Semua Notifikasi
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <!-- End Navbar -->
-    </div>
+            </header>
+            <!-- links partial -->
+       
+
+
+   
