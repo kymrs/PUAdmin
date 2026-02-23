@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if(data.status === "success"){
                     const facility = data.data;
                     
-
+                        
                     document.getElementById("hidden_id").value = facility.id;
                     document.getElementById("name").value = facility.name;
                     document.getElementById("icon").value = facility.icon;

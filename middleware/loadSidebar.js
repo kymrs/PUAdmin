@@ -64,7 +64,7 @@ const loadSidebar = async (req, res, next) => {
         menuMap[akses.Menu.id_menu] = akses.Menu;
       }
     }) 
-
+ 
 
     if(!aksesMenus.length){
       res.locals.sidebarMenus = [];
