@@ -7,8 +7,8 @@
         <!-- <button onclick="testNotif()">Test Notif</button> -->
         <!-- <h3>Notifikasi</h3>
           <ul id="notif"> -->
-        <!-- List user baru akan muncul di sini -->
-        <!-- </ul> -->
+            <!-- List user baru akan muncul di sini -->
+          <!-- </ul> -->
       </div>
       <div class="ms-md-auto py-2 py-md-0">
         <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
@@ -55,8 +55,7 @@
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-icon">
-                <div class="icon-big text-center icon-success bubble-shadow-small"><i class="fas fa-luggage-cart"></i>
-                </div>
+                <div class="icon-big text-center icon-success bubble-shadow-small"><i class="fas fa-luggage-cart"></i></div>
               </div>
               <div class="col col-stats ms-3 ms-sm-0">
                 <div class="numbers">
@@ -73,8 +72,7 @@
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col-icon">
-                <div class="icon-big text-center icon-secondary bubble-shadow-small"><i class="far fa-check-circle"></i>
-                </div>
+                <div class="icon-big text-center icon-secondary bubble-shadow-small"><i class="far fa-check-circle"></i></div>
               </div>
               <div class="col col-stats ms-3 ms-sm-0">
                 <div class="numbers">
@@ -240,8 +238,7 @@
               <div class="card-title">New Customers</div>
               <div class="card-tools">
                 <div class="dropdown">
-                  <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-h"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -250,101 +247,94 @@
                     <a class="dropdown-item" href="#">Something else here</a>
                   </div>
                 </div>
-              </div>
             </div>
-            <div class="card-list py-4">
-              <div class="item-list">
-                <div class="avatar">
-                  <img src="assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle" />
+        </div>
+    </div>
+
+    <div id="change-password-modal" class="fixed inset-0 z-[70] hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity opacity-0 pointer-events-none"
+            id="cp-backdrop"></div>
+
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+
+                <div class="relative transform overflow-hidden rounded-2xl bg-white dark:bg-dark-card text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md opacity-0 scale-95"
+                    id="cp-panel">
+
+                    <div
+                        class="px-6 py-4 border-b border-gray-100 dark:border-dark-border flex justify-between items-center bg-gray-50/50 dark:bg-slate-800/50">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Ganti Password</h3>
+                        <button type="button" onclick="closeChangePasswordModal()"
+                            class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors rounded-lg p-1 hover:bg-gray-100 dark:hover:bg-slate-700">
+                            <i class="ph ph-x text-xl"></i>
+                        </button>
+                    </div>
+
+                    <form id="changePasswordForm" action="#" method="POST" class="p-6 space-y-5">
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password
+                                Lama</label>
+                            <div class="relative group">
+                                <i
+                                    class="ph ph-lock-key absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none"></i>
+                                <input type="password" id="oldPassword" placeholder="••••••••"
+                                    class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all sm:text-sm">
+                                <button type="button" onclick="togglePasswordVisibility('oldPassword', this)"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1 rounded-md focus:outline-none">
+                                    <i class="ph ph-eye-slash text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password
+                                Baru</label>
+                            <div class="relative group">
+                                <i
+                                    class="ph ph-lock-key-open absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none"></i>
+                                <input type="password" id="newPassword" placeholder="••••••••"
+                                    class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all sm:text-sm">
+                                <button type="button" onclick="togglePasswordVisibility('newPassword', this)"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1 rounded-md focus:outline-none">
+                                    <i class="ph ph-eye-slash text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">Konfirmasi
+                                Password Baru</label>
+                            <div class="relative group">
+                                <i
+                                    class="ph ph-check-circle absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none"></i>
+                                <input type="password" id="confirmPassword" placeholder="••••••••"
+                                    class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all sm:text-sm">
+                                <button type="button" onclick="togglePasswordVisibility('confirmPassword', this)"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1 rounded-md focus:outline-none">
+                                    <i class="ph ph-eye-slash text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <div
+                        class="px-6 py-4 bg-gray-50/50 dark:bg-slate-800/50 border-t border-gray-100 dark:border-dark-border flex justify-end gap-3">
+                        <button type="button" onclick="closeChangePasswordModal()"
+                            class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors border border-transparent focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-slate-700">
+                            Batal
+                        </button>
+                        <button type="button" onclick="handleSavePassword()"
+                            class="px-4 py-2 rounded-lg text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-primary-500/30 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+                            Simpan Password
+                        </button>
+                    </div>
+
                 </div>
-                <div class="info-user ms-3">
-                  <div class="username">Jimmy Denis</div>
-                  <div class="status">Graphic Designer</div>
-                </div>
-                <button class="btn btn-icon btn-link op-8 me-1">
-                  <i class="far fa-envelope"></i>
-                </button>
-                <button class="btn btn-icon btn-link btn-danger op-8">
-                  <i class="fas fa-ban"></i>
-                </button>
-              </div>
-              <div class="item-list">
-                <div class="avatar">
-                  <span class="avatar-title rounded-circle border border-white">CF</span>
-                </div>
-                <div class="info-user ms-3">
-                  <div class="username">Chandra Felix</div>
-                  <div class="status">Sales Promotion</div>
-                </div>
-                <button class="btn btn-icon btn-link op-8 me-1">
-                  <i class="far fa-envelope"></i>
-                </button>
-                <button class="btn btn-icon btn-link btn-danger op-8">
-                  <i class="fas fa-ban"></i>
-                </button>
-              </div>
-              <div class="item-list">
-                <div class="avatar">
-                  <img src="assets/img/talha.jpg" alt="..." class="avatar-img rounded-circle" />
-                </div>
-                <div class="info-user ms-3">
-                  <div class="username">Talha</div>
-                  <div class="status">Front End Designer</div>
-                </div>
-                <button class="btn btn-icon btn-link op-8 me-1">
-                  <i class="far fa-envelope"></i>
-                </button>
-                <button class="btn btn-icon btn-link btn-danger op-8">
-                  <i class="fas fa-ban"></i>
-                </button>
-              </div>
-              <div class="item-list">
-                <div class="avatar">
-                  <img src="assets/img/chadengle.jpg" alt="..." class="avatar-img rounded-circle" />
-                </div>
-                <div class="info-user ms-3">
-                  <div class="username">Chad</div>
-                  <div class="status">CEO Zeleaf</div>
-                </div>
-                <button class="btn btn-icon btn-link op-8 me-1">
-                  <i class="far fa-envelope"></i>
-                </button>
-                <button class="btn btn-icon btn-link btn-danger op-8">
-                  <i class="fas fa-ban"></i>
-                </button>
-              </div>
-              <div class="item-list">
-                <div class="avatar">
-                  <span class="avatar-title rounded-circle border border-white bg-primary">H</span>
-                </div>
-                <div class="info-user ms-3">
-                  <div class="username">Hizrian</div>
-                  <div class="status">Web Designer</div>
-                </div>
-                <button class="btn btn-icon btn-link op-8 me-1">
-                  <i class="far fa-envelope"></i>
-                </button>
-                <button class="btn btn-icon btn-link btn-danger op-8">
-                  <i class="fas fa-ban"></i>
-                </button>
-              </div>
-              <div class="item-list">
-                <div class="avatar">
-                  <span class="avatar-title rounded-circle border border-white bg-secondary">F</span>
-                </div>
-                <div class="info-user ms-3">
-                  <div class="username">Farrah</div>
-                  <div class="status">Marketing</div>
-                </div>
-                <button class="btn btn-icon btn-link op-8 me-1">
-                  <i class="far fa-envelope"></i>
-                </button>
-                <button class="btn btn-icon btn-link btn-danger op-8">
-                  <i class="fas fa-ban"></i>
-                </button>
-              </div>
             </div>
-          </div>
         </div>
       </div>
       <div class="col-md-8">
@@ -354,8 +344,7 @@
               <div class="card-title">Transaction History</div>
               <div class="card-tools">
                 <div class="dropdown">
-                  <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-h"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
