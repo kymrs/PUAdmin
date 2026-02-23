@@ -1,26 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Realtime Chat</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-    #chat-box { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; }
-    #chat-box li { margin-bottom: 5px; }
-    #form { display: flex; margin-top: 10px; gap: 10px; }
-    #input { flex-grow: 1; padding: 8px; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    #chat-box {
+      border: 1px solid #ccc;
+      height: 300px;
+      overflow-y: scroll;
+      padding: 10px;
+    }
+
+    #chat-box li {
+      margin-bottom: 5px;
+    }
+
+    #form {
+      display: flex;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    #input {
+      flex-grow: 1;
+      padding: 8px;
+    }
   </style>
 </head>
+
 <body>
   <h2>Simple Chat</h2>
 
   <div id="chat-box">
     <ul id="messages">
-      <% if (messages && messages.length > 0) { %>
-        <% messages.forEach(msg => { %>
-          <li><%= msg.username %>: <%= msg.message %></li>
-        <% }) %>
-      <% } %>
+      <% if (messages && messages.length> 0) { %>
+        <% messages.forEach(msg=> { %>
+          <li>
+            <%= msg.username %>: <%= msg.message %>
+          </li>
+          <% }) %>
+            <% } %>
     </ul>
   </div>
 
@@ -33,19 +60,19 @@
   <script>
     const socket = io();
     const username = "<%= username %>"; // Inject dari session
-  
+
     const form = document.getElementById('form');
     const input = document.getElementById('input');
     const messages = document.getElementById('messages');
-  
-    socket.on('chat message', function(msg) {
+
+    socket.on('chat message', function (msg) {
       const item = document.createElement('li');
       item.textContent = `${msg.username}: ${msg.message}`;
       messages.appendChild(item);
       messages.scrollTop = messages.scrollHeight;
     });
-  
-    form.addEventListener('submit', function(e) {
+
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (input.value) {
         socket.emit('chat message', {
@@ -55,6 +82,7 @@
         input.value = '';
       }
     });
-  </script>  
+  </script>
 </body>
+
 </html>
