@@ -16,20 +16,21 @@ const buildTree = (menus, parentId = null) => {
       .sort((a, b) => a.urutan - b.urutan);
     }
 
-const findActiveMenu = (menus, currentUrl) => {
-  for (const menu of menus) {
-    if(currentUrl.startsWith(menu.link)) {
-      return menu;
-    }
-    if(menu.children && menu.children.length > 0) {
-      const activeChild = findActiveMenu(menu.children);
-      if(activeChild) {
-        return menu;
-      }
-    }
-  }
-  return null;
-}   
+const markActive = (menus, currentUrl) => {
+  return menus.map(menu => {
+    const isActive = currentUrl.startsWith(menu.link);
+
+    const children = markActive(menu.children || [], currentUrl);
+
+    const isChildActive = children.some(child => child.isActive);
+
+    return {
+      ...menu,
+      isActive: isActive || isChildActive,
+      children
+    };
+  });
+};
 
 const loadSidebar = async (req, res, next) => {
   try {
@@ -91,11 +92,16 @@ const loadSidebar = async (req, res, next) => {
     // });
     
     
-    const menus = Object.values(menuMap);
-    res.locals.sidebarMenus = buildTree(menus);
-   // Ambil id_menu aktif
+  const menus = Object.values(menuMap);
 
-    next();
+  const tree = buildTree(menus);
+
+  // 🔥 Tambahkan ini
+  const currentUrl = req.originalUrl;
+
+  res.locals.sidebarMenus = markActive(tree, currentUrl);
+
+  next();
   } catch (error) {
     console.error('❌ Error loading sidebar:', error);
     next(error);
