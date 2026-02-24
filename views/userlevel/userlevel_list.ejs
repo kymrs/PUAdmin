@@ -1,185 +1,126 @@
-<div class="container">
-    <div class="page-inner">
-      <!-- <div class="page-header">
-        <h3 class="fw-bold mb-3">User Level</h3>
-        <ul class="breadcrumbs mb-3">
-          <li class="nav-home">
-            <a href="#">
-              <i class="icon-home"></i>
-            </a>
-          </li>
-          <li class="separator">
-            <i class="icon-arrow-right"></i>
-          </li>
-          <li class="nav-item">
-            <a href="#">Tables</a>
-          </li>
-          <li class="separator">
-            <i class="icon-arrow-right"></i>
-          </li>
-          <li class="nav-item">
-            <a href="#">Datatables</a>
-          </li>
-        </ul>
-      </div> -->
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <div class="d-flex align-items-center">
-                <h4 class="card-title">User Level Table</h4>
-                <a
-                  data-bs-toggle="modal"
-                  data-bs-target="#userlevelModal"
-                  class="btn btn-primary btn-round ms-auto"
-                  href=""
-                >
-                  <i class="fa fa-plus"></i>
-                  Add Row
-                </a>
+<div class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth">
+
+  <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Daftar Level User</h2>
+      <nav class="flex text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <a href="#" class="hover:text-primary-500 transition-colors">Settings</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-800 dark:text-gray-200">User Level</span>
+      </nav>
+    </div>
+
+    <button onclick="openAddLevelModal()"
+      class="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors shadow-lg shadow-primary-500/30">
+      <i class="ph ph-plus text-lg"></i>
+      <span>Tambah Level</span>
+    </button>
+  </div>
+
+  <div
+    class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-dark-border overflow-hidden mb-10">
+
+    <div
+      class="p-5 border-b border-gray-100 dark:border-dark-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="relative w-full md:w-72">
+        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+        <input type="text" placeholder="Cari nama level..."
+          class="w-full pl-10 pr-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder-gray-400">
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr
+            class="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-dark-border text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold">
+            <th class="p-5 w-40 text-center">Action</th>
+            <th class="p-5 whitespace-nowrap w-24 text-center">ID Level</th>
+            <th class="p-5 whitespace-nowrap">Nama Level</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 dark:divide-dark-border">
+
+          <tr class="group hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+            <td class="p-5">
+              <div class="flex items-center justify-center gap-2">
+                <button onclick="openAccessModal('Administrator')"
+                  class="p-2 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 transition-colors"
+                  title="Atur Akses">
+                  <i class="ph-bold ph-key text-lg"></i>
+                </button>
+                <button
+                  class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20 transition-colors"
+                  title="Edit">
+                  <i class="ph-bold ph-pencil-simple text-lg"></i>
+                </button>
+                <button
+                  class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors"
+                  title="Hapus">
+                  <i class="ph-bold ph-trash text-lg"></i>
+                </button>
               </div>
-            </div>
-            <div class="card-body">
+            </td>
+            <td class="p-5 text-center">
+              <span
+                class="inline-block px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded font-mono text-xs font-bold">1</span>
+            </td>
+            <td class="p-5">
+              <span class="font-semibold text-gray-900 dark:text-white">Administrator</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Akses penuh ke
+                seluruh sistem</p>
+            </td>
+          </tr>
 
-              <div class="table-responsive">
-                <table
-                  id="userlevelTable"
-                  class="display table table-striped table-hover"
-                  style="width: 100%"
-                >
-                  <thead>
-                    <tr>
-                        <th>ID Level</th>
-                        <th>Nama Level</th>
-                      <th style="width: 10%">Action</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>ID Level</th>
-                      <th>Nama Level</th>
-                      <th>Action</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <% userlevel.forEach(function(user) {%>
-                        <tr>
-                            <td><%= user.id_level %></td>
-                            <td><%= user.nama_level %></td>
-                            <td>
-                                <div class="form-button-action">
-                                <a
-                                    data-id="<%= user.id_level %>"
-                                    class="btn btn-link btn-primary btn-lg userlevelEdit"
-                                  >
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a
-                                    type="button"
-                                    data-bs-toggle="tooltip"
-                                    data-id="<%= user.id_level %>"
-                                    title=""
-                                    class="btn btn-link btn-danger userlevelDelete"
-                                    data-original-title="Remove"
-                                  >
-                                    <i class="fa fa-times"></i>
-                                </a>
-                                </div>
-                              </td>
-                        </tr>
-                    <% } ); %>
-                  </tbody>
-                </table>
+          <tr class="group hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+            <td class="p-5">
+              <div class="flex items-center justify-center gap-2">
+                <button onclick="openAccessModal('Editor')"
+                  class="p-2 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 transition-colors"
+                  title="Atur Akses">
+                  <i class="ph-bold ph-key text-lg"></i>
+                </button>
+                <button
+                  class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20 transition-colors"
+                  title="Edit">
+                  <i class="ph-bold ph-pencil-simple text-lg"></i>
+                </button>
+                <button
+                  class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors"
+                  title="Hapus">
+                  <i class="ph-bold ph-trash text-lg"></i>
+                </button>
               </div>
+            </td>
+            <td class="p-5 text-center">
+              <span
+                class="inline-block px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded font-mono text-xs font-bold">2</span>
+            </td>
+            <td class="p-5">
+              <span class="font-semibold text-gray-900 dark:text-white">Editor</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Hanya bisa mengelola
+                artikel/produk</p>
+            </td>
+          </tr>
 
-            </div>
+        </tbody>
+      </table>
+    </div>
 
-            <!-- MODAL ADD/EDIT DATA -->
-            <div
-              class="modal fade"
-              id="userlevelModal"
-              tabindex="-1"
-              role="dialog"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header border-0">
-                    <h5 class="modal-title">
-                      <span class="fw-mediumbold">Form User Level</span>
-                      <!-- <span class="fw-light"> User Level </span> -->
-                    </h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form id="userlevelForm">
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="form-group form-group-default">
-                            <label>Nama Level</label>
-                            <input
-                              id="nama_level"
-                              type="text"
-                              class="form-control"
-                            />
-                            <!-- HIDDEN INPUT -->
-                             <input 
-                              type="hidden"
-                              id="hidden_id_userlevel"
-                             />
-                          </div>
-                        </div>
-                    </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer border-0">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="button"
-                      id="submitUserlevel"
-                      class="btn btn-success userLevelBtn"
-                    >
-                      Save CHanges
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div
+      class="p-5 border-t border-gray-100 dark:border-dark-border flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        Menampilkan <span class="font-semibold text-gray-900 dark:text-white">1-2</span> dari <span
+          class="font-semibold text-gray-900 dark:text-white">2</span> level
+      </p>
 
-            <!-- MODAL HAK AKSES -->
-            <div class="modal fade" id="aksesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Manajemen Akses Menu & Submenu</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body" style="overflow-x: scroll;">
-                    <%- include('./userAkses') %>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="submitAksesBtn" class="btn btn-success">Save Changes</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
+      <div class="flex items-center gap-2">
+        <button
+          class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors">Prev</button>
+        <button
+          class="w-8 h-8 rounded-lg bg-primary-600 text-white text-sm font-medium flex items-center justify-center shadow-lg shadow-primary-500/30">1</button>
+        <button
+          class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">Next</button>
       </div>
     </div>
   </div>
