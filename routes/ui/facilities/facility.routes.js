@@ -10,7 +10,7 @@ router.get("/", auth.ensureAuth, loadSidebar, loadNotification, async (req, res)
         const getFacilities = await FacilityService.getAllFacilities() ?? [];
 
         res.render("home", {
-            link: "facilities/facility_form",
+            link: "facilities/facility_list",
             jslink: "/javascripts/facility_javascripts.js",
             sideBarMenus: res.locals.sideBarMenus,
             activeMenu: req.path,

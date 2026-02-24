@@ -1,290 +1,124 @@
- <div class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth">
+<div class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth">
 
-                <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Daftar Produk</h2>
-                        <nav class="flex text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            <a href="#" class="hover:text-primary-500 transition-colors">Dashboard</a>
-                            <span class="mx-2">/</span>
-                            <span class="text-gray-800 dark:text-gray-200">Products</span>
-                        </nav>
-                    </div>
+  <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Daftar Produk</h2>
+      <nav class="flex text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <a href="#" class="hover:text-primary-500 transition-colors">Dashboard</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-800 dark:text-gray-200">Products</span>
+      </nav>
+    </div>
 
-                    <a href="/createProduct"
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors shadow-lg shadow-primary-500/30 no-underline">
-                        <i class="ph ph-plus text-lg"></i>
-                        <span>Tambah Produk</span>
-                    </a>
+    <a href="/createProduct"
+      class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors shadow-lg shadow-primary-500/30 no-underline">
+      <i class="ph ph-plus text-lg"></i>
+      <span>Tambah Produk</span>
+    </a>
 
-                </div>
+  </div>
 
-                <div
-                    class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-dark-border overflow-hidden mb-10">
+  <div
+    class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-dark-border overflow-hidden mb-10">
 
-                    <div
-                        class="p-5 border-b border-gray-100 dark:border-dark-border flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="relative w-full md:w-72">
-                            <i
-                                class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-                            <input type="text" placeholder="Cari nama, SKU..."
-                                class="w-full pl-10 pr-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder-gray-400">
-                        </div>
+    <div
+      class="p-5 border-b border-gray-100 dark:border-dark-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="relative w-full md:w-72">
+        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+        <input type="text" placeholder="Cari nama, SKU..."
+          class="w-full pl-10 pr-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder-gray-400">
+      </div>
 
-                        <div class="flex items-center gap-3 w-full md:w-auto">
-                            <select
-                                class="w-full md:w-auto px-4 py-2 rounded-xl bg-white dark:bg-dark-card border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:border-primary-500 cursor-pointer">
-                                <option value="">Semua Status</option>
-                                <option value="active">Active</option>
-                                <option value="draft">Draft</option>
-                                <option value="out_of_stock">Out of Stock</option>
-                            </select>
-                        </div>
-                    </div>
+      <div class="flex items-center gap-3 w-full md:w-auto">
+        <select
+          class="w-full md:w-auto px-4 py-2 rounded-xl bg-white dark:bg-dark-card border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:border-primary-500 cursor-pointer">
+          <option value="">Semua Status</option>
+          <option value="active">Active</option>
+          <option value="draft">Draft</option>
+          <option value="out_of_stock">Out of Stock</option>
+        </select>
+      </div>
+    </div>
 
-                    <div class="overflow-x-auto">
-                        <table id="productTable" class="w-full text-left border-collapse">
-                            <thead>
-                                <tr
-                                    class="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-dark-border text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold">
-                                    <th class="p-5 w-24">Action</th>
-                                    <th class="p-5 whitespace-nowrap">Nama Produk</th>
-                                    <th class="p-5 whitespace-nowrap">Added By</th>
-                                    <th class="p-5 whitespace-nowrap">Harga</th>
-                                    <th class="p-5 whitespace-nowrap">Stock</th>
-                                    <th class="p-5 whitespace-nowrap">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-dark-border">
+    <div class="overflow-x-auto">
+      <table id="productTable" class="w-full text-left border-collapse">
+        <thead>
+          <tr
+            class="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-dark-border text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold">
+            <th class="p-5 w-24">Action</th>
+            <th class="p-5 whitespace-nowrap">Nama Produk</th>
+            <th class="p-5 whitespace-nowrap">Added By</th>
+            <th class="p-5 whitespace-nowrap">Harga</th>
+            <th class="p-5 whitespace-nowrap">Stock</th>
+            <th class="p-5 whitespace-nowrap">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 dark:divide-dark-border">
 
-                         <tr class="group hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                                    <td class="p-5">
-                                        <div class="flex items-center gap-2">
-                                            <button
-                                                class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20 transition-colors"
-                                                title="Edit">
-                                                <i class="ph-bold ph-pencil-simple text-lg"></i>
-                                            </button>
-                                            <button
-                                                class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors"
-                                                title="Hapus">
-                                                <i class="ph-bold ph-trash text-lg"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="p-5">
-                                        <h3 class="font-semibold text-gray-900 dark:text-white">Smart Watch Series 7
-                                        </h3>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">SKU: WTH-001</p>
-                                    </td>
-                                    <td class="p-5">
-                                        <div class="flex items-center gap-2">
-                                            <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Admin"
-                                                class="w-6 h-6 rounded-full object-cover">
-                                            <span class="text-sm text-gray-700 dark:text-gray-300">Kevin Sanjaya.</span>
-                                        </div>
-                                        <span class="text-xs text-gray-400 ml-8">2 jam lalu</span>
-                                    </td>
-                                    <td class="p-5 font-semibold text-gray-900 dark:text-white">Rp 2.450.000</td>
-                                    <td class="p-5">
-                                        <div class="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-1.5 w-24 mb-1">
-                                            <div class="bg-primary-500 h-1.5 rounded-full" style="width: 45%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">45 items</span>
-                                    </td>
-                                    <td class="p-5">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-400 border border-green-200 dark:border-green-500/20">
-                                            <span
-                                                class="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></span>
-                                            Active
-                                        </span>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div
-                        class="p-5 border-t border-gray-100 dark:border-dark-border flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Menampilkan <span class="font-semibold text-gray-900 dark:text-white">1-3</span> dari <span
-                                class="font-semibold text-gray-900 dark:text-white">45</span> produk
-                        </p>
-
-                        <div class="flex items-center gap-2">
-                            <button
-                                class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors">Prev</button>
-                            <button
-                                class="w-8 h-8 rounded-lg bg-primary-600 text-white text-sm font-medium flex items-center justify-center shadow-lg shadow-primary-500/30">1</button>
-                            <button
-                                class="w-8 h-8 rounded-lg text-gray-600 dark:text-gray-400 text-sm font-medium flex items-center justify-center hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">2</button>
-                            <button
-                                class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">Next</button>
-                        </div>
-                    </div>
-                </div>
-
-                <footer class="mt-auto px-6 pt-6 border-t border-gray-300 dark:border-dark-border transition-colors">
-                    <div class="text-sm text-gray-500 dark:text-gray-400 text-center">
-                        &copy; <span id="currentYear"></span> <span
-                            class="font-semibold text-gray-900 dark:text-white">pengenumroh.com</span>. All rights
-                        reserved.
-                    </div>
-                </footer>
-
-            </div>
-<!-- 
- <div class="container">
-  <div class="page-inner">
-     <div class="page-header">
-      <h3 class="fw-bold mb-3">Travels</h3>
-      <ul class="breadcrumbs mb-3">
-        <li class="nav-home"><a href="#"><i class="icon-home"></i></a></li>
-        <li class="separator"><i class="icon-arrow-right"></i></li>
-        <li class="nav-item"><a href="#">Tables</a></li>
-        <li class="separator"><i class="icon-arrow-right"></i></li>
-        <li class="nav-item"><a href="#">Datatables</a></li>
-      </ul>
-    </div> 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <div class="d-flex align-items-center">
-              <h4 class="card-title">Products Table</h4>
-              <a class="btn btn-primary btn-round ms-auto" href="/createProduct"><i class="fa fa-plus"></i> Add Product</a>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive" style="overflow-x: auto;">
-              <table id="productTable" class="display table table-striped table-hover w-100" style="width: 100%">
-                <thead>
-                  <tr>   
-                    <th>Nama</th>
-                    <th>Added By</th>
-                    <th>Harga</th>
-                    <th>Stock</th>
-                    <th>Status</th>   
-                    <th>Action</th>       
-                  </tr>
-                </thead>
-                <tfoot>
-                  <tr>
-                    <th>Nama</th>
-                    <th>Added By</th>
-                    <th>Harga</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                    <th>Action</th>   
-                  </tr>
-                </tfoot>
-                <tbody>
-                   Data rows will be dynamically rendered here 
-                    <td>         
-                            <img src="../assets/img/logo/favicon-pu.png" alt="product" class="img-product object-fit-sm-contain " sizes="10px">
-                            <span class="p-2 text-uppercase text-body-secondary">Umrah di bulan Ramadhan</span>
-                     
-                   </td> 
-                    <td>Haramain</td> 
-                    <td>
-                    Rp.30.000.000
-                   </td> 
-                    <td>
-                    Double
-                     - 20
-                    <br>
-                    Triple
-                     - 8
-                    <br>
-                    Quad
-                    - 2
-                   </td> 
-                    <td>
-                    <label class="switch">
-                      <input type="checkbox">
-                      <span class="slider round"></span>
-                    </label>
-                   </td> 
-                    <td>
-                    <div class="d-flex gap-2 justify-content-center">
-                      <a href="#" class="btn btn-sm btn-warning">
-                       <i class="fa fa-edit"></i>
-                      </a>
-                      <a href="#" class="btn btn-sm btn-danger">
-                       <i class="fa fa-times"></i>
-                      </a>
-                      <a href="#" class="btn btn-sm btn-success">
-                       <i class="fa fa-eye"></i>
-                      </a>
-                    </div>
-                   </td> 
-                </tbody>
-              </table>
-            </div>
-          </div>
-           MODAL FORM TRAVEL 
-          <div class="modal fade" id="productFormModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header border-0">
-                  <h5 class="modal-title"><span class="fw-mediumbold">Form Product</span> </h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form id="transactionForm">
-                    <div class="row"> 
-                      <input type="hidden" id="hidden_id">
-
-                      <div class="col-sm-12">
-                        <div class="form-group form-group-default">
-                          <label>Nama</label>
-                          <input id="name" type="text" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="form-group form-group-default">
-                          <label>Tanggal</label>
-                          <input id="date" type="date" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="form-group form-group-default">
-                          <label>No Transaksi</label>
-                          <input id="" type="text" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="form-group form-group-default">
-                          <label>Amount</label>
-                          <input id="" type="amount" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="form-group form-group-default">
-                          <label>Status</label>
-                          <input type="hidden" id="" class="form-control">
-                          <select name="status" id="" class="form-control select2">
-                            <option value="">Pilih Status</option>
-                            <option value="Pending">PENDING</option>
-                            <option value="Success">SUCCES</option>
-                            <option value="Failed">FAILED</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <div class="modal-footer border-0">
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                  <button type="button" id="" class="btn btn-success">Save Changes</button>
-                </div>
+          <tr class="group hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+            <td class="p-5">
+              <div class="flex items-center gap-2">
+                <button
+                  class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20 transition-colors"
+                  title="Edit">
+                  <i class="ph-bold ph-pencil-simple text-lg"></i>
+                </button>
+                <button
+                  class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors"
+                  title="Hapus">
+                  <i class="ph-bold ph-trash text-lg"></i>
+                </button>
               </div>
-            </div>
-          </div>
-           END MODAL FORM 
-        </div>
+            </td>
+            <td class="p-5">
+              <h3 class="font-semibold text-gray-900 dark:text-white">Smart Watch Series 7
+              </h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">SKU: WTH-001</p>
+            </td>
+            <td class="p-5">
+              <div class="flex items-center gap-2">
+                <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Admin"
+                  class="w-6 h-6 rounded-full object-cover">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Kevin Sanjaya.</span>
+              </div>
+              <span class="text-xs text-gray-400 ml-8">2 jam lalu</span>
+            </td>
+            <td class="p-5 font-semibold text-gray-900 dark:text-white">Rp 2.450.000</td>
+            <td class="p-5">
+              <div class="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-1.5 w-24 mb-1">
+                <div class="bg-primary-500 h-1.5 rounded-full" style="width: 45%"></div>
+              </div>
+              <span class="text-xs text-gray-500">45 items</span>
+            </td>
+            <td class="p-5">
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-400 border border-green-200 dark:border-green-500/20">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></span>
+                Active
+              </span>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      class="p-5 border-t border-gray-100 dark:border-dark-border flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        Menampilkan <span class="font-semibold text-gray-900 dark:text-white">1-3</span> dari <span
+          class="font-semibold text-gray-900 dark:text-white">45</span> produk
+      </p>
+
+      <div class="flex items-center gap-2">
+        <button
+          class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors">Prev</button>
+        <button
+          class="w-8 h-8 rounded-lg bg-primary-600 text-white text-sm font-medium flex items-center justify-center shadow-lg shadow-primary-500/30">1</button>
+        <button
+          class="w-8 h-8 rounded-lg text-gray-600 dark:text-gray-400 text-sm font-medium flex items-center justify-center hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">2</button>
+        <button
+          class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">Next</button>
       </div>
     </div>
   </div>
-</div>  -->

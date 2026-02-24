@@ -2,18 +2,18 @@
 
   <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
     <div>
-      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Daftar Kategori</h2>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Daftar Fasilitas</h2>
       <nav class="flex text-sm text-gray-500 dark:text-gray-400 mt-1">
         <a href="#" class="hover:text-primary-500 transition-colors">Dashboard</a>
         <span class="mx-2">/</span>
-        <span class="text-gray-800 dark:text-gray-200">Categories</span>
+        <span class="text-gray-800 dark:text-gray-200">Fasilitas</span>
       </nav>
     </div>
 
     <button
       class="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors shadow-lg shadow-primary-500/30">
       <i class="ph ph-plus text-lg"></i>
-      <span>Tambah Kategori</span>
+      <span>Buat Fasilitas</span>
     </button>
   </div>
 
@@ -24,7 +24,7 @@
       class="p-5 border-b border-gray-100 dark:border-dark-border flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div class="relative w-full md:w-72">
         <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-        <input type="text" placeholder="Cari kategori..."
+        <input type="text" placeholder="Cari Fasilitas..."
           class="w-full pl-10 pr-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder-gray-400">
       </div>
     </div>
@@ -35,8 +35,8 @@
           <tr
             class="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-dark-border text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold">
             <th class="p-5 w-24 text-center">Action</th>
-            <th class="p-5 whitespace-nowrap">Nama Kategori</th>
-            <th class="p-5 whitespace-nowrap">Slug</th>
+            <th class="p-5 whitespace-nowrap w-24 text-center">Icon</th>
+            <th class="p-5 whitespace-nowrap">Nama Fasilitas</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 dark:divide-dark-border">
@@ -56,12 +56,16 @@
                 </button>
               </div>
             </td>
-            <td class="p-5">
-              <h3 class="font-semibold text-gray-900 dark:text-white">Electronics</h3>
+            <td class="p-5 text-center">
+              <div
+                class="w-10 h-10 mx-auto rounded-full bg-indigo-50 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <i class="ph-fill ph-spotify-logo text-xl"></i>
+              </div>
             </td>
             <td class="p-5">
-              <span
-                class="text-sm font-mono text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded-md">electronics</span>
+              <h3 class="font-semibold text-gray-900 dark:text-white">Spotify Premium</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Subscription Bulanan
+              </p>
             </td>
           </tr>
 
@@ -80,12 +84,16 @@
                 </button>
               </div>
             </td>
-            <td class="p-5">
-              <h3 class="font-semibold text-gray-900 dark:text-white">Fashion Pria</h3>
+            <td class="p-5 text-center">
+              <div
+                class="w-10 h-10 mx-auto rounded-full bg-orange-50 dark:bg-orange-500/20 flex items-center justify-center text-orange-600 dark:text-orange-400">
+                <i class="ph-fill ph-shopping-cart text-xl"></i>
+              </div>
             </td>
             <td class="p-5">
-              <span
-                class="text-sm font-mono text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded-md">fashion-pria</span>
+              <h3 class="font-semibold text-gray-900 dark:text-white">Belanja Tokopedia</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">INV/2024/01/15/XXI
+              </p>
             </td>
           </tr>
 
@@ -104,12 +112,16 @@
                 </button>
               </div>
             </td>
-            <td class="p-5">
-              <h3 class="font-semibold text-gray-900 dark:text-white">Fashion Wanita</h3>
+            <td class="p-5 text-center">
+              <div
+                class="w-10 h-10 mx-auto rounded-full bg-green-50 dark:bg-green-500/20 flex items-center justify-center text-green-600 dark:text-green-400">
+                <i class="ph-fill ph-money text-xl"></i>
+              </div>
             </td>
             <td class="p-5">
-              <span
-                class="text-sm font-mono text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded-md">fashion-wanita</span>
+              <h3 class="font-semibold text-gray-900 dark:text-white">Gaji Masuk</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Transfer dari PT.
+                Teknologi</p>
             </td>
           </tr>
 
@@ -128,12 +140,15 @@
                 </button>
               </div>
             </td>
-            <td class="p-5">
-              <h3 class="font-semibold text-gray-900 dark:text-white">Home & Living</h3>
+            <td class="p-5 text-center">
+              <div
+                class="w-10 h-10 mx-auto rounded-full bg-red-50 dark:bg-red-500/20 flex items-center justify-center text-red-600 dark:text-red-400">
+                <i class="ph-fill ph-coffee text-xl"></i>
+              </div>
             </td>
             <td class="p-5">
-              <span
-                class="text-sm font-mono text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded-md">home-and-living</span>
+              <h3 class="font-semibold text-gray-900 dark:text-white">Starbucks Coffee</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Makanan & Minuman</p>
             </td>
           </tr>
 
@@ -145,7 +160,7 @@
       class="p-5 border-t border-gray-100 dark:border-dark-border flex flex-col sm:flex-row items-center justify-between gap-4">
       <p class="text-sm text-gray-500 dark:text-gray-400">
         Menampilkan <span class="font-semibold text-gray-900 dark:text-white">1-4</span> dari <span
-          class="font-semibold text-gray-900 dark:text-white">12</span> kategori
+          class="font-semibold text-gray-900 dark:text-white">4</span> Fasilitas
       </p>
 
       <div class="flex items-center gap-2">
@@ -153,8 +168,6 @@
           class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors">Prev</button>
         <button
           class="w-8 h-8 rounded-lg bg-primary-600 text-white text-sm font-medium flex items-center justify-center shadow-lg shadow-primary-500/30">1</button>
-        <button
-          class="w-8 h-8 rounded-lg text-gray-600 dark:text-gray-400 text-sm font-medium flex items-center justify-center hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">2</button>
         <button
           class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">Next</button>
       </div>
