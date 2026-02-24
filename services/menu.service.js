@@ -5,7 +5,7 @@ const { mapMenuWithAcces } = require("../utils/menuAcces");
 class MenuService {
   async getAllMenu() {
     const menu = await MenuRepository.getAllMenu();
-    return menu || []; // jika null/undefined, tetap kembalikan array kosong
+    return menu; // jika null/undefined, tetap kembalikan array kosong
   }
   async getMenuById(id_menu) {
     const menu = await MenuRepository.getMenuById(id_menu);

@@ -138,6 +138,7 @@ function closeMenuModal() {
 
 // 4. EDIT FUNCTION
 async function editMenu(id) {
+  console.log("Mencoba ambil data untuk ID:", id);
   try {
     const res = await fetch(`/api/menu/${id}`);
     const json = await res.json();

@@ -24,7 +24,7 @@ class MenuController {
   async getMenuById(req, res){
       try{
         const {id_menu} = req.params;
-        const menu = await menuRepository.getMenuById(id_menu);
+        const menu = await menuService.getMenuById(id_menu);
 
         return res.status(200).json({
           success: true,

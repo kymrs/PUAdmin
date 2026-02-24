@@ -14,15 +14,25 @@ $(document).ready(function() {
             { 
                 data: "id_menu",
                 className: "p-5 text-center",
-                render: (data, type, row) => `
-                    <div class="flex items-center justify-center gap-2">
-                        <button onclick="editSubMenu(${data})" class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 transition-colors">
+                render: function (data, type, row) {
+                  let buttons = `<div class="flex items-center justify-center gap-2">`
+
+                       if(row.akses?.edit){
+                        buttons += `
+                         <button onclick="editSubMenu(${data})" class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 transition-colors">
                             <i class="ph-bold ph-pencil-simple text-lg"></i>
-                        </button>
-                        <button onclick="deleteSubMenu(${data})" class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 transition-colors">
-                            <i class="ph-bold ph-trash text-lg"></i>
-                        </button>
-                    </div>`
+                        </button>`;
+                       }
+                       if(row.akses?.delete){
+                        buttons += `
+                           <button onclick="deleteSubMenu(${data})" class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 transition-colors">
+                              <i class="ph-bold ph-trash text-lg"></i>
+                           </button>
+                        `
+                       }
+                   buttons += `</div>`;
+                   return buttons;
+                  },
             },
             { 
                 data: "nama_menu", 
@@ -66,51 +76,54 @@ $(document).ready(function() {
     });
 
     // 2. SUBMIT ACTION
-    $('#submitSubMenuBtn').on('click', async function() {
-        const id = $('#hidden_id_submenu').val();
-        const payload = {
-            nama_menu: $('#sub_nama_menu').val(),
-            link: $('#sub_link').val(),
-            icon: $('#sub_icon').val(),
-            id_menu: $('#sub_id_parent').val(), // Parent ID
-            urutan: parseInt($('#sub_urutan').val()),
-            is_active: $('#sub_is_active').val()
-        };
+    document.getElementById("submitSubMenuBtn").addEventListener("click", async () => {
+      const id = document.getElementById("hidden_id_submenu").value;
+      const payload = {
+        nama_menu: document.getElementById("nama_menu").value,
+        link: document.getElementById("link").value,
+        icon: document.getElementById("icon").value,
+        id_menu: document.getElementById("sub_id_parent").value,
+        urutan: document.getElementById("urutan").value,
+        is_active: document.getElementById("is_active").value,
+      }
 
-        const isUpdate = id !== "";
-        const url = isUpdate ? `/api/menu/${id}` : `/api/menu`;
-        const method = isUpdate ? "PUT" : "POST";
+      const isUpdate = id !== "";
+      const url = isUpdate ? `/api/menu/${id}` : `/api/menu`;
+      const method = isUpdate ? "PUT" : "POST";
 
-        try {
-            const res = await fetch(url, {
-                method: method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-            const data = await res.json();
-            if (res.ok) {
-                swal("Berhasil!", "Data submenu disimpan", "success");
-                closeSubMenuModal();
-                table.ajax.reload();
-            } else {
-                swal("Gagal!", data.message, "error");
-            }
-        } catch (err) {
-            swal("Error!", "Koneksi gagal", "error");
-        }
-    });
+      try{
+        const res = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = res.json;
+
+        if (res.ok) {
+        swal("Berhasil!", data.message || "Submenu berhasil ditambahkan", "success");
+        setTimeout(() => location.reload(), 1500);
+      } else {
+        swal("Gagal!", data.message || "Terjadi kesalahan saat menyimpan data", "error");
+      }
+      } catch(error) {
+         swal("Error!", "Gagal menghubungi server", "error");
+      }
+    })
 });
 
 // 3. HELPER FUNCTIONS
 function openSubMenuModal() {
-    $('#submenuForm')[0].reset();
-    $('#hidden_id_submenu').val('');
-    $('#modalSubTitle').text('Tambah Sub Menu');
-    $('#submenuModal').removeClass('hidden');
+    document.getElementById('submenuForm')[0].reset();
+    document.getElementById('hidden_id_submenu').value = '';
+    document.getElementById('modalSubTitle').innerText = 'Tambah Sub Menu';
+    document.getElementById('submenuModal').classList.remove('hidden');
 }
 
 function closeSubMenuModal() {
-    $('#submenuModal').addClass('hidden');
+    document.getElementById('submenuModal').classList.add('hidden');
 }
 
 async function editSubMenu(id) {
@@ -119,16 +132,16 @@ async function editSubMenu(id) {
         const json = await res.json();
         if (json.status === "success") {
             const m = json.data;
-            $('#hidden_id_submenu').val(m.id_menu);
-            $('#sub_nama_menu').val(m.nama_menu);
-            $('#sub_link').val(m.link);
-            $('#sub_icon').val(m.icon);
-            $('#sub_id_parent').val(m.parent_id || m.id_parent_field_anda); // Sesuaikan key parent anda
-            $('#sub_urutan').val(m.urutan);
-            $('#sub_is_active').val(m.is_active);
+            document.getElementById('hidden_id_submenu').value =m.id_menu;
+            document.getElementById('sub_nama_menu').value = m.nama_menu;
+            document.getElementById('sub_link').value = m.link;
+            document.getElementById('sub_icon').value = m.icon;
+            document.getElementById('sub_id_parent').value = m.id_menu ; // Sesuaikan key parent anda
+            document.getElementById('sub_urutan').value = m.urutan;
+            document.getElementById('sub_is_active').value = m.is_active ;
             
-            $('#modalSubTitle').text('Edit Sub Menu');
-            $('#submenuModal').removeClass('hidden');
+            document.getElementById('modalSubTitle').text('Edit Sub Menu');
+            document.getElementById('submenuModal').removeClass('hidden');
         }
     } catch (err) { swal("Error", "Gagal load data", "error"); }
 }
@@ -142,9 +155,11 @@ function deleteSubMenu(id) {
     }).then(async (willDelete) => {
         if (willDelete) {
             const res = await fetch(`/api/menu/${id}`, { method: "DELETE" });
-            if (res.ok) {
-                swal("Terhapus", "Sub menu berhasil dihapus", "success");
-                $('#submenuTable').DataTable().ajax.reload();
+            if (data.status === "success") {
+              swal("Terhapus!", data.message, "success");
+              $("#submenuTable").DataTable().ajax.reload();
+            } else {
+              swal("Gagal!", data.message, "error");
             }
         }
     });
