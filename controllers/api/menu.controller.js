@@ -26,6 +26,14 @@ class MenuController {
         const {id_menu} = req.params;
         const menu = await menuService.getMenuById(id_menu);
 
+        if(!menu) {
+          return res.status(404).json({
+            success: false,
+            message: "Menu tidak ditemukan",
+            data: null
+          });
+        }
+
         return res.status(200).json({
           success: true,
           message: "Menu fetched successfully",
@@ -176,8 +184,11 @@ class MenuController {
 
   async updateMenu(req, res) {
     try {
+      console.log("PARAMS:", req.params);
+
       const {id_menu} = req.params;
-      const menu = await menuRepository.getMenuById(id_menu);
+       console.log("ID MENU DITERIMA:", id_menu);
+      const menu = await menuService.getMenuById(id_menu);
       if (!menu) {
         return res.status(404).json({
           status: "error",
@@ -185,7 +196,7 @@ class MenuController {
         });
       }
 
-      await menuRepository.updateMenu(id_menu, req.body)
+      await menuService.updateMenu(id_menu, req.body)
 
       return res.status(200).json({
         success: true,

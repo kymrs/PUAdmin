@@ -10,6 +10,7 @@ router.get("/", menuController.getAllMenu);
 
 router.get("/parent", menuController.getParentsController);
 router.get("/parent/datatables", ensureAuth, injectUser, menuController.getParentPaginatedMenu);
+router.get("/:id_menu", menuController.getMenuById);
 
 router.get("/submenu", submenuController.getAllSubmenu);
 router.get("/submenu/datatables", ensureAuth, injectUser, submenuController.getSubmenuPaginated);
@@ -18,9 +19,8 @@ router.get("/submenu/datatables", ensureAuth, injectUser, submenuController.getS
 router.get("/nested", menuController.getNestedMenu);
 
 router.post("/", menuController.createMenu);
-router.put("/:id", menuController.updateMenu);
-router.delete("/:id", menuController.deleteMenu);
+router.put("/:id_menu", menuController.updateMenu);
+router.delete("/:id_menu", menuController.deleteMenu);
 
-router.get("/:id", menuController.getMenuById);
 
 module.exports = router;

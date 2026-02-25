@@ -63,6 +63,7 @@ class MenuService {
 
   async updateMenu(id_menu, menuData) {
     const menu = await MenuRepository.getMenuById(id_menu);
+    
     if (!menu) {
       throw new Error("Menu not found");
     }

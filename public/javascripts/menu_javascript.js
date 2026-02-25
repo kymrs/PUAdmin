@@ -137,13 +137,13 @@ function closeMenuModal() {
 }
 
 // 4. EDIT FUNCTION
-async function editMenu(id) {
-  console.log("Mencoba ambil data untuk ID:", id);
+async function editMenu(id_menu) {
+  console.log("Mencoba ambil data untuk ID:", id_menu);
   try {
-    const res = await fetch(`/api/menu/${id}`);
+    const res = await fetch(`/api/menu/${id_menu}`);
     const json = await res.json();
 
-    if (json.status === "success") {
+    if (json.success) {
       const menu = json.data;
       document.getElementById("hidden_id_menu").value = menu.id_menu;
       document.getElementById("nama_menu").value = menu.nama_menu;
@@ -154,6 +154,8 @@ async function editMenu(id) {
 
       document.getElementById("modalTitle").innerText = 'Edit Menu';
       document.getElementById("menuModal").classList.remove("hidden");
+
+      console.log("DATA MENU:", menu);
     } else {
       swal("Gagal", "Menu tidak ditemukan", "error");
     }
