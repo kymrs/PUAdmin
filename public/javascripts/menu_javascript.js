@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. INISIALISASI DATATABLES
   const table = $("#menuTable").DataTable({
     processing: true,
-    serverSide: false,
+    serverSide: true,
     responsive: true,
     scrollX: false,
     autoWidth: true,

@@ -37,8 +37,16 @@ module.exports = (sequelize, DataTypes) => {
 
    
     Menu.associate = (models) => {
-      Menu.belongsTo(Menu, {as: 'parent', foreignKey: 'parent_id'});     
-      Menu.hasMany(Menu, {as: 'children', foreignKey: 'parent_id'});
+     Menu.hasMany(Menu, {
+        as: "children",
+        foreignKey: "parent_id",
+        onDelete: "CASCADE"
+      });
+
+      Menu.belongsTo(Menu, {
+        as: "parent",
+        foreignKey: "parent_id"
+      });
       Menu.hasMany(models.Akses, {
         foreignKey: 'id_menu',
         as: 'akses',
