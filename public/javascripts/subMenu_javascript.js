@@ -2,12 +2,13 @@ $(document).ready(function() {
     // 1. INIT DATATABLES
     const table = $('#submenuTable').DataTable({
         processing: true,
-        serverSide: false,
+        serverSide: true,
         responsive: true,
         scrollX: false,
         autoWidth: true,
         ajax: {
             url: "/api/menu/submenu/datatables", // Sesuaikan endpoint backend
+            type: "GET",
             dataSrc: (json) => json.data
         },
         columns: [
@@ -74,49 +75,52 @@ $(document).ready(function() {
     $('#subMenuSearch').on('keyup', function() {
         table.search(this.value).draw();
     });
-
-    // 2. SUBMIT ACTION
+// 2. SUBMIT ACTION
     document.getElementById("submitSubMenuBtn").addEventListener("click", async () => {
-      const id = document.getElementById("hidden_id_submenu").value;
-      const payload = {
-        nama_menu: document.getElementById("nama_menu").value,
-        link: document.getElementById("link").value,
-        icon: document.getElementById("icon").value,
-        id_menu: document.getElementById("sub_id_parent").value,
-        urutan: document.getElementById("urutan").value,
-        is_active: document.getElementById("is_active").value,
-      }
+        const id = document.getElementById("hidden_id_submenu").value;
+        
+        // PASTIKAN ID DISINI SESUAI DENGAN DI HTML (menggunakan prefix sub_)
+        const payload = {
+            nama_menu: document.getElementById("sub_nama_menu").value,
+            link: document.getElementById("sub_link").value,
+            icon: document.getElementById("sub_icon").value,
+            parent_id: document.getElementById("sub_id_parent").value,
+            urutan: document.getElementById("sub_urutan").value,
+            is_active: document.getElementById("sub_is_active").value,
+        }
 
-      const isUpdate = id !== "";
-      const url = isUpdate ? `/api/menu/${id}` : `/api/menu`;
-      const method = isUpdate ? "PUT" : "POST";
+        const isUpdate = id !== "";
+        const url = isUpdate ? `/api/menu/${id}` : `/api/menu`;
+        const method = isUpdate ? "PUT" : "POST";
 
-      try{
-        const res = await fetch(url, {
-            method: method,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload)
-        });
+        try {
+            const res = await fetch(url, {
+                method: method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            
+            // PERBAIKAN: Tambahkan await dan ()
+            const data = await res.json(); 
 
-        const data = res.json;
-
-        if (res.ok) {
-        swal("Berhasil!", data.message || "Submenu berhasil ditambahkan", "success");
-        setTimeout(() => location.reload(), 1500);
-      } else {
-        swal("Gagal!", data.message || "Terjadi kesalahan saat menyimpan data", "error");
-      }
-      } catch(error) {
-         swal("Error!", "Gagal menghubungi server", "error");
-      }
-    })
+            if (res.ok) {
+                swal("Berhasil!", data.message || "Data berhasil disimpan", "success");
+                closeSubMenuModal();
+                table.ajax.reload(); // Reload table tanpa reload halaman
+            } else {
+                swal("Gagal!", data.message || "Terjadi kesalahan", "error");
+            }
+        } catch(error) {
+            swal("Error!", "Gagal menghubungi server", "error");
+        }
+    });
 });
 
 // 3. HELPER FUNCTIONS
+
 function openSubMenuModal() {
-    document.getElementById('submenuForm')[0].reset();
+    // Reset form dengan benar
+    document.getElementById('submenuForm').reset();
     document.getElementById('hidden_id_submenu').value = '';
     document.getElementById('modalSubTitle').innerText = 'Tambah Sub Menu';
     document.getElementById('submenuModal').classList.remove('hidden');
@@ -130,36 +134,53 @@ async function editSubMenu(id) {
     try {
         const res = await fetch(`/api/menu/${id}`);
         const json = await res.json();
-        if (json.status === "success") {
+        
+        // Sesuaikan dengan respon backend kamu (success atau status === "success")
+        if (json.success || json.status === "success") {
             const m = json.data;
-            document.getElementById('hidden_id_submenu').value =m.id_menu;
+            document.getElementById('hidden_id_submenu').value = m.id_menu;
             document.getElementById('sub_nama_menu').value = m.nama_menu;
             document.getElementById('sub_link').value = m.link;
             document.getElementById('sub_icon').value = m.icon;
-            document.getElementById('sub_id_parent').value = m.id_menu ; // Sesuaikan key parent anda
-            document.getElementById('sub_urutan').value = m.urutan;
-            document.getElementById('sub_is_active').value = m.is_active ;
             
-            document.getElementById('modalSubTitle').text('Edit Sub Menu');
-            document.getElementById('submenuModal').removeClass('hidden');
+            // Gunakan parent_id atau id_parent sesuai database kamu
+            document.getElementById('sub_id_parent').value = m.parent_id || m.id_parent; 
+            
+            document.getElementById('sub_urutan').value = m.urutan;
+            document.getElementById('sub_is_active').value = m.is_active;
+            
+            // PERBAIKAN: Gunakan innerText dan classList
+            document.getElementById('modalSubTitle').innerText = 'Edit Sub Menu';
+            document.getElementById('submenuModal').classList.remove('hidden');
+        } else {
+            swal("Gagal", "Data tidak ditemukan", "warning");
         }
-    } catch (err) { swal("Error", "Gagal load data", "error"); }
+    } catch (err) { 
+        swal("Error", "Gagal load data", "error"); 
+    }
 }
 
 function deleteSubMenu(id) {
     swal({
         title: "Hapus Sub Menu?",
+        text: "Data yang dihapus tidak dapat dikembalikan!",
         icon: "warning",
         buttons: ["Batal", "Ya, Hapus"],
         dangerMode: true,
     }).then(async (willDelete) => {
         if (willDelete) {
-            const res = await fetch(`/api/menu/${id}`, { method: "DELETE" });
-            if (data.status === "success") {
-              swal("Terhapus!", data.message, "success");
-              $("#submenuTable").DataTable().ajax.reload();
-            } else {
-              swal("Gagal!", data.message, "error");
+            try {
+                const res = await fetch(`/api/menu/${id}`, { method: "DELETE" });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    swal("Terhapus!", data.message, "success");
+                    $('#submenuTable').DataTable().ajax.reload();
+                } else {
+                    swal("Gagal!", data.message, "error");
+                }
+            } catch (err) {
+                swal("Error!", "Gagal menghapus data", "error");
             }
         }
     });
