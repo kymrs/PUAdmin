@@ -487,27 +487,7 @@
                 }
             });
         </script>
-        <script>
-          function openAddLevelModal() {
-              document.getElementById("hidden_id_userlevel").value = "";
-              document.getElementById("level-name").value = "";
-              document.querySelector('#add-level-panel h3').innerText = 'Tambah Level Baru';
-              // Panggil fungsi toggleModal (Pastikan fungsi ini terjangkau secara scope)
-              const modal = document.getElementById('add-level-modal');
-              modal.classList.remove('hidden');
-            }
-
-            function closeAddLevelModal() {
-              const modal = document.getElementById('add-level-modal');
-              modal.classList.add('hidden');
-            }
-
-            function closeAccessModal() {
-              const modal = document.getElementById('access-modal');
-              modal.classList.add('hidden');
-            }
-            
-        </script>
+       
         
         </body>
 
