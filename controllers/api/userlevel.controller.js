@@ -105,11 +105,9 @@ class UserlevelController {
 
   async upsertAccess(req, res) {
     try {
-      const id_level = req.session.user.id_level;
+      // Ambil id_level dari body, jika tidak ada baru ambil dari session (fallback)
+      const id_level = req.body.id_level || req.session.user.id_level;
       const aksesData = req.body.akses;
-
-      console.log("ID Level:", id_level);
-      // console.log("Akses Data:", aksesData);
 
       const result = await userlevelService.upsertAccess({ id_level, akses: aksesData });
       return response.success(res, "Access updated successfully", result);
@@ -117,7 +115,6 @@ class UserlevelController {
       return response.error(res, error.message, 400);
     }
   }
-  
 
 }
 

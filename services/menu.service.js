@@ -5,12 +5,17 @@ const { mapMenuWithAcces } = require("../utils/menuAcces");
 class MenuService {
   async getAllMenu() {
     const menu = await MenuRepository.getAllMenu();
-    return menu || []; // jika null/undefined, tetap kembalikan array kosong
+    return menu; // jika null/undefined, tetap kembalikan array kosong
   }
+  
+  async getSubmenu(){
+    return await MenuRepository.getSubmenu();
+  }
+
   async getMenuById(id_menu) {
-    const menu = await MenuRepository.getMenuById(id_menu);
-    return menu || []; // jika null/undefined, tetap kembalikan array kosong
+    return await MenuRepository.getMenuById(id_menu); // jika null/undefined, tetap kembalikan array kosong
   }
+
   async getAllMenuDatatables({ draw, start, length, search, order, columns, parent_id, parent_not_null}) {
     const searchValue = search?.value || "";
 
@@ -30,7 +35,7 @@ class MenuService {
       search: searchValue,
       order,
       columns,
-      parentOnly
+      filter
     });
 
     return {
@@ -45,6 +50,13 @@ class MenuService {
     const menus = await MenuRepository.getParentMenus(id_level);
     return menus.map(menu => mapMenuWithAcces(menu));
   }
+
+  async getSubmenuDatatables(query) {
+    return await this.getAllMenuDatatables({
+      ...query,
+      parent_not_null: true
+    });
+  }
   
   async createMenu(menuData) {
     const requiredFields = ["nama_menu", "link", "icon", "urutan", "is_active"];
@@ -54,7 +66,7 @@ class MenuService {
       }
      }
 
-     const parentId = menuData.parent_id || null;
+     const parentId = menuData.parent_id ?? null;
      return await MenuRepository.createMenu({
       ...menuData,
       parent_id: parentId
@@ -63,10 +75,11 @@ class MenuService {
 
   async updateMenu(id_menu, menuData) {
     const menu = await MenuRepository.getMenuById(id_menu);
+
     if (!menu) {
       throw new Error("Menu not found");
     }
-    const parentId = menuData.parent_id || null;
+    const parentId = menuData.parent_id ?? null;
 
     const updated = await MenuRepository.updateMenu(id_menu, {
       ...menuData,
@@ -88,9 +101,9 @@ class MenuService {
 
   // 🆕 Fungsi baru: Ambil menu dalam struktur bertingkat (multi-level)
   async getNestedMenu() {
-    // const menus = await MenuRepository.getAllMenu();
+    const menus = await MenuRepository.getAllMenu();
     //recursive builder
-    const buildTree = (parentId = null, menus) => {
+    const buildTree = (parentId = null) => {
       return menus
         .filter(menu => menu.parent_id === parentId)
         .map(menu => ({
@@ -100,11 +113,11 @@ class MenuService {
           link: menu.link,
           urutan: menu.urutan,
           is_active: menu.is_active,
-          children: buildTree(menus, menu.id_menu)
+          children: buildTree(menu.id_menu)
         }))
     }
     
-    return buildTree();
+    return buildTree(null);
   }
 
   async createNestedMenu(menuData, parentId = null){

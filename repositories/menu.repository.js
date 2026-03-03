@@ -1,7 +1,7 @@
 const { Model, Op, where } = require("sequelize");
 const { sequelize, Menu, Akses } = require("../models");
 const aksesRepository = require("./akses.repository");
-const submenuRepository = require("./submenu.repository");
+
 const { raw } = require("body-parser");
 
 class MenuRepository {
@@ -13,6 +13,24 @@ class MenuRepository {
       order: [['urutan', 'ASC']] 
     });
   }
+  
+  async getSubmenu() {
+    return await Menu.findAll({    
+      where: {
+        parent_id: {
+          [Op.ne]: null
+        }
+      },
+      include: [
+        {
+          model: Menu,
+          as: "parent"
+        }
+      ],
+      order: [['urutan', 'ASC']]
+    })
+  }
+
   async getMenuById(id_menu) {
     return await Menu.findByPk(id_menu);
   }
@@ -95,7 +113,7 @@ class MenuRepository {
 
     return result;
   }
-
+  
 
   async createMenu(menuData) {
     return await Menu.create(menuData);
@@ -112,12 +130,12 @@ class MenuRepository {
     try {
       // Hapus akses menu terlebih dahulu
       await aksesRepository.deleteAksesById_menu(id_menu, transaction);
-      const menu = await submenuRepository.getSubmenuById_menu(id_menu);
 
-      if (id_menu) {
-        // Hapus submenu terkait
-        await submenuRepository.deleteSubmenu(menu.id_menu, transaction);
-      }
+      // hapus submenu
+      await Menu.destroy({
+        where: { parent_id: id_menu },
+        transaction
+      });
 
       // Hapus menu
       await Menu.destroy({ where: { id_menu }, transaction });
@@ -136,21 +154,23 @@ class MenuRepository {
     });
 
     const menuMap = {};
+    const nestedMenu = [];
+
     allMenu.forEach(menu => {
       menu.children = [];
-      menuMap[menu.id_menu].children.push(menu);
+      menuMap[menu.id_menu] = menu;
     })
 
-    const nestedMenu = [];
     allMenu.forEach(menu => {
       if(menu.parent_id){
-        if(menuMap.parent_id){   
+        if(menuMap[menu.parent_id]){   
           menuMap[menu.parent_id].children.push(menu);
         }
-      }else{
-        nestedMenu.push(menu);
-      }
+        } else {
+          nestedMenu.push(menu);
+        }
     })
+
     return nestedMenu;
   }
   

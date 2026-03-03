@@ -317,3 +317,28 @@ option:hover {
       align-items: center;
       justify-content: center;
   } 
+  
+  /* Styling agar Select2 terlihat seperti input Tailwind kamu */
+.select2-container--default .select2-selection--single {
+    background-color: rgb(249 250 251); /* bg-gray-50 */
+    border: 1px solid rgb(229 231 235); /* border-gray-200 */
+    border-radius: 0.75rem; /* rounded-xl */
+    height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.dark .select2-container--default .select2-selection--single {
+    background-color: rgb(30 41 59); /* dark:bg-slate-800 */
+    border-color: rgb(51 65 85); /* dark:border-slate-700 */
+    color: white;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding-left: 1rem;
+    color: inherit;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 46px;
+}
