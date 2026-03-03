@@ -2,6 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     $('#galleryCategories').DataTable({
+      dom: `
+            <"flex items-center justify-between mb-4"
+                <"flex items-center gap-2"l>
+                <"flex items-center gap-2"f>
+            >
+            rt
+            <"flex items-center justify-between mt-4"
+                <"text-sm text-gray-500"i>
+                <"flex items-center gap-2"p>
+            >
+          `,
       processing: true,
       serverSide: true,
       responsive: false,
