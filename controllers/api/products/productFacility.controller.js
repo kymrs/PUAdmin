@@ -1,7 +1,17 @@
-const ProductService = require("../../../services/products/productService.service");
+const ProductService = require("../../../services/products/product.service");
 const productFacilityRepository = require("../../../repositories/products/productFacility.repository");
 
 class ProductFacilityController {
+    async getFaclitiesByProduct(req, res){
+        try{
+            const facilities = await productFacilityRepository.findByProduct(req.params.id);
+            res.json({ success: true, data: facilities});
+        } catch(error) {
+            console.error(error);
+            res.status(500).json({ success: false, message: "Internal Server Error" });
+        }
+    }
+
     async createFacilities(req, res) {
         const t = sequelize.transaction();
 

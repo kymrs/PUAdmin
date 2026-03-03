@@ -1,7 +1,16 @@
-const ProductService = require("../../../services/products/productService.service");
+const ProductService = require("../../../services/products/product.service");
 const productSnKRepository = require("../../../repositories/products/productSnK.repository");
 
 class ProductSnKController {
+    async getSnkByProduct(req, res){
+                try{
+                    const snk = await productSnKRepository.findByProduct(req.params.id);
+                    res.json({ success: true, data: snk});
+                } catch (error) {
+                    console.error(error);
+                    res.status(500).json({ success: false, message: "Internal Server Error" });
+                }
+            }
     async createsnks(req, res) {
         const t = sequelize.transaction();
 

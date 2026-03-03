@@ -4,14 +4,14 @@ class ProductSnKService {
     async getSnK() {
         return await ProductSnKRepository.findByProduct();
     }
-    async createSnK(snks, prodcutId, transaction) {
+    async createSnK(snks, product_idId, transaction) {
         let validateSnks = snks;
         if (typeof snks === "string") validateSnks = JSON.parse(snks);
         if(!Array.isArray(validateSnks)) validateSnks = validateSnks ? [validateSnks] : [];
 
         if(validateSnks.length === 0) return [];
         const snkPayload = validateSnks.map(s => ({
-            product_id: prodcutId,
+            product_id: product_idId,
             name: s.snk
         }));
 

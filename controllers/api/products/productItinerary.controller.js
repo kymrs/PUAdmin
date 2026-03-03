@@ -1,7 +1,17 @@
-const ProductService = require("../../../services/products/productService.service");
+const ProductService = require("../../../services/products/product.service");
 const productItineraryRepository = require("../../../repositories/products/productItinerary.repository");
 
 class ProductItineraryController {
+    async getItinerariesByProduct(req, res){
+        try{
+            const itineraries = await productItineraryRepository.findByProduct(req.params.id);
+            res.json({ success: true, data: itineraries});
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ success: false, message: "Internal Server Error" });
+        }
+    }
+    
     async createItineraries(req, res) {
         const t = sequelize.transaction();
 

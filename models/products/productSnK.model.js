@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        prodcut_id: {
+        product_id_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
