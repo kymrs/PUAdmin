@@ -1,7 +1,16 @@
-const ProductService = require("../../../services/products/productService.service");
+const ProductService = require("../../../services/products/product.service");
 const productHotelRepository = require("../../../repositories/products/productHotel.repository");
 
 class ProductHotelController {
+    async getHotelByProduct(req, res){
+        try{
+            const hotels = await productHotelRepository.findByProduct(req.params.id);
+            res.json({ success: true, data: hotels});
+        } catch(error) {
+            console.log(error);
+            res.status(500).json({ success: false, message: "Internal Server Error"});
+        }
+    }
     async createHotels(req, res) {
         const t = sequelize.transaction();
 

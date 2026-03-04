@@ -1,7 +1,17 @@
-const productNoteRepository = require("../../repositories/products/productNote.repository");
-const ProductService = require("../../../services/products/productService.service");
+const productNoteRepository = require("../../../repositories/products/productNote.repository");
+const ProductService = require("../../../services/products/product.service");
 
 class ProductNoteController {
+    async getNotesByProduct(req, res){
+            try{
+                const notes = await productNoteRepository.findByProduct(req.params.id);
+                res.json({ success: true, data: notes});
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ success: false, message: "Internal Server Error" });
+            }
+        }
+        
     async createNotes(req, res) {
         const t = sequelize.transaction();
 

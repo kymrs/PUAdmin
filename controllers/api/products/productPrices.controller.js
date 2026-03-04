@@ -39,7 +39,7 @@ class ProductPricesController {
   async index(req, res) {
     try {
       const { id: productId } = req.params;
-      const prices = await productPriceRepo.findByProduct(productId);
+      const prices = await productPriceRepository.findByProduct(productId);
 
       res.json({
         status: "success",

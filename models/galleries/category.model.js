@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     GalleryCategory.associate = (models) => {
-      GalleryCategory.hasMany(models.Gallery, { foreignKey: 'category_id', as: 'galleries' });
       GalleryCategory.hasMany(models.Product, {
         foreignKey:  'category_id', 
         as: "categories"

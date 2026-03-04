@@ -31,9 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: false,
     });
 
-    Gallery.associate = (models) => {
-        Gallery.belongsTo(models.GalleryCategory, { foreignKey: 'category_id', as: 'category' });
-    };
+   
   
     return Gallery;
   };
