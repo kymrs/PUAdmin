@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    $('#galleryCategories').DataTable({
+   const table = $('#galleryCategories').DataTable({
       processing: true,
       serverSide: true,
       responsive: true,
@@ -59,6 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });  
+
+   // Custom Search bar logic
+  document.querySelector('input[placeholder="Cari kategori..."]').addEventListener('keyup', function() {
+    table.search(this.value).draw();
+  });
    // CREATE OR UPDATE
     document.getElementById("submitCategoryBtn").addEventListener("click", async () => {
       const id = document.getElementById("hidden_id_category").value;
