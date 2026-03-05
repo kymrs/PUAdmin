@@ -150,6 +150,11 @@ document.addEventListener("DOMContentLoaded", () => {
   table.on('draw.dt', function () {
     renderPagination();
   });
+
+  // Custom Search bar logic
+    document.querySelector('input[placeholder="Cari user..."]').addEventListener('keyup', function() {
+      table.search(this.value).draw();
+    });
 });
 
     // CREATE OR UPDATE
@@ -201,10 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Custom Search bar logic
-    document.querySelector('input[placeholder="Cari user..."]').addEventListener('keyup', function() {
-      table.search(this.value).draw();
-    });
+    
 
     document.getElementById("addUserBtn").addEventListener("click", (e) => {
       e.preventDefault();

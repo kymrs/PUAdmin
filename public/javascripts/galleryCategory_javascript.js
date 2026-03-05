@@ -133,12 +133,13 @@ document.addEventListener("DOMContentLoaded", () => {
   table.on('draw.dt', function () {
     renderPagination();
   });
+     // Custom Search bar logic
+    document.querySelector('input[placeholder="Cari kategori..."]').addEventListener('keyup', function() {
+      table.search(this.value).draw();
+    });
   });  
 
-   // Custom Search bar logic
-  document.querySelector('input[placeholder="Cari kategori..."]').addEventListener('keyup', function() {
-    table.search(this.value).draw();
-  });
+
    // CREATE OR UPDATE
     document.getElementById("submitCategoryBtn").addEventListener("click", async () => {
       const id = document.getElementById("hidden_id_category").value;
