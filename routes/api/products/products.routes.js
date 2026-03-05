@@ -22,16 +22,24 @@ const diskStrorage = multer.diskStorage({
   destination: function (req, file, cb) {
     const isValid = FILE_TYPE[file.mimetype];
     let uploadError = new Error('Invalid image type: JPG, JPEG, PNG only allowed');
+    let uploadPath = "public/assets/img/products/";
+
+    if (file.fieldname === "thumbnail") {
+      uploadPath += "thumbnails/";
+    }
+
+    if (file.fieldname === "hotel_image_mekkah" || file.fieldname === "hotel_image_madinah") {
+      uploadPath += "hotels/";
+    }
 
     if(isValid){
         uploadError = null;
     }
 
-    cb(uploadError, path.resolve("public/assets/img/products"));
+    cb(uploadError, path.resolve(uploadPath));
   },
   filename: function(req, file, cb) {
-    const safeName = Date.now() + "-" + file.originalname.replace(/[^\w.-]/g, "");
-    cb(null, safeName);
+    cb(null, file.originalname);
   }
 })
 

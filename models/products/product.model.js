@@ -88,6 +88,11 @@ module.exports = (sequelize, DataTypes) => {
             as: 'hotels',
             onDelete: 'CASCADE'
        });
+       Product.hasMany(models.ProductItinerary, {
+            foreignKey: 'product_id',
+            as: 'itinerary',
+            onDelete: 'CASCADE'
+       })
     }
 
 
