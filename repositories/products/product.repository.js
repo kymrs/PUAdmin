@@ -1,9 +1,48 @@
 const { Model, Op, where } = require("sequelize");
-const { Product } = require("../../models");
+const { Product, ProductPrices, ProductFlight, ProductHotel, ProductFacility, ProductItinerary, ProductSnK, ProductNote } = require("../../models");
 
 class ProductRepository {
     async getAllProduct() {
-        return await Product.findAll();
+        return await Product.findAll({
+            include: [
+                {
+                    model: ProductPrices,
+                    as: "prices",
+                    attributes: ["room_types", "price"]
+                },
+                {
+                    model: ProductFlight,
+                    as: "flights",
+                    attributes: ["airline_name", "type"]
+                },
+                {
+                    model: ProductHotel,
+                    as: "hotels",
+                    attributes: ["name", "city", "rating", "jarak", "image", "facilities"]
+                },
+                {
+                    model: ProductFacility,
+                    as: "facility",
+                    attributes: ["facility", "type"]
+                },
+                {
+                    model: ProductItinerary,
+                    as: "itinerary",
+                    attributes: ["day_order", "title", "description"]
+                },
+                {
+                    model: ProductSnK,
+                    as: "snk",
+                    attributes: ["name"]
+                },
+                {
+                    model: ProductNote,
+                    as: "notes",
+                    attributes: ["note"]
+                }
+            ],
+            order: [["createdAt", "DESC"]]
+        });
     }
 
     async getPaginatedProduct({ start, length, search, order, columns }) {
