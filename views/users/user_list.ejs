@@ -1,195 +1,135 @@
-<div class="container">
-    <div class="page-inner">
-      <!-- <div class="page-header">
-        <h3 class="fw-bold mb-3">Users</h3>
-        <ul class="breadcrumbs mb-3">
-          <li class="nav-home">
-            <a href="#">
-              <i class="icon-home"></i>
-            </a>
-          </li>
-          <li class="separator">
-            <i class="icon-arrow-right"></i>
-          </li>
-          <li class="nav-item">
-            <a href="#">Tables</a>
-          </li>
-          <li class="separator">
-            <i class="icon-arrow-right"></i>
-          </li>
-          <li class="nav-item">
-            <a href="#">Datatables</a>
-          </li>
-        </ul>
-      </div> -->
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <div class="d-flex align-items-center">
-                <h4 class="card-title">Users Table</h4>
-                <a
-                  id="addUserBtn"
-                  data-bs-toggle="modal"
-                  data-bs-target="#userFormModal"
-                  class="btn btn-primary btn-round ms-auto"
-                  href=""
-                >
-                  <i class="fa fa-plus"></i>
-                  Add Row
-                </a>
-              </div>
-            </div>
-            <div class="card-body">
+<div class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth">
+  <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Users Management</h2>
+      <nav class="flex text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <a href="#" class="hover:text-primary-500 transition-colors">Settings</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-800 dark:text-gray-200">Users</span>
+      </nav>
+    </div>
 
-              <div class="table-responsive">
-                <table
-                  id="userTable"
-                  class="display table table-striped table-hover"
-                >
-                  <thead>
-                    <tr>
-                      <th style="width: 10%">Action</th>
-                      <th>Username</th>
-                      <th>Fullname</th>
-                      <th>ID Level</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Action</th>
-                      <th>Username</th>
-                      <th>Fullname</th>
-                      <th>ID Level</th>
-                      <th>Status</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    
-                  </tbody>
-                </table>
-              </div>
-            </div>
+    <button id="addUserBtn" data-bs-toggle="modal" data-bs-target="#userFormModal"
+      class="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors shadow-lg shadow-primary-500/30">
+      <i class="ph ph-plus text-lg"></i>
+      <span>Tambah User</span>
+    </button>
+  </div>
 
-              <!-- MODAL EDIT DATA -->
-              <div
-              class="modal fade"
-              id="userFormModal"
-              tabindex="-1"
-              role="dialog"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header border-0">
-                    <h5 class="modal-title">
-                      <span class="fw-mediumbold">Form User</span>
-                      <!-- <span class="fw-light"> User </span> -->
-                    </h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form id="userForm">
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="form-group form-group-default">
-                            <label>Fullname</label>
-                            <input
-                              id="fullname"
-                              type="text"
-                              class="form-control"
-                            />
-                            <!-- HIDDEN INPUT -->
-                             <input 
-                              type="hidden"
-                              id="hidden_id_user"
-                             />
-                          </div>
-                        </div>
-                        <div class="col-sm-12">
-                          <div class="form-group form-group-default">
-                            <label>Username</label>
-                            <input
-                              id="username"
-                              type="text"
-                              class="form-control"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-sm-12" id="passwordDiv">
-                          <div class="form-group form-group-default">
-                            <label>Password</label>
-                            <input
-                              id="password"
-                              type="text"
-                              class="form-control"
-                            />
-                          </div>
-                        </div>
-                      <div class="col-sm-12">
-                        <div class="form-group form-group-default">
-                          <label>ID Level</label>
-                          <select name="id_level" id="id_level" class="form-select">
-                            <option selected disabled>Pilih Opsi....</option>
-                            <% userlevels.forEach(function(level) { %>
-                              <option value="<%= level.id_level %>"><%= level.nama_level %></option>
-                            <% }); %>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="form-group form-group-default">
-                          <label>Active</label>
-                          <select name="is_active" id="is_active" class="form-select">
-                            <option selected disabled>Pilih Opsi....</option>
-                            <option value="Y">Ya</option>
-                            <option value="N">Tidak</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="form-group form-group-default">
-                          <label>Approval</label>
-                          <select name="app" id="app" class="form-select">
-                            <option selected disabled>Pilih Opsi....</option>
-                            <option value="Y">Ya</option>
-                            <option value="N">Tidak</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer border-0">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="button"
-                      id="submitUserBtn"
-                      class="btn btn-success"
-                    >
-                      Save Changes
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-dark-border overflow-hidden mb-10">
+    <div class="p-5 border-b border-gray-100 dark:border-dark-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="relative w-full md:w-72">
+        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+        <input type="text" id="customSearchInput" placeholder="Cari user..."
+          class="w-full pl-10 pr-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder-gray-400">
+      </div>
+    </div>
 
-          </div>
-        </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse" id="userTable">
+        <thead>
+          <tr class="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-dark-border text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold">
+            <th class="p-5 w-32 text-center">Action</th>
+            <th class="p-5 whitespace-nowrap">Username</th>
+            <th class="p-5 whitespace-nowrap">Fullname</th>
+            <th class="p-5 whitespace-nowrap">ID Level</th>
+            <th class="p-5 whitespace-nowrap text-center">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 dark:divide-dark-border">
+          </tbody>
+      </table>
+    </div>
+
+    <div id="customPaginationWrapper"
+      class="p-5 border-t border-gray-100 dark:border-dark-border flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p id="customTableInfo" class="text-sm text-gray-500 dark:text-gray-400">
+        
+      </p>
+
+      <div id="customPagination" class="flex items-center gap-2">
+      
       </div>
     </div>
   </div>
+</div>
+
+<div id="userFormModal" class="fixed inset-0 z-[80] hidden"  tabindex="-1" aria-hidden="true">
+   <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" id="menuModalBackdrop"></div>
+   <div class="flex min-h-full items-center justify-center p-4">
+    <div class="relative transform overflow-hidden rounded-2xl bg-white dark:bg-dark-card text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+        
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-dark-border flex justify-between items-center">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white" id="modalTitle">Form User</h3>
+          <button type="button" onclick="closeUserModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                          <i class="ph ph-x text-xl"></i>
+              </button>
+        </div>
+
+        <div class="p-6">
+          <form id="userForm" class="p-6 space-y-4">
+            <input type="hidden" id="hidden_id_user" />
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fullname</label>
+              <input id="fullname" type="text" 
+                class="w-full px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 focus:border-primary-500 outline-none transition-all dark:text-white">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username</label>
+              <input id="username" type="text" 
+                class="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+            </div>
+             <div id="passwordDiv">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                <input id="password" type="password" class="w-full px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 dark:text-white">
+              </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">ID Level</label>
+                <select name="id_level" id="id_level" 
+                  class="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+                  <option selected disabled>Pilih Opsi....</option>
+                  <% userlevels.forEach(function(level) { %>
+                    <option value="<%= level.id_level %>"><%= level.nama_level %></option>
+                  <% }); %>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Active</label>
+                <select name="is_active" id="is_active" 
+                  class="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+                  <option selected disabled>Pilih Opsi....</option>
+                  <option value="Y">Ya</option>
+                  <option value="N">Tidak</option>
+                </select>
+              </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Approval</label>
+                <select name="app" id="app" 
+                  class="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+                  <option selected disabled>Pilih Opsi....</option>
+                  <option value="Y">Ya</option>
+                  <option value="N">Tidak</option>
+                </select>
+              </div>
+          </form>
+        </div>
+
+        <div class="p-6 flex items-center justify-end gap-3 border-t border-gray-100 dark:border-dark-border">
+          <button onclick="closeUserModal()"  type="button" class="px-5 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="button" id="submitUserBtn" 
+            class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-lg shadow-primary-500/30 transition-all transform active:scale-95">
+            Save Changes
+          </button>
+        </div>
+
+    </div>
+  </div>
+</div>
+

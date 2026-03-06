@@ -93,16 +93,27 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("hotel_madinah_image").addEventListener("change", (e) => hotelImageFiles.Madinah = e.target.files[0]);
 
     // Price Inputs (Mapping dari ID partials)
-    ['price_quad', 'price_triple', 'price_double'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.addEventListener("input", (e) => {
-                const type = id.replace('price_', '').charAt(0).toUpperCase() + id.replace('price_', '').slice(1);
-                const item = ProductPriceState.find(p => p.type === type);
-                if (item) item.price = Number(e.target.value);
-            });
-        }
-    });
+    // ['price_quad', 'price_triple', 'price_double'].forEach(id => {
+    //     const el = document.getElementById(id);
+    //     if (el) {
+    //         el.addEventListener("input", (e) => {
+    //             const type = id.replace('price_', '').charAt(0).toUpperCase() + id.replace('price_', '').slice(1);
+    //             const item = ProductPriceState.find(p => p.type === type);
+    //             if (item) item.price = Number(e.target.value);
+    //         });
+    //     }
+    // });
+    document.querySelectorAll("[data-type]").forEach(input => {
+        input.addEventListener("input", (e) => {
+            const type = e.target.dataset.type;
+
+            const item = ProductPriceState.find(p => p.type === type)
+
+            if(item){
+                item.price = Number(e.target.value);
+            }
+        })
+    }, )
 
     // Dynamic Lists (Enter Keys)
     const setupListInput = (inputId, containerId, stateArray, color) => {
@@ -140,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                     <div class="md:col-span-2">
                         <label class="block text-xs font-semibold text-gray-500 uppercase">Hari</label>
-                        <input type="text" value="${item.day_order}" readonly class="itinerary-day w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-600 font-bold text-center">
+                        <input type="text" value="${item.day_order}" readonly class="itinerary-day w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-600 font-bold text-center" required>
                     </div>
                     <div class="md:col-span-3">
                         <label class="block text-xs font-semibold text-gray-500 uppercase">Lokasi</label>
@@ -148,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
                     <div class="md:col-span-6">
                         <label class="block text-xs font-semibold text-gray-500 uppercase">Aktivitas</label>
-                        <input type="text" placeholder="Aktivitas" class="itinerary-desc w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-600 outline-none focus:border-primary-500">
+                        <input type="text" placeholder="Aktivitas" class="itinerary-desc w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-600 outline-none focus:border-primary-500" required>
                     </div>
                     <div class="md:col-span-1 flex items-end justify-end">
                         <button type="button" class="p-2 text-red-500 hover:bg-red-50 rounded-lg btn-remove-roadmap">

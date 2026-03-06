@@ -222,6 +222,15 @@ class ProductService {
             throw new Error(error.message);
         }
        }
+
+       async deleteByProduct(id, productData) {
+        try{
+            let { prices, flights, notes, snks, facilities,hotels, itineraries,...productFields } = productData;
+            await productRepository.deleteProduct(id, productFields);
+        } catch (error) {
+            throw new Error(error.message);
+        }
+       }
 }
 
 module.exports = new ProductService;

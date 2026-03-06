@@ -1,50 +1,55 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", () => {
 
-  $("#userTable").DataTable({
+ const table = $("#userTable").DataTable({
     processing: true,
     serverSide: true,
     responsive: false,
     scrollX: false,
     autowidth: true,
+    dom: "t",
+    info: false,
+    paginate: true,
+    lengthMenu: [[
+        5, 10, 25, 50, 100, -1],
+        [5, 10, 25, 50, 100, "All"]
+    ],
     ajax: {
       url: "/api/user/datatables", // Backend endpoint
       type: "GET",
-      dataSrc: function (json) {
-        // console.log("DataTables response:", json); // Debugging log
-        return json.data; // Extract the data array
-      },
+      dataSrc: (json) => json.data,
     },
     columns: [
       {
         data: "id",
+        className: "p-5 text-center",
         render: function (data, type, row) {
-          // console.log("Data ID:", row); // Debugging log
-          let buttons = `<div class="d-flex gap-2 justify-content-center">`;
+          console.log("Data ID:", row); // Debugging log
+          let buttons = `<div class="flex items-center justify-center gap-2">`;
 
           if (row.akses && row.akses.edit) {
             buttons += `
-              <a href="#" class="btn btn-sm btn-info userApproval" data-id="${row.id}">
-                <i class="fa fa-check"></i>
-              </a>
-              <a href="#" class="btn btn-sm btn-warning userEdit" data-id="${row.id}">
-                <i class="fa fa-edit"></i>
-              </a>`;
+              <button class="userApproval p-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 dark:bg-green-500/10 dark:text-green-400 transition-colors" title="Approve" data-id="${row.id}">
+                <i class="ph-bold ph-check text-lg"></i>
+              </button>
+              <button onclick="editUser(${row.id})" class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 transition-colors" title="Edit">
+                <i class="ph-bold ph-pencil-simple text-lg"></i>
+              </button>`;
           }
           if (row.akses && row.akses.delete) {
             buttons += `
-              <a href="#" class="btn btn-sm btn-danger userDelete" data-id="${row.id}">
-                <i class="fa fa-times"></i>
-              </a>`;
+             <button onclick="deleteUser(${row.id})" class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 transition-colors" title="Hapus">
+                <i class="ph-bold ph-trash text-lg"></i>
+              </button>`;
           }
 
           buttons += `</div>`;
           return buttons;
         },
       },
-      { data: "fullname", title: "Nama Lengkap" },
-      { data: "username", title: "Username" },
+      { data: "fullname", title: "Nama Lengkap", className: "font-semibold text-gray-900 dark:text-white" },
+      { data: "username", title: "Username", render: data => `<span class="px-2 py-1 rounded-md bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 text-xs font-mono">${data}</span>` },
       { data: "level.nama_level",
-        title: "ID Level",
+        title: "ID Level", className: "font-semibold text-gray-900 dark:text-white",
         render: function (data, type, row) {
           if (!data) return '';
           return data.charAt(0).toUpperCase() + data.slice(1);
@@ -52,14 +57,13 @@ $(document).ready(function() {
       },
       { data: "is_active", 
         title: "Status",
-        render: function (data, type, row) {
-          if (data === 'Y') {
-            return '<span class="badge bg-success">Active</span>';
-          } else if (data === 'N') {
-            return '<span class="badge bg-secondary">Unvalidated</span>';
-          } else {
-            return '<span class="badge bg-warning">Unknown</span>';
-          }
+        render: function (data) {
+          const isActive = data === 'Y';
+          return `
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-400' : 'bg-gray-100 text-gray-500'}">
+              <span class="w-1.5 h-1.5 rounded-full ${isActive ? 'bg-green-600' : 'bg-gray-400'}"></span>
+              ${isActive ? 'Active' : 'Inactive'}
+            </span>`;
         }
       },
     ],
@@ -79,6 +83,79 @@ $(document).ready(function() {
       $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
     },
   });
+  function renderPagination() {
+    var info = table.page.info();
+    var currentPage = info.page;
+    var totalPages = info.pages;
+
+    // INFO TEXT
+    var start = info.start + 1;
+    var end = info.end;
+    var total = info.recordsTotal;
+
+    $('#customTableInfo').html(
+      `Menampilkan <span class="font-semibold text-gray-900 dark:text-white">${start}-${end}</span> 
+       dari <span class="font-semibold text-gray-900 dark:text-white">${total}</span> level`
+    );
+
+    // PAGINATION BUTTONS
+    var paginationHtml = '';
+
+    // PREV
+    paginationHtml += `
+      <button 
+        ${currentPage === 0 ? 'disabled' : ''}
+        onclick="goToPage(${currentPage - 1})"
+        class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 
+        text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 
+        disabled:opacity-50 transition-colors">
+        Prev
+      </button>
+    `;
+
+    // NUMBER BUTTONS
+    for (let i = 0; i < totalPages; i++) {
+      paginationHtml += `
+        <button 
+          onclick="goToPage(${i})"
+          class="w-8 h-8 rounded-lg text-sm font-medium flex items-center justify-center
+          ${i === currentPage 
+            ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
+            : 'border border-gray-200 dark:border-slate-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700'}">
+          ${i + 1}
+        </button>
+      `;
+    }
+
+    // NEXT
+    paginationHtml += `
+      <button 
+        ${currentPage === totalPages - 1 ? 'disabled' : ''}
+        onclick="goToPage(${currentPage + 1})"
+        class="px-3 py-1 rounded-lg border border-gray-200 dark:border-slate-700 
+        text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 
+        disabled:opacity-50 transition-colors">
+        Next
+      </button>
+    `;
+
+    $('#customPagination').html(paginationHtml);
+  }
+
+  window.goToPage = function (page) {
+    table.page(page).draw('page');
+  };
+
+  renderPagination();
+  table.on('draw.dt', function () {
+    renderPagination();
+  });
+
+  // Custom Search bar logic
+    document.querySelector('input[placeholder="Cari user..."]').addEventListener('keyup', function() {
+      table.search(this.value).draw();
+    });
+});
 
     // CREATE OR UPDATE
     document.getElementById("submitUserBtn").addEventListener("click", async () => {
@@ -129,93 +206,18 @@ $(document).ready(function() {
       }
     });
 
-    document.getElementById("addUserBtn").addEventListener("click", () => {
-      document.getElementById("userForm").reset(); // Reset form
+    
+
+    document.getElementById("addUserBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("userFormModal").reset();
+      document.getElementById("hidden_id_user").value = '';
+      document.getElementById("modalTitle").innerText = "Tambah User Baru";
+
+      document.getElementById("userFormModal").classList.remove("hidden");
+
       document.getElementById("password").style.display = "block"; // Tampilkan password field
       document.getElementById("passwordDiv").style.display = "block"; // Tampilkan password field
-    });
-
-      // MENGISI VALUE FORM (EDIT)
-    document.getElementById("userTable").addEventListener("click", async (e) => {
-      if (e.target.closest(".userEdit")) {
-      e.preventDefault();
-      const btn = e.target.closest(".userEdit");
-      const id = btn.getAttribute("data-id");
-    
-      try {
-        const res = await fetch(`/api/user/${id}`);
-        const data = await res.json();
-        console.log(data);
-        document.getElementById("password").style.display = "none";
-        document.getElementById("passwordDiv").style.display = "none"; // Sembunyikan password field
-    
-        if (data.status === "success") {
-        const user = data.data;
-    
-        document.getElementById("hidden_id_user").value = user.id;
-        document.getElementById("fullname").value = user.fullname;
-        document.getElementById("username").value = user.username;
-        document.getElementById("id_level").value = user.id_level;
-        document.getElementById("is_active").value = user.is_active;
-        document.getElementById("app").value = user.app;
-    
-        const modal = new bootstrap.Modal(document.getElementById("userFormModal"));
-        modal.show();
-        } else {
-        swal("Gagal", "User tidak ditemukan", "error");
-        }
-      } catch (err) {
-        swal("Error", "Gagal menghubungi server", "error");
-      }
-      }
-    });
-
-    // RESET SAAT MENUTUP MODAL
-    document.getElementById('userFormModal').addEventListener('hidden.bs.modal', function () {
-        document.getElementById("userForm").reset();
-        document.getElementById("hidden_id_user").value = '';
-    });
-
-    // DELETE
-    document.getElementById("userTable").addEventListener("click", async (e) => {
-      if (e.target.closest(".userDelete")) {
-      e.preventDefault();
-      const btn = e.target.closest(".userDelete");
-      const id = btn.getAttribute("data-id");
-    
-      swal({
-        title: "Yakin ingin menghapus?",
-        icon: "warning",
-        buttons: ["Batal", "Ya, hapus!"],
-        dangerMode: true,
-      }).then(async (willDelete) => {
-        if (willDelete) {
-        try {
-          const res = await fetch(`/api/user/${id}`, {
-          method: "DELETE",
-          });
-    
-          const data = await res.json();
-    
-          if (data.status === "success") {
-          swal({
-            icon: "success",
-            title: "Terhapus!",
-            text: data.message,
-            timer: 1500,
-            buttons: false,
-          }).then(() => {
-            location.reload();
-          });
-          } else {
-          swal("Gagal!", data.message || "Terjadi kesalahan", "error");
-          }
-        } catch (err) {
-          swal("Error!", "Gagal menghubungi server", "error");
-        }
-        }
-      });
-      }
     });
 
 
@@ -261,4 +263,66 @@ $(document).ready(function() {
       }
     });
 
-});
+// function openUserModal() {
+//   document.getElementById("userFormModal").reset();
+//   document.getElementById("hidden_id_user").value = '';
+//   document.getElementById("modalTitle").innerText = "Tambah Menu Baru";
+//   document.getElementById("userFormModal").classList.add("hidden");
+// }
+
+window.closeUserModal = function() {
+  document.getElementById("userFormModal").classList.add("hidden");
+}
+
+window.editUser = async function(id) {
+  
+  try{
+      const res = await fetch(`/api/user/${id}`);
+      const json = await res.json();
+
+      if(json.status === "success"){
+        const user = json.data;
+        document.getElementById("hidden_id_user").value = user.id;
+        document.getElementById("fullname").value = user.fullname;
+        document.getElementById("username").value = user.username;
+        document.getElementById("id_level").value = user.id_level;
+        document.getElementById("is_active").value = user.is_active;
+        document.getElementById("app").value = user.app;
+
+        document.getElementById("modalTitle").innerHTML = 'Edit User';
+        document.getElementById("userFormModal").classList.remove("hidden");
+        document.getElementById("password").style.display = "none";
+        document.getElementById("passwordDiv").style.display = "none";
+      } else {
+        swal("Gagal", "User tidak ditemukan", "error");
+      }
+  } catch (error) {
+    swal("Error", "Gagal mengambil data", "error");
+  }
+}
+
+function deleteUser(id) {
+  swal({
+    title: "Yakin ingin menghapus?",
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    buttons: ["Batal", "Ya, hapus!"],
+    dangerMode: true,
+  }).then(async (willDelete) => {
+    if (willDelete) {
+      try {
+        const res = await fetch(`/api/user/${id}`, { method: "DELETE" });
+        const data = await res.json();
+
+        if (data.status === "success") {
+          swal("Terhapus!", data.message, "success");
+          $("#userTable").DataTable().ajax.reload();
+        } else {
+          swal("Gagal!", data.message, "error");
+        }
+      } catch (err) {
+        swal("Error!", "Gagal menghubungi server", "error");
+      }
+    }
+  });
+}

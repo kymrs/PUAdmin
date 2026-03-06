@@ -4,6 +4,12 @@ class ProductController {
   // List all products
   async getAllProduct(req, res) {
     try {
+
+      // const {akses} = res.locals;
+      // if(akses.view_level !== 'Y') {
+      //   return res.status(403).json({ success: false, message: "Akses ditolak" });
+      // }
+
       const products = await productService.getAllProduct();
       res.json({ success: true, data: products });
     } catch (error) {
@@ -92,7 +98,7 @@ class ProductController {
   async deleteProduct(req, res) {
     try {
       const { id } = req.params;
-      const deleted = await productService.deleteProduct(id);
+      const deleted = await productService.deleteByProduct(id);
       if (!deleted) {
         return res.status(404).json({ success: false, message: "Product not found" });
       }
