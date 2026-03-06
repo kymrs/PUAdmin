@@ -72,56 +72,40 @@ class UserlevelRepository {
     const transaction = await sequelize.transaction();
 
     try {
-      for (const akses of aksesList) {
-        const { id, id_menu, ...permissions } = akses;
+      // 1. Validasi id_level
+      if (!id_level) {
+        throw new Error("id_level is required");
+      }
 
-        if (!id_menu) {
-          throw new Error("id_menu missing in akses entry");
-        }
+      // 2. Hapus SEMUA akses lama untuk level ini dalam transaksi
+      await Akses.destroy({
+        where: { id_level: id_level },
+        transaction
+      });
 
-        // Clean object: only include valid permission columns
-        const allowedFields = [
-          "view_level",
-          "add_level",
-          "edit_level",
-          "delete_level",
-          "print_level",
-          "upload_level"
-        ];
+      // 3. Siapkan data baru untuk di-bulk insert
+      const newData = aksesList.map(akses => ({
+        id_level: id_level,
+        id_menu: akses.id_menu,
+        view_level: akses.view_level || 'N',
+        add_level: akses.add_level || 'N',
+        edit_level: akses.edit_level || 'N',
+        delete_level: akses.delete_level || 'N',
+        print_level: akses.print_level || 'N',
+        upload_level: akses.upload_level || 'N'
+      }));
 
-        const perms = {};
-        for (const key of allowedFields) {
-          if (permissions[key] !== undefined) {
-            perms[key] = permissions[key];
-          }
-        }
-
-        // If id exists → update
-        if (id) {
-          await Akses.update(
-            { ...perms },
-            { where: { id }, transaction }
-          );
-        }
-
-        // If id does NOT exist → create new akses
-        else {
-          await Akses.create(
-            {
-              id_level,
-              id_menu,
-              ...perms
-            },
-            { transaction }
-          );
-        }
+      // 4. Masukkan semua data baru sekaligus
+      if (newData.length > 0) {
+        await Akses.bulkCreate(newData, { transaction });
       }
 
       await transaction.commit();
       return { message: "Akses berhasil diperbarui" };
 
     } catch (error) {
-      await transaction.rollback();
+      if (transaction) await transaction.rollback();
+      console.error("Error in upsertAccess Repository:", error);
       throw error;
     }
   }

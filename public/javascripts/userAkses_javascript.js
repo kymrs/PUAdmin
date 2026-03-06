@@ -94,59 +94,125 @@ const accessPanel = document.getElementById('access-modal-panel');
           </td>`;
     }       
 
-    document.getElementById("submitAksesBtn").addEventListener("click", async function() {
-              const idLevel = this.dataset.current_id_level;
-              const checkboxes = document.querySelectorAll(".checkbox-access");
-              const aksesList = {};
+    // document.getElementById("submitAksesBtn").addEventListener("click", async function() {
+    //           const idLevel = this.dataset.current_id_level;
+    //           const checkboxes = document.querySelectorAll(".checkbox-access");
+    //           const aksesList = {};
 
-              checkboxes.forEach(cb => {
-                  const menuId = cb.dataset.id_menu;
-                  const field = cb.dataset.field;
-                  const status = cb.checked ? "Y" : "N";
+    //           checkboxes.forEach(cb => {
+    //               const menuId = cb.dataset.id_menu;
+    //               const field = cb.dataset.field;
+    //               const status = cb.checked ? "Y" : "N";
 
-                  if (!aksesList[menuId]) {
-                      aksesList[menuId] = {
-                          id_level: idLevel,
-                          id_menu: menuId,
-                          // Inisialisasi semua field agar tidak undefined
-                          view_level: "N", add_level: "N", edit_level: "N", 
-                          delete_level: "N", print_level: "N", upload_level: "N"
-                      };
-                  }
-                  aksesList[menuId][field] = status;
-              });
+    //               if (!aksesList[menuId]) {
+    //                   aksesList[menuId] = {
+    //                       id_level: idLevel,
+    //                       id_menu: menuId,
+    //                       // Inisialisasi semua field agar tidak undefined
+    //                       view_level: "N", add_level: "N", edit_level: "N", 
+    //                       delete_level: "N", print_level: "N", upload_level: "N"
+    //                   };
+    //               }
+    //               aksesList[menuId][field] = status;
+    //           });
+    //           const payload = Array.from(aksesList);
+    //          console.log("Payload yang dikirim:", payload);
+    //           try {
+    //               this.disabled = true;
+    //               this.innerHTML = `<i class="ph ph-circle-notch animate-spin"></i> Menyimpan...`;
 
-              try {
-                  this.disabled = true;
-                  this.innerHTML = `<i class="ph ph-circle-notch animate-spin"></i> Menyimpan...`;
+    //               const res = await fetch("/api/userlevel/upsert-access", {
+    //                   method: "POST",
+    //                   headers: { "Content-Type": "application/json" },
+    //                   body: JSON.stringify({ 
+    //                       id_level: idLevel,
+    //                       akses: Object.values(aksesList) // Pastikan ini dikirim sebagai Array
+    //                   })
+    //               });
+                  
+    //               const result = await res.json();
 
-                  const res = await fetch("/api/userlevel/upsert-access", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ 
-                          id_level: idLevel,
-                          akses: Object.values(aksesList) // Pastikan ini dikirim sebagai Array
-                      })
-                  });
+    //               if (res.ok) {
+    //                   swal("Berhasil!", "Hak akses telah diperbarui", "success").then(() => {
+    //                       // BUG FIX: Otomatis Refresh Halaman
+    //                       location.reload(); 
+    //                   });
+    //               } else {
+    //                   throw new Error(result.message || "Gagal menyimpan ke database");
+    //               }
+    //           } catch (err) {
+    //               swal("Error", err.message, "error");
+    //           } finally {
+    //               this.disabled = false;
+    //               this.innerText = "Simpan Perubahan";
+    //           }
+    // });      
+document.getElementById("submitAksesBtn").addEventListener("click", async function() {
+    const idLevel = this.dataset.current_id_level;
+    const checkboxes = document.querySelectorAll(".checkbox-access");
+    
+    // Kita gunakan Object biasa saja agar lebih mudah di-convert ke Array values
+    const aksesList = {};
 
-                  const result = await res.json();
+    checkboxes.forEach(cb => {
+        const menuId = cb.dataset.id_menu;
+        const field = cb.dataset.field;
+        const status = cb.checked ? "Y" : "N";
 
-                  if (res.ok) {
-                      swal("Berhasil!", "Hak akses telah diperbarui", "success").then(() => {
-                          // BUG FIX: Otomatis Refresh Halaman
-                          location.reload(); 
-                      });
-                  } else {
-                      throw new Error(result.message || "Gagal menyimpan ke database");
-                  }
-              } catch (err) {
-                  swal("Error", err.message, "error");
-              } finally {
-                  this.disabled = false;
-                  this.innerText = "Simpan Perubahan";
-              }
-    });      
+        // Jika menuId belum ada di object, inisialisasi
+        if (!aksesList[menuId]) {
+            aksesList[menuId] = {
+                id_level: parseInt(idLevel), // Pastikan Integer
+                id_menu: parseInt(menuId),   // Pastikan Integer
+                view_level: "N", 
+                add_level: "N", 
+                edit_level: "N", 
+                delete_level: "N", 
+                print_level: "N", 
+                upload_level: "N"
+            };
+        }
+        
+        // Update field spesifik (view_level, add_level, dll)
+        aksesList[menuId][field] = status;
+    });
 
+    // Ubah Object menjadi Array of Objects
+    const payload = Object.values(aksesList);
+    
+    // DEBUG: Pastikan di console muncul array berisi data lengkap
+    console.log("Payload yang dikirim ke backend:", payload);
+
+    try {
+        this.disabled = true;
+        this.innerHTML = `<i class="ph ph-circle-notch animate-spin"></i> Menyimpan...`;
+
+        const res = await fetch("/api/userlevel/upsert-access", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                id_level: parseInt(idLevel),
+                akses: payload // Kirim array hasil Object.values
+            })
+        });
+        
+        const result = await res.json();
+
+        if (res.ok && (result.status === "success" || result.success)) {
+            swal("Berhasil!", "Hak akses telah diperbarui", "success").then(() => {
+                location.reload(); 
+            });
+        } else {
+            throw new Error(result.message || "Gagal menyimpan ke database");
+        }
+    } catch (err) {
+        console.error("Save Error:", err);
+        swal("Error", err.message, "error");
+    } finally {
+        this.disabled = false;
+        this.innerText = "Simpan Perubahan";
+    }
+});
   function closeAccessModal() {
       accessBackdrop.classList.remove('opacity-100');
       accessBackdrop.classList.add('opacity-0');

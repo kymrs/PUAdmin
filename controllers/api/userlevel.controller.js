@@ -105,16 +105,19 @@ class UserlevelController {
 
   async upsertAccess(req, res) {
     try {
-      // Ambil id_level dari body, jika tidak ada baru ambil dari session (fallback)
-      const id_level = req.body.id_level || req.session.user.id_level;
-      const aksesData = req.body.akses;
+        const { id_level, akses } = req.body;
 
-      const result = await userlevelService.upsertAccess({ id_level, akses: aksesData });
-      return response.success(res, "Access updated successfully", result);
+        // Validasi ketat: id_level harus ada di body
+        if (!id_level) {
+            return response.error(res, "ID Level tidak terdeteksi", 400);
+        }
+
+        const result = await userlevelService.upsertAccess({ id_level, akses });
+        return response.success(res, "Access updated successfully", result);
     } catch (error) {
-      return response.error(res, error.message, 400);
+        return response.error(res, error.message, 400);
     }
-  }
+}
 
 }
 
