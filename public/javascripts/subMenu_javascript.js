@@ -77,6 +77,7 @@ $(document).ready(function() {
         ],
     });
 
+
     function renderPagination() {
     var info = table.page.info();
     var currentPage = info.page;
@@ -144,6 +145,7 @@ $(document).ready(function() {
   table.on('draw.dt', function () {
     renderPagination();
   });
+
 
     // Custom Search
     $('#subMenuSearch').on('keyup', function() {
