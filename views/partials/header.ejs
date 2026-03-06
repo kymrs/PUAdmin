@@ -1,4 +1,4 @@
-  <!-- TEMPLATE NEW TAILADMIN -->
+<!-- TEMPLATE NEW TAILADMIN -->
 <!DOCTYPE html>
 <html lang="id" class="light">
 
@@ -11,6 +11,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/webp" href="../assets/img/logo/favicon-pu.png">
+
+    <style>
+        /* Search Input */
+        .dataTables_wrapper .dataTables_filter input {
+            @apply border border-gray-300 dark:border-dark-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 dark:bg-slate-800 dark:text-gray-200;
+        }
+
+        /* Length Dropdown */
+        .dataTables_wrapper .dataTables_length select {
+            @apply border border-gray-300 dark:border-dark-border rounded-lg px-2 py-1 text-sm dark:bg-slate-800 dark:text-gray-200;
+        }
+
+        /* Pagination */
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            @apply px-3 py-1 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-slate-700;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            @apply bg-primary-500 text-white;
+        }
+
+        /* Remove weird border */
+        table.dataTable.no-footer {
+            border-bottom: none !important;
+        }
+    </style>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -66,4 +92,3 @@
 </head>
 
 <body class="bg-gray-50 text-gray-800 dark:bg-dark-bg dark:text-gray-200 font-sans antialiased">
-

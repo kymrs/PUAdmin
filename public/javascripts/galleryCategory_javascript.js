@@ -1,6 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+<<<<<<< HEAD
+
+    $('#galleryCategories').DataTable({
+      dom: `
+            <"flex items-center justify-between mb-4"
+                <"flex items-center gap-2"l>
+                <"flex items-center gap-2"f>
+            >
+            rt
+            <"flex items-center justify-between mt-4"
+                <"text-sm text-gray-500"i>
+                <"flex items-center gap-2"p>
+            >
+          `,
+=======
    const table = $('#galleryCategories').DataTable({
+>>>>>>> a3f15bd141e19ca72d1b237621a2e642bff5c720
       processing: true,
       serverSide: true,
       responsive: true,

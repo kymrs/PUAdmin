@@ -38,7 +38,7 @@ class MenuRepository {
   async getAllNestedMenu(){
     return await Menu.findAll({
       where: {parent_id: null},
-      include:[
+      include:[ 
         {
           model: Menu,
           as: 'children',
