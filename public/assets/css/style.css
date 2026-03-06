@@ -342,3 +342,27 @@ option:hover {
 .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 46px;
 }
+
+/* Active page */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: #2563eb !important; /* primary-600 */
+  color: white !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+/* Disabled */
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* Number button kecil kotak */
+.dataTables_wrapper .dataTables_paginate .paginate_button:not(.previous):not(.next) {
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
