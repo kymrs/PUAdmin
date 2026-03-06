@@ -1,5 +1,5 @@
 const { Model, Op, where } = require("sequelize");
-const { Product, ProductPrices, ProductFlight, ProductHotel, ProductFacility, ProductItinerary, ProductSnK, ProductNote } = require("../../models");
+const { Product, ProductPrices, ProductFlight, ProductHotel, ProductFacility, ProductItinerary, ProductSnK, ProductNote, Akses } = require("../../models");
 
 class ProductRepository {
     async getAllProduct() {
@@ -73,13 +73,53 @@ class ProductRepository {
     }
 
     async getProductById(id) {
-        return await Product.findByPk(id);
+        return await Product.findByPk(id,{
+            include: [
+                {
+                    model: ProductPrices,
+                    as: "prices",
+                    attributes: ["room_types", "price"]
+                },
+                {
+                    model: ProductFlight,
+                    as: "flights",
+                    attributes: ["airline_name", "type"]
+                },
+                {
+                    model: ProductHotel,
+                    as: "hotels",
+                    attributes: ["name", "city", "rating", "jarak", "image", "facilities"]
+                },
+                {
+                    model: ProductFacility,
+                    as: "facility",
+                    attributes: ["facility", "type"]
+                },
+                {
+                    model: ProductItinerary,
+                    as: "itinerary",
+                    attributes: ["day_order", "title", "description"]
+                },
+                {
+                    model: ProductSnK,
+                    as: "snk",
+                    attributes: ["name"]
+                },
+                {
+                    model: ProductNote,
+                    as: "notes",
+                    attributes: ["note"]
+                }
+            ],
+        });
     }
 
     async createProduct(productData) {
         return await Product.create(productData);
     }
-
+    async deleteProduct(id) {
+        return await Product.destroy({ where: {id}});
+    }
     async updateProduct(id, productData) {
         return await Product.update(productData, {
             where: {id}
