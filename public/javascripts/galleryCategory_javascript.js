@@ -1,22 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-<<<<<<< HEAD
-
-    $('#galleryCategories').DataTable({
-      dom: `
-            <"flex items-center justify-between mb-4"
-                <"flex items-center gap-2"l>
-                <"flex items-center gap-2"f>
-            >
-            rt
-            <"flex items-center justify-between mt-4"
-                <"text-sm text-gray-500"i>
-                <"flex items-center gap-2"p>
-            >
-          `,
-=======
    const table = $('#galleryCategories').DataTable({
->>>>>>> a3f15bd141e19ca72d1b237621a2e642bff5c720
       processing: true,
       serverSide: true,
       responsive: true,
@@ -24,9 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
       autowidth: true,
       info: false,
       paginate: true,
-      lengthMenu: [[
-        5, 10, 25, 50, 100, -1],
-        [5, 10, 25, 50, 100, "All"]
+      lengthMenu: [
+        [
+        10, 25, 50, 100, -1
+        ],
+        [
+          5, 10, 25, 50, 100, "All"
+        ]
       ],
       dom: "t",
       ajax: {
@@ -37,19 +25,19 @@ document.addEventListener("DOMContentLoaded", () => {
       columns: [
         {
           data: 'id',
-          className: "p-5 text-center",
+          className: "p-3 text-center",
           render: function (data, type, row) {
             let buttons = `<div class="flex items-center justify-center gap-2">`;
 
             if (row.akses && row.akses.edit) {
               buttons += `
-                <button onclick="editCategory(${row.id})"  class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20 transition-colors galleryCategoryEdit"  title="Edit">
+                <button onclick="editCategory(${row.id})"  class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20 transition-colors galleryCategoryEdit"  title="Edit" style="scale: 0.9">
                         <i class="ph-bold ph-pencil-simple text-lg"></i>
                     </button>`;
             }
             if (row.akses && row.akses.delete) {
               buttons += `
-                <button onclick="deleteCategory(${row.id})" class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors galleryCategoryDelete"" title="Hapus">
+                <button onclick="deleteCategory(${row.id})" class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 transition-colors galleryCategoryDelete"" title="Hapus" style="scale: 0.9">
                         <i class="ph-bold ph-trash text-lg"></i>
                     </button>`;
             }
@@ -81,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .columns.adjust();
       }
     });
+    
 
     function renderPagination() {
     var info = table.page.info();

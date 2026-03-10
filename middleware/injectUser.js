@@ -13,17 +13,36 @@ module.exports = async (req, res, next) => {
     let currentPath = req.originalUrl.replace(/\?.*$/, ""); 
     currentPath = currentPath.replace(/^\/api/, "");
 
-    if(currentPath.includes("/datatables")){
-      res.locals.akses = {
-        view_level: 'Y',
-        add_level: 'Y',
-        edit_level: 'Y',
-        delete_level: 'Y',
-        print_level: 'Y',
-        upload_level: 'Y',
-      };
-    return next();
+    if (currentPath.includes("/datatables")) {
+
+      // hapus /datatables dari path
+      const menuPath = currentPath.replace("/datatables", "");
+
+      const aksesData = await Akses.findOne({
+        where: { id_level: user.id_level },
+        include: {
+          model: Menu,
+          attributes: ["link"],
+          where: { link: menuPath }
+        }
+      });
+
+      if (aksesData) {
+        res.locals.akses = {
+          view_level: aksesData.view_level,
+          add_level: aksesData.add_level,
+          edit_level: aksesData.edit_level,
+          delete_level: aksesData.delete_level,
+          print_level: aksesData.print_level,
+          upload_level: aksesData.upload_level
+        };
+      } else {
+        res.locals.akses = getDefaultAkses();
+      }
+
+      return next();
     }
+    
     // SUPERADMIN → full akses
     if (user.id_level === 6) {
       res.locals.akses = getFullAkses();

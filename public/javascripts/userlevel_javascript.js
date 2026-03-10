@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     columns: [
       {
         data: "id_level",
-        className: "p-5",
+        className: "p-3",
         orderable: false, // Matikan sorting di kolom Action agar tidak error SQL
         render: function (data, type, row) {
           let buttons = `<div class="flex items-center justify-center gap-2">`;
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
           buttons += `
             <button onclick="openAccessModal('${data}', '${row.nama_level}')"
                 class="open-access-btn p-2 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 transition-colors"
-                title="Atur Akses">
+                title="Atur Akses" style="scale: 0.9">
                 <i class="ph-bold ph-key text-lg"></i>
             </button>`;
           
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             buttons += `
               <button onclick="editUserLevel('${data}')"
                   class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 transition-colors"
-                  title="Edit">
+                  title="Edit" style="scale: 0.9">
                   <i class="ph-bold ph-pencil-simple text-lg"></i>
               </button>`;
           }
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             buttons += `
               <button onclick="deleteUserLevel('${data}')"
                   class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 transition-colors"
-                  title="Hapus">
+                  title="Hapus" style="scale: 0.9">
                   <i class="ph-bold ph-trash text-lg"></i>
               </button>`;
           }
