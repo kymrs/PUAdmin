@@ -7,7 +7,7 @@ class ProductHotelFacilityService {
     return await fi
   }
   async replace(productHotelId, facilities, transaction) {
-    await FacilityRepo.deleteByHotel(productHotelId, transaction);
+    await FacilityRepo.deleteByProduct(productHotelId, transaction);
 
     if (!facilities?.length) return [];
 

@@ -1,18 +1,18 @@
 const { ProductSnK } = require("../../models")
 
 class ProductSnKRepository {
-    async create(payload, transaction = null){
-        return await ProductSnK.bulkCreate(payload, {transaction});
+    async createMany(payload, options = {}){
+        return await ProductSnK.bulkCreate(payload, options);
     }
     async findByProduct(productId){
         return await ProductSnK.findAll({
             where: { product_id: productId }
         });
     }
-    async deleteByProduct(productId, transaction = null){
+    async deleteByProduct(productId, options = {}){
         return await ProductSnK.destroy({
             where: { product_id: productId },
-            transaction
+            ...options
         })
     }
 }

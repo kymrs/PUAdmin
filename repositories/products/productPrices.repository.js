@@ -1,8 +1,8 @@
 const { ProductPrices } = require("../../models")
 
 class ProductPricesRepository {
-    async createMany(payload, {transaction}){
-        return await ProductPrices.bulkCreate(payload, {transaction})
+    async createMany(payload, options={}){
+        return await ProductPrices.bulkCreate(payload, options)
     }
 
     async findByProduct(productId){
@@ -11,10 +11,10 @@ class ProductPricesRepository {
         })
     }
 
-    async deleteByProduct(productId, transaction = null){
+    async deleteByProduct(productId, options = {}){
         return await ProductPrices.destroy({
             where: { product_id: productId },
-            transaction
+            ...options
         })
     }
 }

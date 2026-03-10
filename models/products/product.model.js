@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'product_id',
             as: 'itinerary',
             onDelete: 'CASCADE'
-       })
+       });
     }
 
 

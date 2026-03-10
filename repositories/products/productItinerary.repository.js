@@ -1,18 +1,18 @@
 const { ProductItinerary } = require("../../models");
 
 class ProductItineraryRepository {
-    async create(payload, transaction = null) {
-        return await ProductItinerary.bulkCreate(payload, { transaction });
+    async createMany(payload, options = {}) {
+        return await ProductItinerary.bulkCreate(payload,  options );
     }
     async findByProduct(productId) {
         return await ProductItinerary.findAll({
             where: { product_id: productId },
         });
     }
-    async deleteByProductId(productId, transaction = null) {
+    async deleteByProduct(productId, options = {}) {
         return await ProductItinerary.destroy({
             where: { product_id: productId },
-            transaction,
+            ...options,
         });
     }
 }
