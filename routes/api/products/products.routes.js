@@ -46,6 +46,7 @@ const diskStrorage = multer.diskStorage({
 const upload = multer({storage: diskStrorage})
 
 router.get("/", productController.getAllProduct);
+router.get("/datatables", injectUser, productController.getAllProductsDatatables);
 router.get("/:id", productController.getProductById);
 router.get("/:id/flights/", productFlightController.getFlightsByProduct);
 router.get("/:id/facilities/", productFacilityController.getFaclitiesByProduct);
@@ -59,7 +60,11 @@ router.post("/", injectUser,upload.fields([
     { name: 'hotel_image_mekkah', },
     { name: 'hotel_image_madinah', }
 ]), productController.createProduct);
-router.put("/:id", injectUser, productController.updateProduct);
+router.put("/:id", injectUser,upload.fields([
+    { name: 'thumbnail', maxCount: 1 },
+    { name: 'hotel_image_mekkah', },
+    { name: 'hotel_image_madinah', }
+]), productController.updateProduct);
 router.delete("/:id", injectUser, productController.deleteProduct);
 
 

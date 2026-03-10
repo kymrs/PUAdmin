@@ -2,8 +2,8 @@ const { ProductNote } = require('../../models');
 
 class ProductNoteRepository {
 
-    async createNotes(payload, transaction=null) {
-        return await ProductNote.bulkCreate(payload, {transaction});
+    async createMany(payload, options={}) {
+        return await ProductNote.bulkCreate(payload, options);
     }
 
     async findByProduct(productId) {
@@ -12,10 +12,10 @@ class ProductNoteRepository {
         });
     }
 
-    async deleteByProduct(productId, transaction) {
+    async deleteByProduct(productId, options={}) {
         return await ProductNote.destroy({
             where: { product_id: productId },
-            transaction
+            ...options
         });
     }
     

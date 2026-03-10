@@ -16,7 +16,7 @@ class ProductNoteService {
             product_id: productId,
             note: n.note
         }));
-        return await ProductNoteRepository.createNotes(notesPayload, transaction);
+        return await ProductNoteRepository.createMany(notesPayload, transaction);
     }
 
     async getNotesByProduct(productId) {

@@ -14,7 +14,7 @@ async get(product_hotel_id) {
     return ProductHotelFacility.bulkCreate(payloads, { transaction });
   }
 
-  async deleteByHotel(productHotelId, transaction = null) {
+  async deleteByProduct(productHotelId, transaction = null) {
     return ProductHotelFacility.destroy({
       where: { product_hotel_id: productHotelId },
       transaction

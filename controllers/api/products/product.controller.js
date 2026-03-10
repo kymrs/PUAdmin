@@ -1,3 +1,4 @@
+const { response } = require("express");
 const productService = require("../../../services/products/product.service");
 
 class ProductController {
@@ -17,6 +18,71 @@ class ProductController {
       res.status(500).json({ success: false, message: "Internal Server Error" });
     }
   }
+
+  //  async getAllProductsDatatables(req, res) {
+  //   try {
+  //     const {akses} = res.locals.akses || {};
+
+  //     if (akses.view_level !== 'Y') {
+  //       return res.status(403).json({ error: "Akses ditolak" });
+  //     }
+
+  //     const result = await productService.getAllProductsDatatables(req.query);
+
+  //     result.data = result.data.map(row => ({
+  //       ...row.get({ plain: true }),
+  //       akses: {
+  //         edit: akses.edit_level === 'Y',
+  //         delete: akses.delete_level === 'Y'
+  //       }
+  //     }))
+
+  //     return response.datatables(res, result)
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ success: false, message: "Internal Server Error" });
+  //   }
+  //}
+  async getAllProductsDatatables(req, res) {
+  try {
+    // 1. Ambil langsung objek akses dari res.locals
+    // Jika res.locals.akses tidak ada, gunakan objek kosong {} agar .view_level tidak crash
+    const akses = res.locals.akses || {};
+
+    // 2. Cek izin akses
+    if (akses.view_level !== 'Y') {
+      return res.status(403).json({ error: "Akses ditolak" });
+    }
+
+    const result = await productService.getAllProductsDatatables(req.query);
+
+    // 3. Pastikan result.data ada sebelum di-map
+    if (result && result.data) {
+      result.data = result.data.map(row => {
+        // Gunakan pengecekan instance sequelize agar .get() tidak error
+        const plainData = typeof row.get === 'function' ? row.get({ plain: true }) : row;
+        
+        return {
+          ...plainData,
+          akses: {
+            edit: akses.edit_level === 'Y',
+            delete: akses.delete_level === 'Y'
+          }
+        };
+      });
+    }
+
+    return res.json({
+    draw: result.draw,
+    recordsTotal: result.recordsTotal,
+    recordsFiltered: result.recordsFiltered,
+    data: result.data
+});
+  } catch (error) {
+    console.error("DEBUG ERROR:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
 
   // Get product by ID
   async getProductById(req, res) {
@@ -99,26 +165,22 @@ class ProductController {
     try {
       const { id } = req.params;
       const deleted = await productService.deleteByProduct(id);
+      
       if (!deleted) {
-        return res.status(404).json({ success: false, message: "Product not found" });
+        // Menggunakan format status: "error"
+        return res.status(404).json({ status: "error", message: "Product not found" });
       }
-      res.json({ success: true, message: "Product deleted" });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: "Internal Server Error" });
-    }
-  }
 
-  // Datatables endpoint
-  async getAllProductsDatatables(req, res) {
-    try {
-      const result = await productService.getAllProductsDatatables(req.query);
-      res.json(result);
+      // Menggunakan format status: "success"
+      return res.json({ success: true, message: "Product deleted" });
+      
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, message: "Internal Server Error" });
+      return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
   }
+  // Datatables endpoint
+ 
 }
 
 module.exports = new ProductController();

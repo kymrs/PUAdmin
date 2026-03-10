@@ -2,8 +2,8 @@ const {ProductFlight} = require("../../models")
 
 class ProductFlightRepository {
 
-    async create(payload, transaction){
-         return await ProductFlight.bulkCreate(payload, {transaction});
+    async createMany(payload, options = {}){
+         return await ProductFlight.bulkCreate(payload, options);
     }
     async findByProduct(productId) {
         return await ProductFlight.findAll({
@@ -11,10 +11,10 @@ class ProductFlightRepository {
         });
     }
 
-    async deleteByProduct(productId, transaction) {
+    async deleteByProduct(productId, options) {
         return await ProductFlight.destroy({
         where: { product_id: productId },
-        transaction
+        ...options
          });
     }
     

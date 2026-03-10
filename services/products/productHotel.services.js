@@ -31,13 +31,13 @@ class ProductHotelService {
       }
 
 
-        return await ProductHotelRepository.create(hotelPayload, transaction);
+        return await ProductHotelRepository.createMany(hotelPayload, transaction);
     }
 
     async replaceHotels(productId, hotels, transaction = null) {
         if (!hotels || hotels.length === 0) return [];
 
-        await ProductHotelRepository.deleteByProductId(productId, transaction);
+        await ProductHotelRepository.deleteByProduct(productId, transaction);
 
         const hotelPayload = hotels.map(h => ({
             product_id: productId,

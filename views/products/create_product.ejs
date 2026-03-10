@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <div class="bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-dark-border p-6 lg:p-8">
+        <div class="flight-container bg-white dark:bg-dark-card rounded-2xl shadow-sm border border-gray-100 dark:border-dark-border p-6 lg:p-8">
             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                 <i class="ph-fill ph-airplane-takeoff text-primary-600"></i> Detail Perjalanan
             </h3>
@@ -76,7 +76,7 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Maskapai Keberangkatan<span class="text-danger">*</span></label>
                     <div class="relative">
                         <i class="ph ph-airplane-takeoff absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="flight_kbrkt" name="flight_kbrkt" placeholder="Contoh: Garuda Indonesia"
+                        <input type="text" required id="flight_kbrkt" name="flight_kbrkt" placeholder="Contoh: Garuda Indonesia"
                             class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 outline-none transition-all dark:text-white">
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Maskapai Kepulangan<span class="text-danger">*</span></label>
                     <div class="relative">
                         <i class="ph ph-airplane-landing absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="flight_kplg" name="flight_kplg" placeholder="Contoh: Saudi Arabian Airlines"
+                        <input type="text" required id="flight_kplg" name="flight_kplg" placeholder="Contoh: Saudi Arabian Airlines"
                             class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 outline-none transition-all dark:text-white">
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Image Hotel<span class="text-danger">*</span></label>
-                        <input type="file" id="hotel_mekkah_image" name="hotel_mekkah_image" onchange="validateFileExtension(this)" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary-50 file:text-primary-700">
+                        <input type="file" id="hotel_mekkah_image" name="hotel_mekkah_image" onchange="validateFileExtension(this)" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary-50 file:text-primary-700" >
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -156,7 +156,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Image Hotel<span class="text-danger">*</span></label>
-                        <input type="file" id="hotel_madinah_image" name="hotel_madinah_image" onchange="validateFileExtension(this)" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary-50 file:text-primary-700">
+                        <input type="file" id="hotel_madinah_image" name="hotel_madinah_image" onchange="validateFileExtension(this)" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary-50 file:text-primary-700" >
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -196,7 +196,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Exclude (Tidak Termasuk)<span class="text-danger">*</span></label>
-                    <input type="text" id="exclude-fclty" name="exclude" placeholder="Ketik lalu tekan Enter" 
+                    <input type="text" id="exclude-fclty" name="exclude"  placeholder="Ketik lalu tekan Enter" 
                         class="w-full px-4 py-3 rounded-xl bg-red-50/30 dark:bg-red-900/10 border border-red-100 dark:border-red-800/30 outline-none focus:border-red-500 transition-all dark:text-white">
                     <ul id="exclude-container" class="mt-3 space-y-2"></ul>
                 </div>
@@ -216,7 +216,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Syarat & Ketentuan<span class="text-danger">*</span></label>
-                        <input type="text" id="snk" name="Snk" placeholder="Ketik lalu tekan Enter" 
+                        <input  type="text" id="snk" name="Snk" placeholder="Ketik lalu tekan Enter" 
                             class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 outline-none focus:border-primary-500 dark:text-white">
                         <ul id="snk-container" class="mt-3 space-y-1"></ul>
                     </div>
@@ -224,7 +224,7 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Catatan<span class="text-danger">*</span></label>
                         <div class="flex gap-2">
                             <input type="text" id="note" name="note" placeholder="Ketik catatan lalu Enter" 
-                                class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 outline-none focus:border-primary-500 dark:text-white">
+                                class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 outline-none focus:border-primary-500 dark:text-white" >
                             <button type="button" id="addNote" class="bg-primary-600 text-white px-4 rounded-xl hover:bg-primary-700">
                                 <i class="ph ph-plus"></i>
                             </button>

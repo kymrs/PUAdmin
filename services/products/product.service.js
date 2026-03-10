@@ -26,24 +26,28 @@ class ProductService {
         }
    }
 
-     async getAllProductsDatatables({ draw, start, length, search, order, columns}) {
-           const searchValue = search?.value || "";
-   
-           const { count, rows } = await productRepository.getPaginatedProduct({
-               start: parseInt(start, 10) || 0,
-               length: parseInt(length, 10) || 10,
-               search: searchValue,
-               order,
-               columns
-           });
-   
-           return {
-               draw: parseInt(draw, 10),
-               recordsTotal: count,
-               recordsFiltered: count,
-               data: rows
-           }
-       }
+   async getAllProductsDatatables(query) {
+        // Destrukturisasi query dari datatables
+        const { draw, start, length, search, order, columns } = query;
+        const searchValue = search?.value || "";
+
+        // Panggil repository
+        const result = await productRepository.getPaginatedProduct({
+            start: parseInt(start, 10) || 0,
+            length: parseInt(length, 10) || 10,
+            search: searchValue,
+            order,
+            columns
+        });
+
+        // findAndCountAll mengembalikan { count, rows }
+        return {
+            draw: parseInt(draw, 10) || 0,
+            recordsTotal: result.count,
+            recordsFiltered: result.count,
+            data: result.rows // Ini yang akan di-map di controller
+        };
+    }
 
        async createProduct(productData) {
             const transaction = await sequelize.transaction();
@@ -90,9 +94,9 @@ class ProductService {
                 transaction
             );
 
-            console.log("Cek Tipe Data Prices:", typeof validatePrices);
-            console.log("Is Array?:", Array.isArray(validatePrices));
-            console.log("Isi Data:", validatePrices);
+            // console.log("Cek Tipe Data Prices:", typeof validatePrices);
+            // console.log("Is Array?:", Array.isArray(validatePrices));
+            // console.log("Isi Data:", validatePrices);
             //  create prices
             if (validatePrices?.length) {
                 const pricePayload = validatePrices.map(p => ({
@@ -115,7 +119,7 @@ class ProductService {
                
                 }));
 
-                await productFlightRepository.create(
+                await productFlightRepository.createMany(
                 flightPayload,
                 transaction
                 );
@@ -129,7 +133,7 @@ class ProductService {
                 note: n.note
                 }));
 
-                await productNoteRepository.createNotes(
+                await productNoteRepository.createMany(
                 notePayload,
                 transaction
                 );
@@ -143,7 +147,7 @@ class ProductService {
                 name: s.name
                 }));
 
-                await productSnKRepository.create(
+                await productSnKRepository.createMany(
                 snkPayload,
                 transaction
                 );
@@ -158,14 +162,14 @@ class ProductService {
                 type: f.type
                 }));
 
-                await productFacilityRepository.create(
+                await productFacilityRepository.createMany(
                 facilityPayload,
                 transaction
                 );
                 console.log("facility payload:", facilityPayload)
             }
 
-            // create Hotel
+            // createMany Hotel
             if(validateHotels?.length) {
                 const hotelPayload = validateHotels.map(h => ({
                    product_id: newProduct.id,
@@ -177,7 +181,7 @@ class ProductService {
                     facilities: h.facilities
                 }));
 
-                await productHotelRepository.create(
+                await productHotelRepository.createMany(
                 hotelPayload,
                 transaction
                 );
@@ -192,7 +196,7 @@ class ProductService {
                     description: i.description
                 }));
 
-                await productItineraryRepository.create(
+                await productItineraryRepository.createMany(
                     itineraryPayload,
                     transaction
                 );
@@ -209,24 +213,73 @@ class ProductService {
         }
 
        async updateProduct(id, productData) {
+        const transaction = await sequelize.transaction();
         try {
             let { prices, flights, notes, snks, facilities,hotels, itineraries,...productFields } = productData;
             await productRepository.updateProduct(id, productFields);
-            if (prices) {
-                // Delete old prices and add new ones
-                await productPricesRepository.deleteByProduct(id);
-                await productPricesRepository.createMany(id, prices);
+            
+            const updateRelation = async (repo, data, mapper) => {
+                if(data) {
+                    const validatedData = typeof data === "string" ? JSON.parse(data) : data;
+
+                    await repo.deleteByProduct(id,{transaction});
+
+                    if(validatedData.length > 0){
+                        const payload = validatedData.map(item => mapper(item, id));
+                        await repo.createMany(payload, {transaction});
+                    }
+                }
             }
+             // 2. Proses Semua Relasi
+                    await updateRelation(productPricesRepository, prices, (p, pid) => ({
+                        product_id: pid, 
+                        room_types: p.type || p.room_types, price: p.price
+                    }));
+
+                    await updateRelation(productFlightRepository, flights, (f, pid) => ({
+                        product_id: pid, 
+                        airline_name: f.airline_name, 
+                        type: f.type
+                    }));
+
+                    await updateRelation(productNoteRepository, notes, (n, pid) => ({
+                        product_id: pid, 
+                        note: n.note
+                    }));
+
+                    await updateRelation(productHotelRepository, hotels, (h, pid) => ({
+                        product_id: pid, name: h.name, city: h.city, rating: h.rating, jarak: h.jarak, image: h.image || "", facilities: h.facilities
+                    }));
+
+                    await updateRelation(productItineraryRepository, itineraries, (i, pid) => ({
+                        product_id: pid, 
+                        day_order: i.day_order, 
+                        title: i.title, 
+                        description: i.description
+                    }));
+
+                    await updateRelation(productSnKRepository, snks, (i, pid) => ({
+                        product_id: pid, 
+                        name: i.name
+                    }));
+
+                    await updateRelation(productFacilityRepository, facilities, (f, pid) => ({
+                        product_id: pid, 
+                        facility: f.facility, 
+                        type: f.type
+                    }));
+            console.log("productFields:", productFields);
+            await transaction.commit();
             return await productRepository.getProductById(id);
         } catch (error) {
+            if(transaction) await transaction.rollback();
             throw new Error(error.message);
         }
        }
 
-       async deleteByProduct(id, productData) {
+       async deleteByProduct(id) {
         try{
-            let { prices, flights, notes, snks, facilities,hotels, itineraries,...productFields } = productData;
-            await productRepository.deleteProduct(id, productFields);
+            return await productRepository.deleteProduct(id);
         } catch (error) {
             throw new Error(error.message);
         }

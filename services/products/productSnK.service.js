@@ -15,7 +15,7 @@ class ProductSnKService {
             name: s.snk
         }));
 
-        return await ProductSnKRepository.create(snkPayload, transaction);
+        return await ProductSnKRepository.createMany(snkPayload, transaction);
     }
     async replaceSnK(productId, snks, transaction = null) {
         if (!snks || snks.length === 0) return [];
