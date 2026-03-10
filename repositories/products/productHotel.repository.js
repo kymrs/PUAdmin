@@ -1,8 +1,8 @@
 const { ProductHotel,  ProductHotelFaciility} = require("../../models");
 
 class ProductHotelRepository {
-  async create(payload, transaction = null) {
-    return await ProductHotel.bulkCreate(payload, { transaction });
+  async createMany(payload, options = {}) {
+    return await ProductHotel.bulkCreate(payload, options );
   }
   async findByProduct(productId) {
     return await ProductHotel.findAll({
@@ -15,10 +15,10 @@ class ProductHotelRepository {
       where: { product_id: productId },
     });
   }
-  async deleteByProductId(productId, transaction = null) {
+  async deleteByProduct(productId, options = {}) {
     return await ProductHotel.destroy({
       where: { product_id: productId },
-      transaction,
+      options,
     });
   }
 }

@@ -22,7 +22,7 @@ class ProductFlightService {
             
         }))
 
-        return await ProductFlightRepository.create(flightPayload, transaction);
+        return await ProductFlightRepository.createMany(flightPayload, transaction);
     }
 
     async replaceFlight(productId, flights, transaction = null) {

@@ -18,12 +18,12 @@ class ProductItineraryService {
             activity: i.activity,
             description: i.description
         }))
-        return await ProductItineraryRepository.create(itineraryPayload, transaction);
+        return await ProductItineraryRepository.createMany(itineraryPayload, transaction);
     }
     async replaceItinerary(productId, itineraries, transaction = null) {
         if (!itineraries || itineraries.length === 0) return [];
 
-        await ProductItineraryRepository.deleteByProductId(productId, transaction);
+        await ProductItineraryRepository.deleteByProduct(productId, transaction);
 
         const itineraryPayload = itineraries.map(i => ({
             product_id: productId, 

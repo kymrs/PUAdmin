@@ -1,18 +1,18 @@
 const { ProductFacility } = require("../../models");
 
 class ProductFacilityRepository {
-  async create(payload, transaction) {
-    return await ProductFacility.bulkCreate(payload, { transaction });
+  async createMany(payload, options={} ) {
+    return await ProductFacility.bulkCreate(payload,  options);
   }
   async findByProduct(productId) {
     return await ProductFacility.findAll({
       where: { product_id: productId },
     });
   }
-  async deleteByProductId(productId, transaction = null) {
+  async deleteByProduct(productId, options  = null) {
     return await ProductFacility.destroy({
       where: { product_id: productId },
-      transaction,
+      ...options ,
     });
   }
 }

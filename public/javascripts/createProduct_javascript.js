@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // --- INITIALIZATION ---
-    loadCategory();
+document.addEventListener("DOMContentLoaded", async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
 
     // --- STATES ---
     const ProductState = {
@@ -39,6 +39,202 @@ document.addEventListener("DOMContentLoaded", function() {
     let thumbnail_file = null;
     let hotelImageFiles = { Mekkah: null, Madinah: null };
 
+     function fillFormData(data) {
+    // --- 1. Field Utama Produk ---
+    $('#nama_produk').val(data.nama_produk);
+    ProductState.nama_produk = data.nama_produk;
+
+    $('#category_id').val(data.category_id);
+    ProductState.category_id = data.category_id
+
+    $('#status').val(data.status);
+    ProductState.status = data.status;
+
+    $('#quota').val(data.quota);
+    ProductState.quota = Number(data.quota);
+
+    $('#duration').val(data.duration);
+    ProductState.duration = Number(data.duration);
+
+    $('#tmp_keberangkatan').val(data.tmp_keberangkatan);
+    ProductState.tmp_keberangkatan = data.tmp_keberangkatan;
+
+    $('#date').val(data.tgl_keberangkatan);
+    ProductState.tgl_keberangkatan = data.tgl_keberangkatan;
+
+    $('#description').val(data.description);
+    ProductState.description = data.description;
+    // --- 2. Thumbnail Preview ---
+    if (data.thumbnail_url) {
+        // You may need to add an <img id="thumbnailPreview"> in your EJS if not present
+        $('#thumbnailPreview').attr('src', `/assets/img/products/thumbnails/${data.thumbnail_url}`).show();
+        ProductState.thumbnail_url = data.thumbnail_url;
+    }
+
+    // --- 3. Data Relasi: Prices (Tipe Kamar & Harga) ---
+    if (data.prices && data.prices.length > 0) {
+        // Reset state
+        ProductPriceState.forEach(ps => ps.price = 0);
+        data.prices.forEach(p => {
+            if (p.type === "Quad") {
+                $("input[name='price_quad']").val(p.price);
+                ProductPriceState.find(ps => ps.type === "Quad").price = p.price;
+            } else if (p.type === "Triple") {
+                $("input[name='price_triple']").val(p.price);
+                ProductPriceState.find(ps => ps.type === "Triple").price = p.price;
+            } else if (p.type === "Double") {
+                $("input[name='price_double']").val(p.price);
+                ProductPriceState.find(ps => ps.type === "Double").price = p.price;
+            }
+        });
+    }
+
+    // --- 4. Data Relasi: Flights ---
+    if (data.flights && data.flights.length > 0) {
+        data.flights.forEach(f => {
+            if (f.type === "Departure") {
+                $('#flight_kbrkt').val(f.airline_name);
+                ProductFlightState.Departure.airline_name = f.airline_name;
+            } else if (f.type === "Return") {
+                $('#flight_kplg').val(f.airline_name);
+                ProductFlightState.Return.airline_name = f.airline_name;
+            }
+        });
+    }
+
+    // --- 5. Data Relasi: Hotels ---
+    if (data.hotels && data.hotels.length > 0) {
+        data.hotels.forEach(h => {
+            if (h.city === "Mekkah") {
+                // Hotel Mekkah
+                $("#hotel_mekkah input[name='include']").val(h.name);
+                $("#hotel_mekkah select").val(h.rating);
+                $("#hotel_mekkah input[placeholder='50m']").val(h.jarak);
+                $('#mekkah_fclty').val(h.facilities);
+                // Preview image if needed
+                ProductHotelState.Mekkah = { name: h.name, rating: h.rating, jarak: h.jarak, facilities: h.facilities };
+                if(h.image) $('#preview_mekkah').attr('src', `/assets/img/products/hotels/${h.image}`);
+            } else if (h.city === "Madinah") {
+                // Hotel Madinah
+                $("#hotel_madinah input[name='exclude']").val(h.name);
+                $("#hotel_madinah select").val(h.rating);
+                $("#hotel_madinah input[placeholder='100m']").val(h.jarak);
+                $('#madinah_fclty').val(h.facilities);
+                ProductHotelState.Madinah = { name: h.name, rating: h.rating, jarak: h.jarak, facilities: h.facilities };
+                if(h.image) $('#preview_madinah').attr('src', `/assets/img/products/hotels/${h.image}`);
+            }
+        });
+    }
+
+    // --- 6. Data Relasi: Itinerary ---
+    if (data.itinerary && data.itinerary.length > 0) {
+        $('#roadmap_option').empty();
+        ProductItineraryState.length = 0;
+        data.itinerary.sort((a, b) => a.day_order - b.day_order).forEach(i => {
+            const item = { day_order: i.day_order, title: i.title, description: i.description };
+            ProductItineraryState.push(item);
+            if (typeof addItineraryRow === 'function') {
+                addItineraryRow(i.day_order, i.title, i.description);
+            } else {
+                // Fallback: Render itinerary item directly
+                const container = document.getElementById('roadmap_option');
+                const div = document.createElement('div');
+                div.className = "relative group itinerary-item mb-4";
+                div.innerHTML = `
+                    <span class="absolute -left-[2.1rem] top-4 w-4 h-4 rounded-full bg-primary-600 border-4 border-white dark:border-dark-card"></span>
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-xl p-4 border border-gray-100 dark:border-slate-700">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-gray-500 uppercase">Hari</label>
+                                <input type="text" value="${item.day_order}" readonly class="itinerary-day w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-600 font-bold text-center" required>
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-gray-500 uppercase">Lokasi</label>
+                                <input type="text" value="${item.title}" placeholder="Lokasi" class="itinerary-title w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-600 outline-none focus:border-primary-500">
+                            </div>
+                            <div class="md:col-span-6">
+                                <label class="block text-xs font-semibold text-gray-500 uppercase">Aktivitas</label>
+                                <input type="text" value="${item.description}" placeholder="Aktivitas" class="itinerary-desc w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-600 outline-none focus:border-primary-500" required>
+                            </div>
+                            <div class="md:col-span-1 flex items-end justify-end">
+                                <button type="button" class="p-2 text-red-500 hover:bg-red-50 rounded-lg btn-remove-roadmap">
+                                    <i class="ph-bold ph-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                div.querySelector('.itinerary-title').addEventListener('input', (e) => item.title = e.target.value);
+                div.querySelector('.itinerary-desc').addEventListener('input', (e) => item.description = e.target.value);
+                div.querySelector('.btn-remove-roadmap').addEventListener('click', () => {
+                    const idx = ProductItineraryState.indexOf(item);
+                    if (idx > -1) ProductItineraryState.splice(idx, 1);
+                    div.remove();
+                    updateRoadmapOrder();
+                });
+                container.appendChild(div);
+            }
+        });
+    }
+
+    // --- 7. Data Relasi: Fasilitas, SnK, & Notes ---
+    if (data.facility) {
+        $('#include-container').empty();
+        $('#exclude-container').empty();
+        ProductFacilityState.INCLUDE.length = 0;
+        ProductFacilityState.EXCLUDE.length = 0;
+        data.facility.forEach(f => {
+            if (f.type === "INCLUDE") {
+                ProductFacilityState.INCLUDE.push(f.facility);
+                createListItem(f.facility, 'include-container', ProductFacilityState.INCLUDE, 'bg-green-50/50');
+            } else if (f.type === "EXCLUDE") {
+                ProductFacilityState.EXCLUDE.push(f.facility);
+                createListItem(f.facility, 'exclude-container', ProductFacilityState.EXCLUDE, 'bg-red-50/50');
+            }
+        });
+    }
+    if (data.snk) {
+        $('#snk-container').empty();
+        ProductSnKState.length = 0;
+        data.snk.forEach(s => {
+            ProductSnKState.push(s.name);
+            createListItem(s.name, 'snk-container', ProductSnKState, 'bg-gray-50');
+        });
+    }
+    if (data.notes) {
+        $('#note-container').empty();
+        ProductNoteState.length = 0;
+        data.notes.forEach(n => {
+            ProductNoteState.push(n.note);
+            createListItem(n.note, 'note-container', ProductNoteState, 'bg-blue-50/50');
+        });
+    }
+}
+
+
+
+     if (productId) {
+        try {
+            const response = await fetch(`/api/products/products/${productId}`);
+            
+            // Cek apakah response-nya oke (status 200)
+            if (!response.ok) {
+                const text = await response.text(); // Ambil teks error jika bukan JSON
+                console.error("Server Error Response:", text);
+                throw new Error(`Server returned status ${response.status}`);
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                fillFormData(result.data);
+            }
+        } catch (error) {
+            console.error("Error fetching product data:", error);
+            swal("Gagal!", "Gagal mengambil data produk. Cek koneksi atau URL.", "error");
+        }
+    }
+    // --- INITIALIZATION ---
+    loadCategory();
     // --- UI HELPERS (TAILWIND STYLE) ---
 
     // Helper untuk membuat List Item (Note, SnK, Facility)
@@ -104,16 +300,21 @@ document.addEventListener("DOMContentLoaded", function() {
     //     }
     // });
     document.querySelectorAll("[data-type]").forEach(input => {
-        input.addEventListener("input", (e) => {
-            const type = e.target.dataset.type;
+    input.addEventListener("input", (e) => {
+        const type = e.target.dataset.type;
+        const item = ProductPriceState.find(p => p.type === type);
 
-            const item = ProductPriceState.find(p => p.type === type)
-
-            if(item){
-                item.price = Number(e.target.value);
-            }
-        })
-    }, )
+        if (item) {
+            // Simpan nilai asli (dengan titik) ke state sementara 
+            // atau biarkan saja, karena nanti dibersihkan saat SUBMIT
+            item.price = e.target.value; 
+        }
+        
+        // Opsional: Tambahkan auto-format titik saat user mengetik
+        let rawValue = e.target.value.replace(/\D/g, "");
+        e.target.value = new Intl.NumberFormat('id-ID').format(rawValue);
+    });
+});
 
     // Dynamic Lists (Enter Keys)
     const setupListInput = (inputId, containerId, stateArray, color) => {
@@ -212,8 +413,31 @@ document.addEventListener("DOMContentLoaded", function() {
         e.preventDefault();
         collectHotelData();
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        const url = productId ? `/api/products/products/${productId}` : '/api/products/products';
+         const method = productId ? 'PUT' : 'POST';
+
         if (!ProductState.category_id) return swal("Oops!", "Kategori belum dipilih", "warning");
 
+        const getCleanNumber = (value) => {
+            if (!value) return 0;
+            // Mengubah "30.000.000" (string) menjadi 30000000 (number)
+            const cleanValue = value.toString().replace(/\D/g, '');
+            return parseInt(cleanValue, 10) || 0;
+        } 
+
+        ProductPriceState.forEach(p => {
+          // Ambil value langsung dari input HTML agar mendapatkan data terbaru yang ada titiknya
+            const inputElement = document.querySelector(`[data-type="${p.type}"]`);
+            if (inputElement) {
+                p.price = getCleanNumber(inputElement.val || inputElement.value);
+            } else {
+                // Fallback jika input tidak ketemu, bersihkan data yang ada di state
+                p.price = getCleanNumber(p.price);
+            }
+        });
         const formData = new FormData();
 
         // Append Data Utama
@@ -243,10 +467,13 @@ document.addEventListener("DOMContentLoaded", function() {
         if (hotelImageFiles.Madinah) formData.append("hotel_image_madinah", hotelImageFiles.Madinah);
 
         try {
-            const res = await fetch("/api/products/products", { method: "POST", body: formData });
+            const res = await fetch(url, { 
+                method: method, 
+                body: formData 
+            });
             const data = await res.json();
             if (res.ok) {
-                swal("Berhasil", "Produk berhasil disimpan", "success").then(() => window.location.reload());
+                swal("Berhasil", "Produk berhasil disimpan", "success").then(() => window.location.href = "/products");
             } else {
                 swal("Gagal", data.message || "Terjadi kesalahan", "error");
             }
@@ -254,6 +481,8 @@ document.addEventListener("DOMContentLoaded", function() {
             swal("Error", "Gagal menghubungi server", "error");
         }
     });
+
+    
 });
 
 async function loadCategory() {

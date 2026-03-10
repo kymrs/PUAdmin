@@ -1,36 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
     const table = $("#productTable").DataTable({
         processing: true,
-        serverSide: false,
+        serverSide: true,
         responsive: false,
         scrollX: false,
         autowidth: true,
         dom: "t",
         info: false,
         paginate: true,
+        order:[],
         lengthMenu: [[
             10, 25, 50, 100, -1],
             [10, 25, 50, 100, "All"]
         ],
          ajax: {
-            url: "/api/products/products/", // Backend endpoint
+            url: "/api/products/products/datatables", // Backend endpoint
             type: "GET",
-            dataSrc: (json) => json.data,
+            // dataSrc: (json) => json.data,
         },
+        lengthChange: false,
         columns: [
             {
                 data: "id",
-                className: "p-5 text-center",
+                className: "pl-5  border border-b",
                 render: function (data, type, row) {
                      let buttons = `<div class="flex items-center justify-center gap-2">`;
-
-                     if(row.akses && row.akses.edit) {
+                     // Paksa munculkan teks untuk debug
+                     console.log("Row data:", row)
+                     if(row.akses?.edit ) {
                         buttons += `
                            <button onclick="editProduct(${row.id})" class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-400 transition-colors" title="Edit">
                                 <i class="ph-bold ph-pencil-simple text-lg"></i>
                             </button>`;
                      }
-                     if(row.akses && row.akses.delete) {
+                     if(row.akses?.delete
+                     ) {
                         buttons += `
                            <button onclick="deleteProduct(${row.id})" class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 transition-colors" title="Hapus">
                                 <i class="ph-bold ph-trash text-lg"></i>
@@ -42,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 {
                     data: "thumbnail_url", title: "Thumbnail", 
+                    className: "pl-5 border border-b",
                     render: function(data) {
                         if(data) {
                             const safeUrl = encodeURIComponent(data);
@@ -51,11 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 },
                 {
-                    data: "nama_produk", title: "Nama Produk", className: "font-semibold text-gray-900 dark:text-white"
+                    data: "nama_produk", title: "Nama Produk", className: "pl-5  font-semibold text-gray-900 dark:text-white border border-b"
                 },
                 {
                     data: "prices", // Ini akan mengambil seluruh array 'prices'
                     title: "Harga (Tipe Kamar)",
+                    className: "p-5  border border-b",
                     render: function(data, type, row) {
                         if (!data || data.length === 0) return "Tidak ada harga";
                         
@@ -67,16 +73,17 @@ document.addEventListener("DOMContentLoaded", () => {
                                 minimumFractionDigits: 0
                             }).format(item.price);
                             
-                            return `<div><strong>${item.room_types}:</strong> ${formattedPrice}</div>`;
+                            return `<span> <strong>${item.room_types}:</strong> ${formattedPrice}</span>`;
                         }).join(''); // Menggabungkan hasil array menjadi string HTML
                     }
                 },
                 {
                     data: "quota", title: "Stock",
-                    className: "text-gray-500 dark:text-white" 
+                    className: "pl-5  text-gray-500 dark:text-white border border-b" 
                 },
                 {
                     data: "status", title: "Status",
+                    className: "p-5  border border-b",
                     render: function(data) {
                         const isPublic = data === "publish";
                          return `
@@ -93,6 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
             },
         });
     
+    $('#entriesSelect').on('change', function () {
+      table.page.len($(this).val()).draw();
+    });
     // Custom Search bar logic
     document.querySelector('input[placeholder="Cari Product..."]').addEventListener('keyup', function() {
       table.search(this.value).draw();
@@ -170,22 +180,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
  
 
-    function deleteProduct(id) {
-  swal({
-    title: "Yakin ingin menghapus?",
-    text: "Data yang dihapus tidak dapat dikembalikan!",
-    icon: "warning",
-    buttons: ["Batal", "Ya, hapus!"],
-    dangerMode: true,
-  }).then(async (willDelete) => {
-    if (willDelete) {
+    window.deleteProduct = (id) => {
+    swal({
+      title: "Yakin ingin menghapus?",
+      text: "Data yang dihapus tidak dapat dikembalikan!",
+      icon: "warning",
+      buttons: ["Batal", "Ya, hapus!"],
+      dangerMode: true,
+    }).then(async (willDelete) => {
+      if (willDelete) {
       try {
         const res = await fetch(`/api/products/products/${id}`, { method: "DELETE" });
         const data = await res.json();
 
-        if (data.status === "success") {
+        // UBAH BAGIAN INI:
+        if (res.ok) { 
           swal("Terhapus!", data.message, "success");
-          $("#productTable").DataTable().ajax.reload();
+          $("#productTable").DataTable().ajax.reload(null, false); // null, false agar tetap di halaman yang sama
         } else {
           swal("Gagal!", data.message, "error");
         }
@@ -193,5 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
         swal("Error!", "Gagal menghubungi server", "error");
       }
     }
-  });
-}
+    });
+  }
+
+  window.editProduct = (id) => {
+    // Alihkan user ke halaman create dengan membawa parameter ID
+    window.location.href = `/createProduct?id=${id}`;
+};
