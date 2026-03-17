@@ -10,6 +10,13 @@ class AksesService {
          return akses;
     }
     async getAksesById(id) {
+        // try{
+        //     const akses = await AksesRepository.getAksesById(id);
+
+        //     return akses;
+        // } catch (error) {
+        //     console.error("Error: ", error)
+        // }
         const akses = await AksesRepository.getAksesById(id);
         if (!akses) {
             throw new Error("Akses not found");
@@ -38,9 +45,9 @@ class AksesService {
         return await AksesRepository.deleteAkses(id);
     }
 
-    async upsertAkses(level, menuId, payload){
+    async upsertAkses(id_level, menuId, payload){
         return await Akses.upsert({
-            id_level: level,
+            id_level: id_level,
             id_menu: menuId,
             ...payload
         })
@@ -60,12 +67,12 @@ class AksesService {
             id_menu: row.id_menu,
             nama_menu: row.Menu.nama_menu,
             link: row.Menu.link,
-            view_level: row.view_level,
-            add_level: row.add_level,
-            edit_level: row.edit_level,
-            delete_level: row.delete_level,
-            print_level: row.print_level,
-            upload_level: row.upload_level,
+            view_level: row.view_level?.trim(),
+            add_level: row.add_level?.trim(),
+            edit_level: row.edit_level?.trim(),
+            delete_level: row.delete_level?.trim(),
+            print_level: row.print_level?.trim(),
+            upload_level: row.upload_level?.trim(),
         }))
     }
 }

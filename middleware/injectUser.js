@@ -1,4 +1,5 @@
 const { Menu, Akses } = require("../models");
+const { Op } = require("sequelize");
 
 module.exports = async (req, res, next) => {
   try {
@@ -12,29 +13,38 @@ module.exports = async (req, res, next) => {
 
     let currentPath = req.originalUrl.replace(/\?.*$/, ""); 
     currentPath = currentPath.replace(/^\/api/, "");
+    // hilangkan trailing slash
+    if (currentPath.length > 1 && currentPath.endsWith("/")) {
+      currentPath = currentPath.slice(0, -1);
+    }
 
     if (currentPath.includes("/datatables")) {
 
       // hapus /datatables dari path
-      const menuPath = currentPath.replace("/datatables", "");
+      const menuPath = currentPath.replace(/\/datatables$/, "");
 
       const aksesData = await Akses.findOne({
         where: { id_level: user.id_level },
         include: {
           model: Menu,
           attributes: ["link"],
-          where: { link: menuPath }
+         where: {
+          [Op.or]: [
+            { link: { [Op.like]: `${menuPath}%` } },
+            { link: { [Op.like]: `${menuPath.replace("/", "")}%` } }
+          ]
+        }
         }
       });
 
       if (aksesData) {
         res.locals.akses = {
-          view_level: aksesData.view_level,
-          add_level: aksesData.add_level,
-          edit_level: aksesData.edit_level,
-          delete_level: aksesData.delete_level,
-          print_level: aksesData.print_level,
-          upload_level: aksesData.upload_level
+          view_level: aksesData.view_level?.trim() ?? "N",
+          add_level: aksesData.add_level?.trim() ?? "N",
+          edit_level: aksesData.edit_level?.trim() ?? "N",
+          delete_level: aksesData.delete_level?.trim() ?? "N",
+          print_level: aksesData.print_level?.trim() ?? "N",
+          upload_level: aksesData.upload_level?.trim() ?? "N"
         };
       } else {
         res.locals.akses = getDefaultAkses();
@@ -44,7 +54,7 @@ module.exports = async (req, res, next) => {
     }
     
     // SUPERADMIN → full akses
-    if (user.id_level === 6) {
+    if (user.id_level === 1) {
       res.locals.akses = getFullAkses();
       res.locals.user = user;
       return next();
@@ -63,7 +73,7 @@ module.exports = async (req, res, next) => {
     // Mapping
     const aksesMap = {};
     for (const row of aksesList){
-      if(!Menu || !row.Menu.link) continue;
+      if(!row.Menu || !row.Menu.link) continue;
 
       let link = row.Menu.link.trim();
 
@@ -72,12 +82,12 @@ module.exports = async (req, res, next) => {
       if(!link.startsWith("/")) link = "/" + link;
 
        aksesMap[link] = {
-          view_level: row.view_level,
-          add_level: row.add_level,
-          edit_level: row.edit_level,
-          delete_level: row.delete_level,
-          print_level: row.print_level,
-          upload_level: row.upload_level,
+          view_level: row.view_level?.trim(),
+          add_level: row.add_level?.trim(),
+          edit_level: row.edit_level?.trim(),
+          delete_level: row.delete_level?.trim(),
+          print_level: row.print_level?.trim(),
+          upload_level: row.upload_level?.trim(),
       };
     }
 
@@ -130,6 +140,6 @@ function matchAkses(currentPath, aksesMap) {
       bestMatch = aksesMap[link];
       longest = link.length;
     }
-    return bestMatch;
   }
+   return bestMatch;
 }

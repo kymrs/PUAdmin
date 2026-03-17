@@ -67,7 +67,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     // --- 2. Thumbnail Preview ---
     if (data.thumbnail_url) {
         // You may need to add an <img id="thumbnailPreview"> in your EJS if not present
-        $('#thumbnailPreview').attr('src', `/assets/img/products/thumbnails/${data.thumbnail_url}`).show();
+        // const preview = document.getElementById('thumbnail-preview');
+        
+
+        $('#thumbnail-preview').attr('src', `/assets/img/products/thumbnails/${data.thumbnail_url}`).show();
         ProductState.thumbnail_url = data.thumbnail_url;
     }
 
@@ -282,7 +285,36 @@ document.addEventListener("DOMContentLoaded", async function() {
     // File Uploads
     document.getElementById("thumbnail").addEventListener("change", (e) => {
         thumbnail_file = e.target.files[0];
-        if (thumbnail_file) ProductState.thumbnail_url = thumbnail_file.name;
+        const filePreview = document.getElementById("thumbnail-preview");
+        const placeholder = document.getElementById("placeholder-content");
+        const overlay = document.getElementById('change-overlay');
+
+        if (thumbnail_file) {
+            
+            // Validasi tipe file (tambahan dari validateFileExtension)
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                // Pasang source gambar ke preview
+                preview.src = event.target.result;
+                
+                // Tampilkan preview, sembunyikan placeholder
+                preview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+                
+                // Tampilkan overlay saat hover (opsional)
+                if(overlay) overlay.classList.remove('hidden');
+            }
+
+        reader.readAsDataURL(file);
+        ProductState.thumbnail_url = thumbnail_file.name
+        } else {
+            // Jika tidak ada file, kembalikan ke awal
+            preview.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+        }
+      
+        // if (thumbnail_file) ProductState.thumbnail_url = thumbnail_file.name;
     });
 
     document.getElementById("hotel_mekkah_image").addEventListener("change", (e) => hotelImageFiles.Mekkah = e.target.files[0]);

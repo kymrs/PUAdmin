@@ -14,17 +14,19 @@ class AksesRepository{
         return await Akses.create(aksesData);
     }
     async updateAkses(id, aksesData){
-        return await Akses.update(aksesData, { where: { id } });
+        await Akses.update(aksesData, { where: { id } });
+
+        return await Akses.findByPk(id);
     }
     
     async deleteAkses(id){
         return await Akses.destroy({ where: { id } });
     }
     async getAksesByLevel(id_level) {
-        return await Menu.findAll({
+        return await Akses.findAll({
            include: [{
                 model: Akses,
-                required: false,
+                required: true,
                 where: { id_level: id_level}
            }],
         });
@@ -35,27 +37,36 @@ class AksesRepository{
             transaction
         })
     }
-    async upsert (data, options){
-        const { id, id_level, id_menu, level, status } = data;
-        try{
-            const [akses] = await Akses.upsert(
-                {
-                    id,
-                    id_level,
-                    id_menu,
-                    [level]: status // Menggunakan computed property untuk level,
-                },
-                {
-                    returning: true,
-                    ...options
-                }
-            );
+    async upsert (options){
+        const columnMap = {
+            view: "view_level",
+            add: "add_level",
+            edit: "edit_level",
+            delete: "delete_level",
+            print: "print_level",
+            upload: "upload_level"
+            };
 
-        return akses;
-        } catch (error){
-            throw new Error('Failed to upsert Akses: ' + error.message);
+            const column = columnMap[level];
+
+            if(!column){
+            throw new Error("Invalid akses level");
+            }
+
+            const [akses] = await Akses.upsert(
+            {
+                id,
+                id_level,
+                id_menu,
+                [column]: status
+            },
+            {
+                returning: true,
+                ...options
+            }
+            );
+            // return akses;
         }
-    }
 }
 
 module.exports = new AksesRepository();

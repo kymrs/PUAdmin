@@ -155,16 +155,15 @@ const loadApiRoutes = (dir, baseRoute = "") => {
       loadApiRoutes(fullPath, path.join(baseRoute, file));
     } 
     else if (file.endsWith(".routes.js")) {
+
       const route = require(fullPath);
 
-      const isIndex = file === "index.routes.js";
-      const routeName = isIndex ? "" : file.replace(".routes.js", "");
-
-      const routePath = `/api/${path.join(baseRoute, routeName)}`
+      const routePath = `/api/${baseRoute}`
         .replace(/\\/g, "/")
         .replace(/\/$/, "");
 
       app.use(routePath, route);
+
       console.log(`✅ Loaded API route: ${routePath}`);
     }
   });
