@@ -12,6 +12,7 @@ class ProductController {
       // }
 
       const products = await productService.getAllProduct();
+      console.log("MASUK PRODUCT CONTROLLER");
       res.json({ success: true, data: products });
     } catch (error) {
       console.error(error);
@@ -21,9 +22,9 @@ class ProductController {
 
    async getAllProductsDatatables(req, res) {
     try {
-      const {akses} = res.locals.akses || {};
+      const akses = res.locals.akses || {};
 
-      if (akses.view_level !== 'Y') {
+      if (akses.view_level?.trim() !== 'Y') {
         return res.status(403).json({ error: "Akses ditolak" });
       }
 

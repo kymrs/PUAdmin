@@ -1,5 +1,5 @@
 const express = require("express");
-const aksesController = require("../../controllers/api/akses.controller.js");
+const aksesController = require("../../../controllers/api/akses.controller.js");
 
 const router = express.Router();
 

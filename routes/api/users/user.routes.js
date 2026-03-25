@@ -1,6 +1,6 @@
 const express = require("express");
-const userController = require("../../controllers/api/user.controller");
-const { injectUser } = require("../../middleware");
+const userController = require("../../../controllers/api/user.controller");
+const { injectUser } = require("../../../middleware");
 
 const router = express.Router();
 

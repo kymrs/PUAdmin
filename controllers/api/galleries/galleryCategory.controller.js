@@ -16,7 +16,7 @@ class GalleryCategoryService {
     try {
       const { akses } = res.locals;
 
-        if (akses.view_level !== 'Y') {
+        if (akses.view_level?.trim() !== 'Y') {
           return res.status(403).json({ error: "Akses ditolak" });
         }
   

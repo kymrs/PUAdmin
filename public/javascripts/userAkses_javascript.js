@@ -8,7 +8,7 @@ const accessPanel = document.getElementById('access-modal-panel');
                 const accessLevelName = document.getElementById("modal-level-name");
                 if (accessLevelName) accessLevelName.textContent = levelName;
 
-                // 2. Fetch Data dari API
+                // 2. Fetch Data dari APIa
                 try {
                     const res = await fetch(`/api/userlevel/by-level/${idLevel}`);
                     const response = await res.json();

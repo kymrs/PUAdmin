@@ -1,6 +1,6 @@
 const express = require('express');
-const transactionController = require('../../controllers/api/transactions/transaction.controller');
-const { injectUser } = require ('../../middleware');
+const transactionController = require('../../../controllers/api/transactions/transaction.controller');
+const { injectUser } = require ('../../../middleware');
 const router = express.Router();
 
 router.get("/", transactionController.getAllTransactions);

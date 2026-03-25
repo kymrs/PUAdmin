@@ -24,10 +24,11 @@ class AksesRepository{
     }
     async getAksesByLevel(id_level) {
         return await Akses.findAll({
+           where:{ id_level},
            include: [{
-                model: Akses,
+                model: Menu,
                 required: true,
-                where: { id_level: id_level}
+                
            }],
         });
     }
@@ -37,7 +38,7 @@ class AksesRepository{
             transaction
         })
     }
-    async upsert (options){
+    async upsert (options={}){
         const columnMap = {
             view: "view_level",
             add: "add_level",
@@ -54,18 +55,18 @@ class AksesRepository{
             }
 
             const [akses] = await Akses.upsert(
-            {
-                id,
-                id_level,
-                id_menu,
-                [column]: status
-            },
-            {
-                returning: true,
-                ...options
-            }
+                {
+                    id,
+                    id_level,
+                    id_menu,
+                    [column]: status
+                },
+                {
+                    returning: true,
+                    ...options
+                }
             );
-            // return akses;
+            return akses;
         }
 }
 

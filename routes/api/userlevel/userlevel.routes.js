@@ -1,7 +1,7 @@
 const express = require("express");
-const userlevelController = require("../../controllers/api/userlevel.controller");
-const { injectUser } = require("../../middleware/");
-const { ensureAuth } = require("../../middleware/auth");
+const userlevelController = require("../../../controllers/api/userlevel.controller");
+const { injectUser } = require("../../../middleware");
+const { ensureAuth } = require("../../../middleware/auth");
 
 const router = express.Router();
 

@@ -5,19 +5,19 @@ module.exports = async (req, res, next) => {
   try {
     const user = req.session.user;
 
-    // Kalau belum login → set default akses N
     if (!user) {
       res.locals.akses = getDefaultAkses();
       return next();
     }
 
-    let currentPath = req.originalUrl.replace(/\?.*$/, ""); 
+    let currentPath = req.originalUrl.replace(/\?.*$/, "");
     currentPath = currentPath.replace(/^\/api/, "");
-    // hilangkan trailing slash
+    // Hapus trailing slash
     if (currentPath.length > 1 && currentPath.endsWith("/")) {
       currentPath = currentPath.slice(0, -1);
     }
 
+    // ─── Handler khusus path /datatables ───
     if (currentPath.includes("/datatables")) {
 
       // hapus /datatables dari path
@@ -50,17 +50,18 @@ module.exports = async (req, res, next) => {
         res.locals.akses = getDefaultAkses();
       }
 
+      console.log(`[RBAC /datatables] path: ${menuPath} | akses:`, res.locals.akses);
       return next();
     }
-    
-    // SUPERADMIN → full akses
+
+    // ─── Superadmin → full akses ───
     if (user.id_level === 1) {
       res.locals.akses = getFullAkses();
       res.locals.user = user;
       return next();
     }
 
-    // Ambil akses dari DB
+    // ─── User biasa: ambil akses dari DB ───
     const aksesList = await Akses.findAll({
       where: { id_level: user.id_level },
       include: {
@@ -70,12 +71,13 @@ module.exports = async (req, res, next) => {
       },
     });
 
-    // Mapping
     const aksesMap = {};
     for (const row of aksesList){
       if(!row.Menu || !row.Menu.link) continue;
 
       let link = row.Menu.link.trim();
+      if (link === "#" || link === "") continue;
+      if (!link.startsWith("/")) link = "/" + link;
 
       if( link === "#" || link === "" ) continue;
 
@@ -91,12 +93,10 @@ module.exports = async (req, res, next) => {
       };
     }
 
-    // Cari matching akses berdasarkan link terpanjang
-    const akses = matchAkses(currentPath, aksesMap) || getDefaultAkses()
-    ;
-    
+    const akses = matchAkses(currentPath, aksesMap) || getDefaultAkses();
+    console.log(`[RBAC] path: ${currentPath} | level: ${user.id_level} | akses:`, akses);
 
-    res.locals.akses = akses;
+    res.locals.akses   = akses;
     res.locals.username = user.username;
     res.locals.fullname = user.fullname;
     res.locals.id_level = user.id_level;
@@ -108,35 +108,35 @@ module.exports = async (req, res, next) => {
   }
 };
 
-// Helpers
 function getDefaultAkses() {
-  return {
-    view_level: "N",
-    add_level: "N",
-    edit_level: "N",
-    delete_level: "N",
-    print_level: "N",
-    upload_level: "N",
-  };
+  return { 
+    view_level:"N", 
+    add_level:"N", 
+    edit_level:"N", 
+    delete_level:"N", 
+    print_level:"N", 
+    upload_level:"N"
+   };
 }
 
 function getFullAkses() {
-  return {
-    view_level: "Y",
-    add_level: "Y",
-    edit_level: "Y",
-    delete_level: "Y",
-    print_level: "Y",
-    upload_level: "Y",
+  return { 
+    view_level:"Y", 
+    add_level:"Y", 
+    edit_level:"Y", 
+    delete_level:"Y", 
+    print_level:"Y", 
+    upload_level:"Y" 
   };
 }
 
+// ✅ Fix Bug #1: return di LUAR loop
 function matchAkses(currentPath, aksesMap) {
   let bestMatch = null;
   let longest = 0;
 
-  for(const link in aksesMap){
-    if(currentPath.startsWith(link) && link.length > longest ){
+  for (const link in aksesMap) {
+    if (currentPath.startsWith(link) && link.length > longest) {
       bestMatch = aksesMap[link];
       longest = link.length;
     }

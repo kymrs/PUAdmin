@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
             [10, 25, 50, 100, "All"]
         ],
          ajax: {
-            url: "/api/products/", // Backend endpoint
+            url: "/api/products/datatables", // Backend endpoint
             type: "GET",
             // dataSrc: (json) => json.data,
         },

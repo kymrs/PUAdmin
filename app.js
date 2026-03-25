@@ -77,32 +77,6 @@ app.use("/", authRoutes);
 // 📦 Auto-load UI Routes (nested-friendly)
 const uiRoutesPath = path.join(__dirname, "routes", "ui");
 
-
-// const FILE_TYPE ={
-//     'image/png': 'png',
-//     'image/jpeg': 'jpeg',
-//     'image/jpg': 'jpg'
-// }
-
-
-
-// app.post("/api/hotels/hotel", upload.single('image'), (req, res) => {
-//   const hotelName = req.body.name;
-//   const photoPath = req.file ? `/assets/img/uploads/${req.file.filename}` : null;
-
-//   // SIMPAN KE DB: Kolom photo diisi string dari `photoPath`
-//   // query: INSERT INTO hotels (name, photo) VALUES (hotelName, photoPath)
-
-//   res.json({
-//     status: "success",
-//     message: "Hotel created successfully",
-//     data: {
-//       name: hotelName,
-//       image: photoPath
-//     }
-//   })
-// })
-
 function loadUiRoutes(basePath, parentRoute = "") {
   if (!fs.existsSync(basePath)) return;
 
@@ -125,27 +99,30 @@ function loadUiRoutes(basePath, parentRoute = "") {
 }
 
 loadUiRoutes(uiRoutesPath);
-
-// 🔌 Auto-load API Routes (recursive)
 // const loadApiRoutes = (dir, baseRoute = "") => {
 //   fs.readdirSync(dir).forEach((file) => {
 //     const fullPath = path.join(dir, file);
 //     const stat = fs.lstatSync(fullPath);
 
 //     if (stat.isDirectory()) {
-//       // Rekursif jika folder
-//       const newBase = path.join(baseRoute, file);
-//       loadApiRoutes(fullPath, newBase);
-//     } else if (file.endsWith(".routes.js")) {
+//       // masuk ke folder → jadi endpoint
+//       loadApiRoutes(fullPath, path.join(baseRoute, file));
+//     } 
+//     else if (file.endsWith(".routes.js")) {
+
 //       const route = require(fullPath);
-//       const routeName = file.split(".")[0]; // gallery.routes.js => gallery
-//       const routePath = `/api/${path.join(baseRoute, routeName)}`.replace(/\\/g, "/");
+
+//       // ⬇️ INI KUNCINYA
+//       const routePath = `/api/${baseRoute}`
+//         .replace(/\\/g, "/")
+//         .replace(/\/$/, "");
+
 //       app.use(routePath, route);
-//       console.log(`✅ Loaded API route: ${routePath}`); //UNTUK MELIHAT HASIL ROUTES
+
+//       console.log(`✅ Loaded API route: ${routePath}`);
 //     }
 //   });
 // };
-
 const loadApiRoutes = (dir, baseRoute = "") => {
   fs.readdirSync(dir).forEach((file) => {
     const fullPath = path.join(dir, file);

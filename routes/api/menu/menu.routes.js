@@ -1,9 +1,9 @@
 const express = require("express");
-const menuController = require("../../controllers/api/menu.controller");
+const menuController = require("../../../controllers/api/menu.controller");
 
-const { injectUser } = require("../../middleware/");
-const { ensureAuth } = require("../../middleware/auth");
-const { route } = require("../auth.routes");
+const { injectUser } = require("../../../middleware");
+const { ensureAuth } = require("../../../middleware/auth");
+const { route } = require("../../auth.routes");
 
 const router = express.Router();
 

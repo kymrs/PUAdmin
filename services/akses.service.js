@@ -4,24 +4,10 @@ const AksesRepository = require('../repositories/akses.repository');
 class AksesService {
     async getAllAkses() {
         const akses = await AksesRepository.getAllAkses();
-         if (akses.length === 0) {
-            throw new Error("No akses found");
-        }
          return akses;
     }
     async getAksesById(id) {
-        // try{
-        //     const akses = await AksesRepository.getAksesById(id);
-
-        //     return akses;
-        // } catch (error) {
-        //     console.error("Error: ", error)
-        // }
-        const akses = await AksesRepository.getAksesById(id);
-        if (!akses) {
-            throw new Error("Akses not found");
-        }
-        return akses;
+        return await AksesRepository.getAksesById(id);
     }
     async createAkses(aksesData){
         const requiredFields = ["id_level", "id_menu", "view_level"];
