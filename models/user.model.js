@@ -1,4 +1,4 @@
-const { create } = require("../repositories/chat.repository");
+
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define("User", {
