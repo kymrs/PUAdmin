@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }).then(async (willDelete) => {
       if (willDelete) {
       try {
-        const res = await fetch(`/api/products/products/${id}`, { method: "DELETE" });
+        const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
         const data = await res.json();
 
         // UBAH BAGIAN INI:

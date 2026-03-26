@@ -77,6 +77,26 @@ app.use("/", authRoutes);
 // 📦 Auto-load UI Routes (nested-friendly)
 const uiRoutesPath = path.join(__dirname, "routes", "ui");
 
+// function loadUiRoutes(basePath, parentRoute = "") {
+//   if (!fs.existsSync(basePath)) return;
+
+//   fs.readdirSync(basePath).forEach((file) => {
+//     const fullPath = path.join(basePath, file);
+//     const stat = fs.statSync(fullPath);
+
+//     if (stat.isDirectory()) {
+//       // Rekursif masuk folder
+//       loadUiRoutes(fullPath, path.join(parentRoute, file));
+//     } else if (file.endsWith(".routes.js")) {
+//       const route = require(fullPath);
+//       const routePath = path.join(parentRoute, file.replace(".routes.js", ""));
+//       const cleanRoutePath = routePath.replace(/\\/g, "/"); // cross-platform
+
+//       console.log(`✅ Loaded UI route: /${cleanRoutePath}`);
+//       app.use(`/${cleanRoutePath}`, route);
+//     }
+//   });
+// }
 function loadUiRoutes(basePath, parentRoute = "") {
   if (!fs.existsSync(basePath)) return;
 
@@ -85,15 +105,27 @@ function loadUiRoutes(basePath, parentRoute = "") {
     const stat = fs.statSync(fullPath);
 
     if (stat.isDirectory()) {
-      // Rekursif masuk folder
+      // masuk folder → jadi endpoint
       loadUiRoutes(fullPath, path.join(parentRoute, file));
-    } else if (file.endsWith(".routes.js")) {
-      const route = require(fullPath);
-      const routePath = path.join(parentRoute, file.replace(".routes.js", ""));
-      const cleanRoutePath = routePath.replace(/\\/g, "/"); // cross-platform
+    } 
+    else if (file.endsWith(".routes.js")) {
 
-      console.log(`✅ Loaded UI route: /${cleanRoutePath}`);
-      app.use(`/${cleanRoutePath}`, route);
+      const route = require(fullPath);
+
+      const isIndex = file === "index.routes.js";
+
+      // 🔥 ini penting
+      const routeName = isIndex ? "" : file.replace(".routes.js", "");
+
+      const routePath = path.join(parentRoute, routeName)
+        .replace(/\\/g, "/")
+        .replace(/\/$/, "");
+
+      const finalPath = "/" + routePath;
+
+      app.use(finalPath, route);
+
+      console.log(`✅ UI route: ${finalPath || "/"}`);
     }
   });
 }

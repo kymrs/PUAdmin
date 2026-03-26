@@ -38,7 +38,12 @@ class ProductController {
         }
       }))
 
-      return response.datatables(res, result)
+     return res.json({
+      draw: result.draw,
+      recordsTotal: result.recordsTotal,
+      recordsFiltered: result.recordsFiltered,
+      data: result.data
+    });
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, message: "Internal Server Error" });

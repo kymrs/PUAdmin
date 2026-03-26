@@ -21,19 +21,22 @@ module.exports = async (req, res, next) => {
     if (currentPath.includes("/datatables")) {
 
       // hapus /datatables dari path
-      const menuPath = currentPath.replace(/\/datatables$/, "");
+      let menuPath =currentPath.replace(/\/datatables$/, "");
+
+      menuPath = "/" + menuPath.split("/")[1];
 
       const aksesData = await Akses.findOne({
         where: { id_level: user.id_level },
         include: {
           model: Menu,
           attributes: ["link"],
-         where: {
-          [Op.or]: [
-            { link: { [Op.like]: `${menuPath}%` } },
-            { link: { [Op.like]: `${menuPath.replace("/", "")}%` } }
-          ]
-        }
+          where: {
+            [Op.or]: [
+              { link: menuPath },
+              { link: `/${menuPath}` },
+              { link: { [Op.like]: `${menuPath}%` } }
+            ]
+          }
         }
       });
 
@@ -51,6 +54,8 @@ module.exports = async (req, res, next) => {
       }
 
       console.log(`[RBAC /datatables] path: ${menuPath} | akses:`, res.locals.akses);
+      console.log("🔥 currentPath:", currentPath);
+      console.log("🔥 menuPath:", menuPath);
       return next();
     }
 
@@ -142,4 +147,11 @@ function matchAkses(currentPath, aksesMap) {
     }
   }
    return bestMatch;
+}
+
+function normalizePath(path) {
+  return path
+    .replace(/^\/api/, "")
+    .replace(/\/$/, "")
+    .toLowerCase();
 }
